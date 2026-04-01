@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QALingo — Product Architecture</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --teal: #1a9e8f;
+    --teal-light: #22c5b3;
+    --green: #7ec94a;
+    --green-light: #a3e071;
+    --blue: #2e6fd9;
+    --blue-bug: #4a90d9;
+    --dark: #0d1117;
+    --dark2: #161b22;
+    --dark3: #1f2937;
+    --card: #1a2332;
+    --border: #2a3a50;
+    --text: #e2e8f0;
+    --muted: #7a8fa6;
+    --accent: #f0c040;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--dark);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, #0d1117 0%, #0f2027 50%, #0d1117 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 48px 40px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(26,158,143,0.15) 0%, transparent 70%);
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -60px; left: 20%;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(126,201,74,0.1) 0%, transparent 70%);
+  }
+  .header-inner { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; }
+  .logo-row { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
+  .logo-badge {
+    background: linear-gradient(135deg, var(--teal), var(--green));
+    border-radius: 14px;
+    padding: 10px 16px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 22px;
+    letter-spacing: -0.5px;
+  }
+  .logo-badge span { color: #fff; }
+  .logo-badge span.g { color: var(--accent); }
+  .doc-label {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .header h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: 36px;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, #fff 40%, var(--teal-light));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .header p {
+    color: var(--muted);
+    font-size: 15px;
+    max-width: 560px;
+  }
+  .version-row {
+    display: flex; gap: 12px; margin-top: 20px; flex-wrap: wrap;
+  }
+  .pill {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-family: 'DM Mono', monospace;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+  }
+  .pill.teal { background: rgba(26,158,143,0.15); color: var(--teal-light); border: 1px solid rgba(26,158,143,0.3); }
+  .pill.green { background: rgba(126,201,74,0.12); color: var(--green-light); border: 1px solid rgba(126,201,74,0.25); }
+  .pill.yellow { background: rgba(240,192,64,0.12); color: var(--accent); border: 1px solid rgba(240,192,64,0.25); }
+
+  /* LAYOUT */
+  .container { max-width: 1100px; margin: 0 auto; padding: 40px; }
+
+  /* SECTION TITLE */
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--teal-light);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* CARDS */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+  }
+  .card-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    margin-bottom: 4px;
+    color: #fff;
+  }
+  .card-sub {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+
+  /* GRID */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 14px; }
+
+  /* USER JOURNEY */
+  .journey {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+    overflow-x: auto;
+    padding-bottom: 8px;
+  }
+  .journey-step {
+    flex: 1;
+    min-width: 140px;
+    position: relative;
+  }
+  .journey-step:not(:last-child)::after {
+    content: '→';
+    position: absolute;
+    right: -12px;
+    top: 20px;
+    color: var(--teal);
+    font-size: 18px;
+    z-index: 2;
+  }
+  .journey-node {
+    background: var(--dark3);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    margin-right: 24px;
+    transition: border-color 0.2s;
+  }
+  .journey-node:hover { border-color: var(--teal); }
+  .step-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--teal-light);
+    margin-bottom: 6px;
+    letter-spacing: 1px;
+  }
+  .step-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+  .step-desc {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+
+  /* LEARNING PATH */
+  .path-row {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .path-level {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: var(--dark3);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 18px;
+    transition: border-color 0.2s;
+  }
+  .path-level:hover { border-color: var(--teal); }
+  .level-badge {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+  .level-info { flex: 1; }
+  .level-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    color: #fff;
+  }
+  .level-desc {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+  .level-topics {
+    display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px;
+  }
+  .topic-tag {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 4px;
+    padding: 2px 7px;
+    font-size: 10px;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+  }
+  .level-meta {
+    text-align: right;
+    flex-shrink: 0;
+  }
+  .level-lessons {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--teal-light);
+  }
+  .level-time {
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  /* EXERCISE TYPES */
+  .ex-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .ex-card {
+    background: var(--dark3);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+  }
+  .ex-icon {
+    font-size: 22px;
+    margin-bottom: 8px;
+  }
+  .ex-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+  .ex-desc {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+
+  /* GAMIFICATION */
+  .feedback-box {
+    background: var(--dark3);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+  }
+  .feedback-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+  .feedback-row:last-child { border-bottom: none; }
+  .fb-trigger {
+    font-size: 18px;
+    flex-shrink: 0;
+    width: 28px;
+    text-align: center;
+  }
+  .fb-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    margin-bottom: 3px;
+    letter-spacing: 0.5px;
+  }
+  .fb-message {
+    font-size: 12px;
+    color: var(--text);
+    font-style: italic;
+  }
+
+  /* INTERVIEW PREP */
+  .interview-levels { display: flex; flex-direction: column; gap: 10px; }
+  .int-level {
+    background: var(--dark3);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 18px;
+  }
+  .int-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .int-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+  }
+  .int-count {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .int-examples { display: flex; flex-direction: column; gap: 4px; }
+  .int-q {
+    font-size: 11px;
+    color: var(--muted);
+    padding-left: 10px;
+    border-left: 2px solid var(--border);
+  }
+
+  /* MONETIZATION */
+  .plan-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .plan-card {
+    background: var(--dark3);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    position: relative;
+  }
+  .plan-card.featured {
+    border-color: var(--teal);
+    background: rgba(26,158,143,0.06);
+  }
+  .plan-badge-featured {
+    position: absolute;
+    top: -10px; left: 50%; transform: translateX(-50%);
+    background: var(--teal);
+    color: #fff;
+    font-size: 9px;
+    font-family: 'DM Mono', monospace;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 10px;
+  }
+  .plan-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 16px;
+    margin-bottom: 4px;
+  }
+  .plan-price {
+    font-family: 'DM Mono', monospace;
+    font-size: 22px;
+    color: #fff;
+    margin-bottom: 2px;
+  }
+  .plan-price span {
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .plan-desc {
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 14px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .plan-features { display: flex; flex-direction: column; gap: 6px; }
+  .plan-feat {
+    font-size: 11px;
+    color: var(--text);
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+  }
+  .plan-feat::before {
+    content: '✓';
+    color: var(--teal-light);
+    font-size: 11px;
+    flex-shrink: 0;
+  }
+
+  /* MVP TIMELINE */
+  .timeline { display: flex; flex-direction: column; gap: 0; }
+  .tl-item {
+    display: flex;
+    gap: 18px;
+    position: relative;
+  }
+  .tl-item:not(:last-child) .tl-line {
+    position: absolute;
+    left: 15px;
+    top: 32px;
+    bottom: 0;
+    width: 2px;
+    background: var(--border);
+  }
+  .tl-dot {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    font-weight: 500;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+  .tl-content {
+    padding-bottom: 24px;
+    flex: 1;
+  }
+  .tl-week {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+  .tl-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+  .tl-items-list { display: flex; flex-direction: column; gap: 3px; }
+  .tl-li {
+    font-size: 11px;
+    color: var(--muted);
+    display: flex; gap: 6px;
+  }
+  .tl-li::before { content: '—'; color: var(--border); }
+
+  /* METRICS */
+  .metric-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .metric-card {
+    background: var(--dark3);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    text-align: center;
+  }
+  .metric-val {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 24px;
+    margin-bottom: 4px;
+  }
+  .metric-label {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.3;
+  }
+
+  /* TECH STACK */
+  .stack-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .stack-group {
+    background: var(--dark3);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+  }
+  .stack-group-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--teal-light);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .stack-items { display: flex; flex-direction: column; gap: 6px; }
+  .stack-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .stack-name {
+    font-size: 12px;
+    color: #fff;
+  }
+  .stack-role {
+    font-size: 10px;
+    color: var(--muted);
+  }
+
+  /* SECTION SPACING */
+  .section { margin-bottom: 48px; }
+
+  /* SEPARATOR */
+  hr.sep {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 40px 0;
+  }
+
+  /* COLORS FOR LEVELS */
+  .l0 { background: rgba(126,201,74,0.15); color: var(--green-light); }
+  .l1 { background: rgba(26,158,143,0.15); color: var(--teal-light); }
+  .l2 { background: rgba(46,111,217,0.15); color: #7eb3f7; }
+  .l3 { background: rgba(240,192,64,0.15); color: var(--accent); }
+  .l4 { background: rgba(180,80,200,0.15); color: #d48cf7; }
+  .l5 { background: rgba(220,80,80,0.15); color: #f78c8c; }
+
+  @media (max-width: 700px) {
+    .grid-2, .grid-3, .grid-4, .ex-grid, .plan-grid, .metric-grid, .stack-grid { grid-template-columns: 1fr; }
+    .container { padding: 20px; }
+    .header { padding: 28px 20px; }
+    .header h1 { font-size: 26px; }
+    .journey { flex-direction: column; }
+    .journey-step::after { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-inner">
+    <div class="logo-row">
+      <div class="logo-badge"><span>QA</span><span class="g">Lingo</span></div>
+      <div class="doc-label">Product Architecture v1.0</div>
+    </div>
+    <h1>The Blueprint</h1>
+    <p>Full product architecture for QALingo — the Duolingo-style platform for QA professionals. From zero to ISTQB certified, interview-ready, and hired.</p>
+    <div class="version-row">
+      <span class="pill teal">MVP Scope Defined</span>
+      <span class="pill green">English First</span>
+      <span class="pill yellow">Web App → Mobile</span>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- USER JOURNEY -->
+  <div class="section">
+    <div class="section-title">01 — User Journey</div>
+    <div class="journey">
+      <div class="journey-step">
+        <div class="journey-node">
+          <div class="step-num">STEP 01</div>
+          <div class="step-name">Land</div>
+          <div class="step-desc">Discovers QALingo via LinkedIn, Reddit, or referral</div>
+        </div>
+      </div>
+      <div class="journey-step">
+        <div class="journey-node">
+          <div class="step-num">STEP 02</div>
+          <div class="step-name">Onboard</div>
+          <div class="step-desc">2-question quiz: experience level + goal (job, cert, upskill)</div>
+        </div>
+      </div>
+      <div class="journey-step">
+        <div class="journey-node">
+          <div class="step-num">STEP 03</div>
+          <div class="step-name">Learn</div>
+          <div class="step-desc">Daily 5-min lessons with exercises, feedback from Q</div>
+        </div>
+      </div>
+      <div class="journey-step">
+        <div class="journey-node">
+          <div class="step-num">STEP 04</div>
+          <div class="step-name">Practice</div>
+          <div class="step-desc">ISTQB / Scrum exam simulators + drip interview prep</div>
+        </div>
+      </div>
+      <div class="journey-step">
+        <div class="journey-node">
+          <div class="step-num">STEP 05</div>
+          <div class="step-name">Achieve</div>
+          <div class="step-desc">Earn badges, complete modules, share on LinkedIn</div>
+        </div>
+      </div>
+      <div class="journey-step">
+        <div class="journey-node">
+          <div class="step-num">STEP 06</div>
+          <div class="step-name">Get Hired</div>
+          <div class="step-desc">Interview-ready badge, profile boosts, referral loop</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEARNING PATH -->
+  <div class="section">
+    <div class="section-title">02 — Learning Path (6 Levels)</div>
+    <div class="path-row">
+
+      <div class="path-level">
+        <div class="level-badge l0">0</div>
+        <div class="level-info">
+          <div class="level-name">QA Foundations</div>
+          <div class="level-desc">For complete beginners. No prior experience needed.</div>
+          <div class="level-topics">
+            <span class="topic-tag">What is QA?</span>
+            <span class="topic-tag">Bug vs Defect</span>
+            <span class="topic-tag">Testing vs Checking</span>
+            <span class="topic-tag">SDLC basics</span>
+            <span class="topic-tag">QA mindset</span>
+          </div>
+        </div>
+        <div class="level-meta">
+          <div class="level-lessons">12 lessons</div>
+          <div class="level-time">~1 week</div>
+        </div>
+      </div>
+
+      <div class="path-level">
+        <div class="level-badge l1">1</div>
+        <div class="level-info">
+          <div class="level-name">Types of Testing</div>
+          <div class="level-desc">Core testing types every QA professional must know.</div>
+          <div class="level-topics">
+            <span class="topic-tag">Functional</span>
+            <span class="topic-tag">Regression</span>
+            <span class="topic-tag">Smoke & Sanity</span>
+            <span class="topic-tag">Exploratory</span>
+            <span class="topic-tag">UAT</span>
+            <span class="topic-tag">Performance</span>
+          </div>
+        </div>
+        <div class="level-meta">
+          <div class="level-lessons">18 lessons</div>
+          <div class="level-time">~2 weeks</div>
+        </div>
+      </div>
+
+      <div class="path-level">
+        <div class="level-badge l2">2</div>
+        <div class="level-info">
+          <div class="level-name">QA Documentation</div>
+          <div class="level-desc">Write test cases, bug reports, and test plans like a pro.</div>
+          <div class="level-topics">
+            <span class="topic-tag">Test Cases</span>
+            <span class="topic-tag">Bug Reports</span>
+            <span class="topic-tag">Test Plans</span>
+            <span class="topic-tag">Severity & Priority</span>
+            <span class="topic-tag">Traceability</span>
+          </div>
+        </div>
+        <div class="level-meta">
+          <div class="level-lessons">15 lessons</div>
+          <div class="level-time">~2 weeks</div>
+        </div>
+      </div>
+
+      <div class="path-level">
+        <div class="level-badge l3">3</div>
+        <div class="level-info">
+          <div class="level-name">Agile & Scrum for QA</div>
+          <div class="level-desc">QA in sprints, ceremonies, and Definition of Done.</div>
+          <div class="level-topics">
+            <span class="topic-tag">Scrum roles</span>
+            <span class="topic-tag">Sprint testing</span>
+            <span class="topic-tag">DoD & DoR</span>
+            <span class="topic-tag">Retrospectives</span>
+            <span class="topic-tag">Scrum Foundation prep</span>
+          </div>
+        </div>
+        <div class="level-meta">
+          <div class="level-lessons">14 lessons</div>
+          <div class="level-time">~2 weeks</div>
+        </div>
+      </div>
+
+      <div class="path-level">
+        <div class="level-badge l4">4</div>
+        <div class="level-info">
+          <div class="level-name">ISTQB Foundation Prep ⭐ MVP</div>
+          <div class="level-desc">Full syllabus coverage + exam simulator. The core of QALingo.</div>
+          <div class="level-topics">
+            <span class="topic-tag">All 6 chapters</span>
+            <span class="topic-tag">300+ questions</span>
+            <span class="topic-tag">Exam simulation</span>
+            <span class="topic-tag">Why-you-failed explanations</span>
+          </div>
+        </div>
+        <div class="level-meta">
+          <div class="level-lessons">30 lessons</div>
+          <div class="level-time">~4 weeks</div>
+        </div>
+      </div>
+
+      <div class="path-level">
+        <div class="level-badge l5">5</div>
+        <div class="level-info">
+          <div class="level-name">Specialization Tracks</div>
+          <div class="level-desc">Choose your path after Foundation.</div>
+          <div class="level-topics">
+            <span class="topic-tag">API Testing</span>
+            <span class="topic-tag">Mobile QA</span>
+            <span class="topic-tag">Automation intro</span>
+            <span class="topic-tag">CI/CD basics</span>
+          </div>
+        </div>
+        <div class="level-meta">
+          <div class="level-lessons">20+ lessons</div>
+          <div class="level-time">~3 weeks</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- EXERCISE TYPES -->
+  <div class="section">
+    <div class="section-title">03 — Exercise Types</div>
+    <div class="ex-grid">
+      <div class="ex-card">
+        <div class="ex-icon">🔘</div>
+        <div class="ex-name">Multiple Choice</div>
+        <div class="ex-desc">ISTQB-style questions with explanation of why each answer is right or wrong.</div>
+      </div>
+      <div class="ex-card">
+        <div class="ex-icon">🐛</div>
+        <div class="ex-name">Is This a Bug?</div>
+        <div class="ex-desc">Real scenario presented. User decides Yes/No + justification. Q reacts.</div>
+      </div>
+      <div class="ex-card">
+        <div class="ex-icon">✏️</div>
+        <div class="ex-name">Fill in the Blank</div>
+        <div class="ex-desc">ISTQB terminology completion. Reinforces vocabulary retention.</div>
+      </div>
+      <div class="ex-card">
+        <div class="ex-icon">📋</div>
+        <div class="ex-name">Write the Test Case</div>
+        <div class="ex-desc">Given a feature description, write the test case. AI evaluates completeness.</div>
+      </div>
+      <div class="ex-card">
+        <div class="ex-icon">🔤</div>
+        <div class="ex-name">Match the Definition</div>
+        <div class="ex-desc">Drag-and-drop matching of QA terms to definitions. Fast and engaging.</div>
+      </div>
+      <div class="ex-card">
+        <div class="ex-icon">⏱️</div>
+        <div class="ex-name">Timed Exam Sim</div>
+        <div class="ex-desc">40 questions, 60 minutes. Full ISTQB Foundation simulation with pass/fail report.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GAMIFICATION & Q PERSONALITY -->
+  <div class="section">
+    <div class="section-title">04 — Gamification & Q's Voice</div>
+    <div class="grid-2">
+
+      <div class="card">
+        <div class="card-title">Q's Feedback Messages</div>
+        <div class="card-sub">Personality-driven micro-copy that makes users feel something</div>
+        <div class="feedback-box">
+          <div class="feedback-row">
+            <div class="fb-trigger">✅</div>
+            <div>
+              <div class="fb-label">CORRECT ANSWER</div>
+              <div class="fb-message">"QAlemental, Dear Watson."</div>
+            </div>
+          </div>
+          <div class="feedback-row">
+            <div class="fb-trigger">❌</div>
+            <div>
+              <div class="fb-label">WRONG ANSWER</div>
+              <div class="fb-message">"Even the best detectives miss clues. Try again."</div>
+            </div>
+          </div>
+          <div class="feedback-row">
+            <div class="fb-trigger">🔥</div>
+            <div>
+              <div class="fb-label">7-DAY STREAK</div>
+              <div class="fb-message">"A true QA detective never misses a day."</div>
+            </div>
+          </div>
+          <div class="feedback-row">
+            <div class="fb-trigger">💀</div>
+            <div>
+              <div class="fb-label">STREAK LOST</div>
+              <div class="fb-message">"The bug got away... this time."</div>
+            </div>
+          </div>
+          <div class="feedback-row">
+            <div class="fb-trigger">🏆</div>
+            <div>
+              <div class="fb-label">MODULE COMPLETE</div>
+              <div class="fb-message">"Case closed. On to the next one."</div>
+            </div>
+          </div>
+          <div class="feedback-row">
+            <div class="fb-trigger">💼</div>
+            <div>
+              <div class="fb-label">INTERVIEW READY</div>
+              <div class="fb-message">"QAlemental, Dear Watson. They'll hire you on the spot."</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Gamification System</div>
+        <div class="card-sub">Retention mechanics inspired by Duolingo</div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div class="feedback-box">
+            <div class="feedback-row">
+              <div class="fb-trigger">🔥</div>
+              <div><div class="fb-label">STREAKS</div><div class="fb-message">Daily lesson streak. Email reminder if you miss a day.</div></div>
+            </div>
+            <div class="feedback-row">
+              <div class="fb-trigger">💎</div>
+              <div><div class="fb-label">XP SYSTEM</div><div class="fb-message">Earn XP per lesson, bonus for perfect scores.</div></div>
+            </div>
+            <div class="feedback-row">
+              <div class="fb-trigger">🏅</div>
+              <div><div class="fb-label">BADGES</div><div class="fb-message">First Bug Found · ISTQB Ready · Interview Certified · 30-Day Streak</div></div>
+            </div>
+            <div class="feedback-row">
+              <div class="fb-trigger">📊</div>
+              <div><div class="fb-label">PROGRESS MAP</div><div class="fb-message">Visual path showing levels completed and what's next.</div></div>
+            </div>
+            <div class="feedback-row">
+              <div class="fb-trigger">❤️</div>
+              <div><div class="fb-label">LIVES</div><div class="fb-message">5 lives per session. Lose one per wrong answer. Recharge daily. (Pro = unlimited)</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- INTERVIEW PREP -->
+  <div class="section">
+    <div class="section-title">05 — Interview Prep (Drip Mode)</div>
+    <div class="grid-2">
+      <div>
+        <div class="card" style="margin-bottom:14px;">
+          <div class="card-title">How Drip Interviews Work</div>
+          <div class="card-sub">One question per day. Real feedback. Real growth.</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="font-size:12px;color:var(--text);">1. Q serves one interview question per day</div>
+            <div style="font-size:12px;color:var(--text);">2. User writes their answer (free text)</div>
+            <div style="font-size:12px;color:var(--text);">3. AI evaluates: structure, depth, keywords, real-world grounding</div>
+            <div style="font-size:12px;color:var(--text);">4. Feedback highlights what to add next time</div>
+            <div style="font-size:12px;color:var(--text);">5. Full simulation mode: 5 questions, timed, full report</div>
+          </div>
+        </div>
+      </div>
+      <div class="interview-levels">
+        <div class="int-level">
+          <div class="int-header">
+            <div class="int-name" style="color:var(--green-light);">🟢 Junior QA</div>
+            <div class="int-count">40 questions</div>
+          </div>
+          <div class="int-examples">
+            <div class="int-q">"What's the difference between severity and priority?"</div>
+            <div class="int-q">"Walk me through how you'd write a test case."</div>
+          </div>
+        </div>
+        <div class="int-level">
+          <div class="int-header">
+            <div class="int-name" style="color:var(--teal-light);">🔵 Mid-Level QA</div>
+            <div class="int-count">35 questions</div>
+          </div>
+          <div class="int-examples">
+            <div class="int-q">"How do you decide when to stop testing?"</div>
+            <div class="int-q">"Explain your approach to regression testing in Agile."</div>
+          </div>
+        </div>
+        <div class="int-level">
+          <div class="int-header">
+            <div class="int-name" style="color:var(--accent);">🟡 Senior / Lead QA</div>
+            <div class="int-count">30 questions</div>
+          </div>
+          <div class="int-examples">
+            <div class="int-q">"How would you build a QA process from scratch?"</div>
+            <div class="int-q">"How do you influence devs to prioritize quality?"</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MONETIZATION -->
+  <div class="section">
+    <div class="section-title">06 — Monetization Model</div>
+    <div class="plan-grid">
+      <div class="plan-card">
+        <div class="plan-name" style="color:var(--muted);">Free</div>
+        <div class="plan-price">$0 <span>/forever</span></div>
+        <div class="plan-desc">Enough to hook them. Not enough to stop.</div>
+        <div class="plan-features">
+          <div class="plan-feat">Levels 0 & 1 fully unlocked</div>
+          <div class="plan-feat">5 lives per day</div>
+          <div class="plan-feat">Basic streak tracking</div>
+          <div class="plan-feat">3 drip interview questions/week</div>
+          <div class="plan-feat">Community badges</div>
+        </div>
+      </div>
+      <div class="plan-card featured">
+        <div class="plan-badge-featured">Most Popular</div>
+        <div class="plan-name" style="color:var(--teal-light);">Pro</div>
+        <div class="plan-price">$12 <span>/month</span></div>
+        <div class="plan-desc">For serious learners going for the cert or the job.</div>
+        <div class="plan-features">
+          <div class="plan-feat">All 6 levels unlocked</div>
+          <div class="plan-feat">Unlimited lives</div>
+          <div class="plan-feat">Full ISTQB exam simulator</div>
+          <div class="plan-feat">Daily interview drip</div>
+          <div class="plan-feat">Full simulation mode (5Q timed)</div>
+          <div class="plan-feat">Detailed performance analytics</div>
+          <div class="plan-feat">Shareable LinkedIn badges</div>
+        </div>
+      </div>
+      <div class="plan-card">
+        <div class="plan-name" style="color:var(--accent);">Teams</div>
+        <div class="plan-price">$8 <span>/seat/mo</span></div>
+        <div class="plan-desc">For QA leads training their teams. Min 5 seats.</div>
+        <div class="plan-features">
+          <div class="plan-feat">Everything in Pro</div>
+          <div class="plan-feat">Team progress dashboard</div>
+          <div class="plan-feat">Custom learning paths</div>
+          <div class="plan-feat">Admin controls</div>
+          <div class="plan-feat">Priority support</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MVP TIMELINE -->
+  <div class="section">
+    <div class="section-title">07 — MVP Build Timeline (6 Weeks)</div>
+    <div class="grid-2">
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-line"></div>
+          <div class="tl-dot l0">1</div>
+          <div class="tl-content">
+            <div class="tl-week">WEEK 1</div>
+            <div class="tl-title">Foundation & Setup</div>
+            <div class="tl-items-list">
+              <div class="tl-li">Choose no-code stack (Bubble / Softr)</div>
+              <div class="tl-li">Set up landing page with waitlist</div>
+              <div class="tl-li">Define content structure in Notion</div>
+              <div class="tl-li">Post on LinkedIn & Reddit for early feedback</div>
+            </div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-line"></div>
+          <div class="tl-dot l1">2</div>
+          <div class="tl-content">
+            <div class="tl-week">WEEK 2</div>
+            <div class="tl-title">Content: ISTQB Module</div>
+            <div class="tl-items-list">
+              <div class="tl-li">Write first 10 lessons (chapters 1-2)</div>
+              <div class="tl-li">Create 50 multiple choice questions</div>
+              <div class="tl-li">Write Q's feedback messages</div>
+            </div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-line"></div>
+          <div class="tl-dot l2">3</div>
+          <div class="tl-content">
+            <div class="tl-week">WEEK 3</div>
+            <div class="tl-title">Build Core Experience</div>
+            <div class="tl-items-list">
+              <div class="tl-li">Onboarding flow (2 questions)</div>
+              <div class="tl-li">Lesson player with 3 exercise types</div>
+              <div class="tl-li">Streak tracker + XP counter</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-line"></div>
+          <div class="tl-dot l3">4</div>
+          <div class="tl-content">
+            <div class="tl-week">WEEK 4</div>
+            <div class="tl-title">Interview Prep (Junior)</div>
+            <div class="tl-items-list">
+              <div class="tl-li">Write 40 Junior QA interview questions</div>
+              <div class="tl-li">Build drip delivery system</div>
+              <div class="tl-li">AI feedback integration</div>
+            </div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-line"></div>
+          <div class="tl-dot l4">5</div>
+          <div class="tl-content">
+            <div class="tl-week">WEEK 5</div>
+            <div class="tl-title">Polish & Email Loop</div>
+            <div class="tl-items-list">
+              <div class="tl-li">Daily streak email (Mailchimp / Loops)</div>
+              <div class="tl-li">Badge system (First Bug Found, etc.)</div>
+              <div class="tl-li">LinkedIn share integration</div>
+            </div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-line"></div>
+          <div class="tl-dot l5">6</div>
+          <div class="tl-content">
+            <div class="tl-week">WEEK 6</div>
+            <div class="tl-title">Beta Launch</div>
+            <div class="tl-items-list">
+              <div class="tl-li">Invite waitlist (50-100 users)</div>
+              <div class="tl-li">Monitor Day 3 return rate (target: 30%+)</div>
+              <div class="tl-li">Collect feedback & iterate</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUCCESS METRICS -->
+  <div class="section">
+    <div class="section-title">08 — MVP Success Metrics</div>
+    <div class="metric-grid">
+      <div class="metric-card">
+        <div class="metric-val" style="color:var(--teal-light);">30%</div>
+        <div class="metric-label">Day 3 return rate<br><span style="color:var(--muted);font-size:10px;">Primary validation signal</span></div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-val" style="color:var(--green-light);">100</div>
+        <div class="metric-label">Waitlist signups<br><span style="color:var(--muted);font-size:10px;">Before building anything</span></div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-val" style="color:var(--accent);">5%</div>
+        <div class="metric-label">Free → Pro conversion<br><span style="color:var(--muted);font-size:10px;">At 90-day mark</span></div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-val" style="color:#d48cf7;">7 days</div>
+        <div class="metric-label">Avg streak at Week 4<br><span style="color:var(--muted);font-size:10px;">Retention health signal</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TECH STACK -->
+  <div class="section">
+    <div class="section-title">09 — Recommended Tech Stack (No-Code MVP)</div>
+    <div class="stack-grid">
+      <div class="stack-group">
+        <div class="stack-group-title">Frontend & App</div>
+        <div class="stack-items">
+          <div class="stack-item"><span class="stack-name">Bubble.io</span><span class="stack-role">Web app builder</span></div>
+          <div class="stack-item"><span class="stack-name">Framer</span><span class="stack-role">Landing page</span></div>
+          <div class="stack-item"><span class="stack-name">Lottie</span><span class="stack-role">Q animations</span></div>
+        </div>
+      </div>
+      <div class="stack-group">
+        <div class="stack-group-title">Content & Data</div>
+        <div class="stack-items">
+          <div class="stack-item"><span class="stack-name">Notion</span><span class="stack-role">Content backend</span></div>
+          <div class="stack-item"><span class="stack-name">Airtable</span><span class="stack-role">Question bank</span></div>
+          <div class="stack-item"><span class="stack-name">Supabase</span><span class="stack-role">User data & streaks</span></div>
+        </div>
+      </div>
+      <div class="stack-group">
+        <div class="stack-group-title">Email & Growth</div>
+        <div class="stack-items">
+          <div class="stack-item"><span class="stack-name">Loops.so</span><span class="stack-role">Streak emails</span></div>
+          <div class="stack-item"><span class="stack-name">Carrd</span><span class="stack-role">Waitlist page (early)</span></div>
+          <div class="stack-item"><span class="stack-name">Plausible</span><span class="stack-role">Analytics</span></div>
+        </div>
+      </div>
+      <div class="stack-group">
+        <div class="stack-group-title">AI & Interview Prep</div>
+        <div class="stack-items">
+          <div class="stack-item"><span class="stack-name">Claude API</span><span class="stack-role">Interview answer feedback</span></div>
+          <div class="stack-item"><span class="stack-name">Stripe</span><span class="stack-role">Pro subscriptions</span></div>
+          <div class="stack-item"><span class="stack-name">Make.com</span><span class="stack-role">Automation glue</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align:center;padding:32px 0 8px;border-top:1px solid var(--border);margin-top:20px;">
+    <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:18px;margin-bottom:6px;">
+      <span style="color:var(--teal-light);">QA</span><span style="color:var(--green-light);">Lingo</span>
+    </div>
+    <div style="font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;">Product Architecture v1.0 · Built with 10+ years of real QA expertise</div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QALingo — Your Progress</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --teal:#1aab98;--teal-d:#0f7a6e;--teal-g:rgba(26,171,152,.14);
+  --green:#7ec94a;--green-g:rgba(126,201,74,.12);
+  --amber:#f0c040;--amber-g:rgba(240,192,64,.12);
+  --red:#e05555;--red-g:rgba(224,85,85,.1);
+  --purple:#9b6ff7;--purple-g:rgba(155,111,247,.12);
+  --blue:#4a90d9;--blue-g:rgba(74,144,217,.12);
+  --dark:#07090d;--d2:#0b0f16;--d3:#10161f;
+  --card:#0f1520;--border:#1a2535;--bhi:#253545;
+  --text:#dde8f0;--muted:#5a7490;--white:#eef3f8;
+}
+html,body{height:100%;overflow-x:hidden}
+body{background:var(--dark);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh}
+
+/* ── TOPBAR ── */
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 28px;border-bottom:1px solid var(--border);
+  background:rgba(7,9,13,.95);backdrop-filter:blur(12px);
+  position:sticky;top:0;z-index:100;
+}
+.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:18px}
+.logo .qa{color:var(--teal)}.logo .li{color:var(--green)}
+.nav-tabs{display:flex;gap:4px}
+.nav-tab{
+  padding:7px 14px;border-radius:8px;font-family:'Syne',sans-serif;
+  font-weight:600;font-size:12px;cursor:pointer;border:none;
+  color:var(--muted);background:transparent;transition:all .15s;
+}
+.nav-tab:hover{color:var(--text);background:var(--d3)}
+.nav-tab.active{color:var(--white);background:var(--d3);border:1px solid var(--border)}
+.top-xp{
+  display:flex;align-items:center;gap:8px;
+  font-family:'Syne',sans-serif;font-weight:700;font-size:14px;color:var(--amber);
+  background:var(--amber-g);border:1px solid rgba(240,192,64,.2);
+  border-radius:20px;padding:6px 14px;
+}
+
+/* ── LAYOUT ── */
+.app{max-width:1100px;margin:0 auto;padding:32px 24px 60px;display:flex;flex-direction:column;gap:24px}
+
+/* ── HERO CARD ── */
+.hero-card{
+  background:var(--card);border:1px solid var(--border);border-radius:20px;
+  padding:28px 32px;display:flex;align-items:center;gap:28px;
+  position:relative;overflow:hidden;
+}
+.hero-card::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 60% 100% at 0% 50%,rgba(26,171,152,.06) 0%,transparent 60%);
+  pointer-events:none;
+}
+.hero-avatar{
+  width:80px;height:80px;border-radius:20px;
+  background:linear-gradient(135deg,var(--teal-d),var(--teal));
+  display:flex;align-items:center;justify-content:center;
+  font-size:40px;flex-shrink:0;
+  box-shadow:0 8px 32px var(--teal-g);
+  animation:avatarFloat 4s ease-in-out infinite;
+  position:relative;z-index:1;
+}
+@keyframes avatarFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.hero-info{flex:1;position:relative;z-index:1}
+.hero-name{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--white);letter-spacing:-.5px;margin-bottom:2px}
+.hero-title{font-size:13px;color:var(--teal);margin-bottom:14px;font-family:'DM Mono',monospace;letter-spacing:.5px}
+.level-row{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.level-badge{
+  background:linear-gradient(135deg,var(--teal),var(--green));
+  color:#fff;font-family:'Syne',sans-serif;font-weight:800;font-size:13px;
+  padding:4px 12px;border-radius:8px;
+}
+.level-name{font-family:'Syne',sans-serif;font-weight:700;font-size:15px;color:var(--white)}
+.xp-bar-wrap{height:8px;background:var(--d3);border-radius:8px;overflow:hidden;margin-bottom:4px}
+.xp-bar{height:100%;border-radius:8px;background:linear-gradient(90deg,var(--teal),var(--green));transition:width 1.2s cubic-bezier(.34,1.2,.64,1)}
+.xp-label{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted)}
+.hero-stats{display:flex;gap:20px;position:relative;z-index:1}
+.hstat{text-align:center}
+.hstat-val{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;margin-bottom:2px}
+.hstat-label{font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:.5px}
+
+/* ── STREAK SECTION ── */
+.streak-card{
+  background:var(--card);border:1px solid var(--border);border-radius:16px;
+  padding:24px;display:flex;align-items:center;gap:24px;
+  position:relative;overflow:hidden;
+}
+.streak-card::before{
+  content:'';position:absolute;right:-20px;top:50%;transform:translateY(-50%);
+  font-size:120px;opacity:.04;line-height:1;
+  font-family:'Syne',sans-serif;font-weight:800;color:var(--amber);
+  content:'🔥';filter:blur(2px);
+}
+.streak-flame{font-size:52px;animation:flamePulse 2s ease-in-out infinite;flex-shrink:0}
+@keyframes flamePulse{0%,100%{transform:scale(1) rotate(-3deg)}50%{transform:scale(1.1) rotate(3deg)}}
+.streak-info{flex:1}
+.streak-num{font-family:'Syne',sans-serif;font-size:48px;font-weight:800;color:var(--amber);line-height:1;margin-bottom:2px}
+.streak-label{font-size:14px;color:var(--muted);margin-bottom:12px}
+.streak-calendar{display:flex;gap:6px;flex-wrap:wrap}
+.sday{
+  width:32px;height:32px;border-radius:8px;border:1.5px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);
+  transition:all .2s;
+}
+.sday.done{background:var(--amber-g);border-color:rgba(240,192,64,.35);color:var(--amber)}
+.sday.today{background:var(--amber);border-color:var(--amber);color:var(--dark);font-weight:700;animation:todayPulse 2s ease-in-out infinite}
+@keyframes todayPulse{0%,100%{box-shadow:0 0 0 0 rgba(240,192,64,.4)}50%{box-shadow:0 0 0 6px rgba(240,192,64,0)}}
+.streak-right{display:flex;flex-direction:column;gap:10px;flex-shrink:0}
+.streak-stat{text-align:center;background:var(--d3);border:1px solid var(--border);border-radius:12px;padding:14px 20px}
+.ss-val{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;margin-bottom:2px}
+.ss-label{font-size:10px;color:var(--muted);font-family:'DM Mono',monospace}
+
+/* ── TWO COL ── */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+
+/* ── SECTION HEADER ── */
+.sec-h{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--teal);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.sec-h::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* ── BADGES ── */
+.badges-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.badge-item{
+  background:var(--card);border:1px solid var(--border);border-radius:14px;
+  padding:18px 14px;text-align:center;cursor:pointer;
+  transition:all .2s;position:relative;overflow:hidden;
+}
+.badge-item.unlocked{border-color:var(--bhi)}
+.badge-item.unlocked:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,0,0,.4)}
+.badge-item.locked{opacity:.45;filter:grayscale(.8)}
+.badge-item.locked:hover{opacity:.6}
+.badge-item::before{
+  content:'';position:absolute;inset:0;opacity:0;transition:opacity .3s;
+  background:radial-gradient(ellipse at 50% 0%,rgba(26,171,152,.12),transparent 60%);
+}
+.badge-item.unlocked:hover::before{opacity:1}
+.b-emoji{font-size:32px;margin-bottom:8px;display:block;transition:transform .3s}
+.badge-item.unlocked:hover .b-emoji{transform:scale(1.2) rotate(5deg)}
+.b-name{font-family:'Syne',sans-serif;font-weight:700;font-size:12px;color:var(--white);margin-bottom:4px;line-height:1.3}
+.b-desc{font-size:10px;color:var(--muted);line-height:1.4}
+.b-locked-icon{position:absolute;top:8px;right:8px;font-size:11px;opacity:.5}
+.b-xp{
+  display:inline-block;font-family:'DM Mono',monospace;font-size:9px;
+  padding:2px 7px;border-radius:4px;margin-top:6px;
+}
+.new-badge{
+  position:absolute;top:-1px;left:50%;transform:translateX(-50%);
+  background:var(--amber);color:var(--dark);font-family:'DM Mono',monospace;
+  font-size:8px;font-weight:500;letter-spacing:.5px;padding:2px 8px;border-radius:0 0 6px 6px;
+}
+
+/* ── XP HISTORY ── */
+.xp-history{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px}
+.xp-chart{display:flex;align-items:flex-end;gap:6px;height:80px;margin-bottom:12px}
+.xp-bar-item{
+  flex:1;border-radius:4px 4px 0 0;
+  background:linear-gradient(180deg,var(--teal),var(--teal-d));
+  transition:height .8s cubic-bezier(.34,1.2,.64,1);min-height:4px;
+  position:relative;cursor:pointer;
+}
+.xp-bar-item:hover{background:linear-gradient(180deg,var(--green),var(--teal))}
+.xp-bar-item::after{
+  content:attr(data-val);position:absolute;bottom:calc(100% + 4px);left:50%;
+  transform:translateX(-50%);font-family:'DM Mono',monospace;font-size:9px;
+  color:var(--muted);white-space:nowrap;opacity:0;transition:opacity .15s;
+}
+.xp-bar-item:hover::after{opacity:1}
+.xp-days{display:flex;gap:6px}
+.xd{flex:1;text-align:center;font-family:'DM Mono',monospace;font-size:9px;color:var(--muted)}
+.xp-total-row{display:flex;justify-content:space-between;align-items:center;padding-top:12px;border-top:1px solid var(--border)}
+.xpt-label{font-size:12px;color:var(--muted)}
+.xpt-val{font-family:'Syne',sans-serif;font-weight:800;font-size:15px;color:var(--amber)}
+
+/* ── LEADERBOARD ── */
+.leaderboard{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden}
+.lb-header{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.lb-title{font-family:'Syne',sans-serif;font-weight:700;font-size:15px;color:var(--white)}
+.lb-period{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px}
+.lb-row{
+  display:flex;align-items:center;gap:14px;
+  padding:14px 24px;border-bottom:1px solid rgba(26,37,53,.5);
+  transition:background .15s;
+}
+.lb-row:last-child{border-bottom:none}
+.lb-row:hover{background:var(--d3)}
+.lb-row.you{background:rgba(26,171,152,.06);border-left:3px solid var(--teal)}
+.lb-rank{font-family:'Syne',sans-serif;font-weight:800;font-size:15px;width:24px;flex-shrink:0;text-align:center}
+.lb-rank.gold{color:var(--amber)}
+.lb-rank.silver{color:#aab8c2}
+.lb-rank.bronze{color:#cd7f32}
+.lb-avatar{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.lb-name{flex:1;font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--white)}
+.lb-you-tag{font-size:10px;color:var(--teal);font-family:'DM Mono',monospace;margin-left:6px}
+.lb-xp{font-family:'DM Mono',monospace;font-size:12px;color:var(--amber)}
+.lb-streak{font-size:12px;color:var(--muted)}
+
+/* ── ACHIEVEMENTS PROGRESS ── */
+.achieve-list{display:flex;flex-direction:column;gap:10px}
+.achieve-item{
+  background:var(--card);border:1px solid var(--border);border-radius:12px;
+  padding:14px 18px;display:flex;align-items:center;gap:14px;
+  transition:border-color .15s;
+}
+.achieve-item:hover{border-color:var(--bhi)}
+.ai-icon{font-size:24px;flex-shrink:0}
+.ai-info{flex:1}
+.ai-name{font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--white);margin-bottom:4px}
+.ai-bar-wrap{height:6px;background:var(--d3);border-radius:6px;overflow:hidden}
+.ai-bar{height:100%;border-radius:6px;transition:width 1s cubic-bezier(.34,1.2,.64,1)}
+.ai-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-top:4px}
+.ai-reward{font-family:'DM Mono',monospace;font-size:10px;flex-shrink:0;padding:3px 8px;border-radius:5px}
+
+/* ── LEVEL MAP ── */
+.level-map{display:flex;flex-direction:column;gap:0}
+.lm-row{display:flex;align-items:center;gap:0}
+.lm-node{
+  width:48px;height:48px;border-radius:14px;border:2px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;flex-shrink:0;position:relative;transition:all .2s;cursor:pointer;
+}
+.lm-node.done{background:var(--green-g);border-color:rgba(126,201,74,.4)}
+.lm-node.current{background:var(--teal-g);border-color:var(--teal);box-shadow:0 0 0 4px rgba(26,171,152,.15);animation:nodePulse 2s ease-in-out infinite}
+@keyframes nodePulse{0%,100%{box-shadow:0 0 0 4px rgba(26,171,152,.15)}50%{box-shadow:0 0 0 8px rgba(26,171,152,.05)}}
+.lm-node.locked{opacity:.4}
+.lm-connector{flex:1;height:2px;background:var(--border)}
+.lm-connector.done{background:rgba(126,201,74,.4)}
+.lm-info{display:flex;justify-content:space-between;padding:6px 0 14px}
+.lm-label{font-family:'DM Mono',monospace;font-size:9px;text-align:center;color:var(--muted);width:48px}
+.lm-label.done{color:var(--green)}
+.lm-label.current{color:var(--teal)}
+
+/* ── DAILY CHALLENGE ── */
+.daily-card{
+  background:linear-gradient(135deg,rgba(26,171,152,.08),rgba(126,201,74,.05));
+  border:1px solid rgba(26,171,152,.25);border-radius:16px;padding:24px;
+  position:relative;overflow:hidden;
+}
+.daily-card::before{
+  content:'⚡';position:absolute;right:16px;top:50%;transform:translateY(-50%);
+  font-size:80px;opacity:.06;
+}
+.daily-tag{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--teal);margin-bottom:8px}
+.daily-h{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--white);margin-bottom:4px}
+.daily-sub{font-size:13px;color:var(--muted);margin-bottom:16px}
+.daily-rewards{display:flex;gap:10px;margin-bottom:16px}
+.dreward{display:flex;align-items:center;gap:6px;font-family:'DM Mono',monospace;font-size:11px;padding:5px 10px;border-radius:8px}
+.dreward.xp{background:var(--amber-g);color:var(--amber);border:1px solid rgba(240,192,64,.2)}
+.dreward.streak{background:rgba(224,85,85,.08);color:#f08080;border:1px solid rgba(224,85,85,.2)}
+.dreward.badge{background:var(--purple-g);color:var(--purple);border:1px solid rgba(155,111,247,.2)}
+.daily-btn{
+  background:var(--teal);color:#fff;border:none;border-radius:10px;
+  padding:12px 24px;font-family:'Syne',sans-serif;font-weight:700;font-size:14px;
+  cursor:pointer;transition:all .15s;
+}
+.daily-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px var(--teal-g)}
+
+/* ── CONFETTI SYSTEM ── */
+.confetti-wrap{position:fixed;inset:0;pointer-events:none;z-index:999;overflow:hidden}
+.confetti-piece{
+  position:absolute;width:8px;height:8px;border-radius:2px;
+  animation:confettiFall linear both;
+  top:-20px;
+}
+@keyframes confettiFall{
+  0%{transform:translateY(0) rotate(0deg);opacity:1}
+  100%{transform:translateY(100vh) rotate(720deg);opacity:0}
+}
+
+/* ── XP POP ── */
+.xp-pop{
+  position:fixed;z-index:998;pointer-events:none;
+  font-family:'Syne',sans-serif;font-weight:800;font-size:22px;color:var(--amber);
+  text-shadow:0 2px 10px rgba(240,192,64,.4);
+  animation:xpPop 1.4s ease both;
+}
+@keyframes xpPop{0%{opacity:1;transform:translateY(0) scale(1)}60%{opacity:1;transform:translateY(-50px) scale(1.1)}100%{opacity:0;transform:translateY(-90px) scale(.8)}}
+
+/* ── BADGE POPUP ── */
+.badge-popup{
+  position:fixed;top:80px;left:50%;transform:translateX(-50%) translateY(-20px);
+  background:var(--card);border:1px solid var(--teal);border-radius:16px;
+  padding:20px 28px;display:flex;align-items:center;gap:16px;
+  z-index:998;opacity:0;pointer-events:none;
+  transition:all .4s cubic-bezier(.34,1.2,.64,1);
+  box-shadow:0 16px 48px rgba(0,0,0,.5),0 0 0 1px rgba(26,171,152,.2);
+}
+.badge-popup.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.bp-icon{font-size:36px}
+.bp-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--teal);margin-bottom:4px}
+.bp-name{font-family:'Syne',sans-serif;font-weight:800;font-size:16px;color:var(--white)}
+.bp-sub{font-size:12px;color:var(--muted);margin-top:2px}
+
+@media(max-width:768px){
+  .two-col,.three-col{grid-template-columns:1fr}
+  .badges-grid{grid-template-columns:repeat(2,1fr)}
+  .hero-card{flex-direction:column;text-align:center}
+  .hero-stats{justify-content:center}
+  .streak-card{flex-direction:column;text-align:center}
+  .streak-calendar{justify-content:center}
+  .app{padding:20px 16px 60px}
+}
+</style>
+</head>
+<body>
+
+<!-- CONFETTI -->
+<div class="confetti-wrap" id="confettiWrap"></div>
+
+<!-- BADGE POPUP -->
+<div class="badge-popup" id="badgePopup">
+  <div class="bp-icon" id="bpIcon">🏅</div>
+  <div>
+    <div class="bp-label">Badge Unlocked!</div>
+    <div class="bp-name" id="bpName">First Bug Found</div>
+    <div class="bp-sub" id="bpSub">+100 XP · Share on LinkedIn</div>
+  </div>
+</div>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="logo"><span class="qa">QA</span><span class="li">Lingo</span></div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="switchTab('progress',this)">Progress</button>
+    <button class="nav-tab" onclick="switchTab('badges',this)">Badges</button>
+    <button class="nav-tab" onclick="switchTab('leaderboard',this)">Leaderboard</button>
+  </div>
+  <div class="top-xp">⚡ <span id="topXP">2840</span> XP</div>
+</div>
+
+<div class="app">
+
+  <!-- ── HERO ── -->
+  <div class="hero-card">
+    <div class="hero-avatar">🔍</div>
+    <div class="hero-info">
+      <div class="hero-name">QA Detective</div>
+      <div class="hero-title">SENIOR INVESTIGATOR · LEVEL 8</div>
+      <div class="level-row">
+        <div class="level-badge">LVL 8</div>
+        <div class="level-name">Senior Investigator</div>
+      </div>
+      <div class="xp-bar-wrap"><div class="xp-bar" id="heroXPBar" style="width:0%"></div></div>
+      <div class="xp-label" id="heroXPLabel">2840 / 3500 XP to Level 9</div>
+    </div>
+    <div class="hero-stats">
+      <div class="hstat">
+        <div class="hstat-val" style="color:var(--amber)">🔥 23</div>
+        <div class="hstat-label">DAY STREAK</div>
+      </div>
+      <div class="hstat">
+        <div class="hstat-val" style="color:var(--green)">94%</div>
+        <div class="hstat-label">ACCURACY</div>
+      </div>
+      <div class="hstat">
+        <div class="hstat-val" style="color:var(--purple)">14</div>
+        <div class="hstat-label">BADGES</div>
+      </div>
+      <div class="hstat">
+        <div class="hstat-val" style="color:var(--teal)">#7</div>
+        <div class="hstat-label">RANK</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── PROGRESS TAB ── -->
+  <div id="tab-progress">
+
+    <!-- DAILY CHALLENGE -->
+    <div class="daily-card">
+      <div class="daily-tag">⚡ Daily Challenge — Resets in 6h 42m</div>
+      <div class="daily-h">Complete today's ISTQB question set</div>
+      <div class="daily-sub">5 questions from Chapter 4 — Test Design Techniques</div>
+      <div class="daily-rewards">
+        <div class="dreward xp">⚡ +150 XP</div>
+        <div class="dreward streak">🔥 Streak protected</div>
+        <div class="dreward badge">🏅 Daily Detective</div>
+      </div>
+      <button class="daily-btn" onclick="claimDaily()">Start Challenge →</button>
+    </div>
+
+    <!-- STREAK -->
+    <div class="streak-card">
+      <div class="streak-flame">🔥</div>
+      <div class="streak-info">
+        <div class="streak-num" id="streakNum">23</div>
+        <div class="streak-label">day streak — keep it going, Watson</div>
+        <div class="streak-calendar" id="streakCal"></div>
+      </div>
+      <div class="streak-right">
+        <div class="streak-stat">
+          <div class="ss-val" style="color:var(--amber)">31</div>
+          <div class="ss-label">LONGEST</div>
+        </div>
+        <div class="streak-stat">
+          <div class="ss-val" style="color:var(--green)">47</div>
+          <div class="ss-label">TOTAL DAYS</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="two-col">
+
+      <!-- XP HISTORY -->
+      <div class="xp-history">
+        <div class="sec-h">XP This Week</div>
+        <div class="xp-chart" id="xpChart"></div>
+        <div class="xp-days" id="xpDays"></div>
+        <div class="xp-total-row">
+          <span class="xpt-label">This week's total</span>
+          <span class="xpt-val">+1,240 XP ↑ 18%</span>
+        </div>
+      </div>
+
+      <!-- ACHIEVEMENTS IN PROGRESS -->
+      <div>
+        <div class="sec-h">Achievements in Progress</div>
+        <div class="achieve-list" id="achieveList"></div>
+      </div>
+
+    </div>
+
+    <!-- LEVEL MAP -->
+    <div>
+      <div class="sec-h">Learning Path</div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px">
+        <div class="level-map" id="levelMap"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── BADGES TAB ── -->
+  <div id="tab-badges" style="display:none">
+    <div class="sec-h">Earned Badges (14/28)</div>
+    <div class="badges-grid" id="badgesGrid"></div>
+  </div>
+
+  <!-- ── LEADERBOARD TAB ── -->
+  <div id="tab-leaderboard" style="display:none">
+    <div class="two-col">
+      <div>
+        <div class="sec-h">This Week — Global</div>
+        <div class="leaderboard" id="lbGlobal"></div>
+      </div>
+      <div>
+        <div class="sec-h">Your League — Detective Division</div>
+        <div class="leaderboard" id="lbLeague"></div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /app -->
+
+<script>
+// ══════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════
+
+const BADGES = [
+  // EARNED
+  {id:'first_bug',emoji:'🐛',name:'First Bug Found',desc:'Completed your first "Is This a Bug?" exercise',xp:50,color:'var(--green)',unlocked:true,new:false},
+  {id:'watson',emoji:'🔍',name:'QAlemental!',desc:'Got 5 consecutive correct answers',xp:100,color:'var(--teal)',unlocked:true,new:false},
+  {id:'streak7',emoji:'🔥',name:'7-Day Streak',desc:'Practiced 7 days in a row',xp:150,color:'var(--amber)',unlocked:true,new:false},
+  {id:'chapter1',emoji:'📖',name:'Chapter 1 Complete',desc:'Finished ISTQB Fundamentals module',xp:200,color:'var(--teal)',unlocked:true,new:false},
+  {id:'principles',emoji:'⚖️',name:'The 7 Principles',desc:'Mastered all 7 Testing Principles',xp:120,color:'var(--purple)',unlocked:true,new:false},
+  {id:'first_exam',emoji:'📋',name:'First Exam Attempt',desc:'Completed your first full exam simulation',xp:100,color:'var(--blue)',unlocked:true,new:false},
+  {id:'pass_65',emoji:'🎓',name:'Pass the Bar',desc:'Scored 65%+ on an exam simulation',xp:300,color:'var(--green)',unlocked:true,new:false},
+  {id:'interview1',emoji:'💼',name:'Interview Ready',desc:'Completed 10 interview prep questions',xp:150,color:'var(--amber)',unlocked:true,new:false},
+  {id:'bva_master',emoji:'📐',name:'Boundary Hunter',desc:'Correctly applied BVA in 5 exercises',xp:120,color:'var(--teal)',unlocked:true,new:false},
+  {id:'streak14',emoji:'🔥',name:'14-Day Streak',desc:'Practiced 14 days in a row',xp:200,color:'var(--amber)',unlocked:true,new:false},
+  {id:'accuracy90',emoji:'🎯',name:'Sharp Eye',desc:'Maintained 90%+ accuracy for a week',xp:250,color:'var(--green)',unlocked:true,new:true},
+  {id:'senior_q',emoji:'⭐',name:'Senior Questions',desc:'Answered first Senior-level interview question',xp:100,color:'var(--purple)',unlocked:true,new:false},
+  {id:'chapter4',emoji:'🧩',name:'Design Detective',desc:'Completed Test Design Techniques module',xp:200,color:'var(--blue)',unlocked:true,new:false},
+  {id:'streak23',emoji:'🔥',name:'23-Day Streak',desc:'Current achievement — still going!',xp:400,color:'var(--amber)',unlocked:true,new:true},
+  // LOCKED
+  {id:'streak30',emoji:'🔥',name:'30-Day Streak',desc:'Practice 30 days in a row',xp:500,color:'var(--amber)',unlocked:false},
+  {id:'istqb_ready',emoji:'🏆',name:'ISTQB Ready',desc:'Score 80%+ on 3 consecutive exam simulations',xp:1000,color:'var(--green)',unlocked:false},
+  {id:'chapter_all',emoji:'🗺️',name:'Full Map Clear',desc:'Complete all 6 ISTQB chapters',xp:800,color:'var(--teal)',unlocked:false},
+  {id:'interview50',emoji:'💼',name:'Interview Master',desc:'Complete 50 interview prep questions',xp:500,color:'var(--amber)',unlocked:false},
+  {id:'streak60',emoji:'🔥',name:'60-Day Streak',desc:'Practice 60 days in a row',xp:1000,color:'var(--amber)',unlocked:false},
+  {id:'accuracy95',emoji:'🎯',name:'Eagle Eye',desc:'Maintain 95%+ accuracy for 2 weeks',xp:600,color:'var(--green)',unlocked:false},
+  {id:'exam_perfect',emoji:'💯',name:'Perfect Score',desc:'Score 100% on an exam simulation',xp:2000,color:'var(--amber)',unlocked:false},
+  {id:'scrum_done',emoji:'🔄',name:'Scrum Certified',desc:'Complete the Scrum Foundation module',xp:400,color:'var(--purple)',unlocked:false},
+  {id:'top3',emoji:'🥉',name:'Top 3 — League',desc:'Finish in the top 3 of your weekly league',xp:300,color:'var(--amber)',unlocked:false},
+  {id:'referral',emoji:'🤝',name:'Fellow Detective',desc:'Invite a friend who completes onboarding',xp:200,color:'var(--teal)',unlocked:false},
+  {id:'api_done',emoji:'🔌',name:'API Investigator',desc:'Complete the API Testing specialization',xp:350,color:'var(--blue)',unlocked:false},
+  {id:'mobile_done',emoji:'📱',name:'Mobile QA',desc:'Complete the Mobile Testing specialization',xp:350,color:'var(--green)',unlocked:false},
+  {id:'first_year',emoji:'🎂',name:'One Year Detective',desc:'1 year anniversary on QALingo',xp:1000,color:'var(--purple)',unlocked:false},
+  {id:'senior_done',emoji:'🏅',name:'Senior Ready',desc:'Complete all Senior interview prep questions',xp:600,color:'var(--amber)',unlocked:false},
+];
+
+const ACHIEVEMENTS = [
+  {icon:'🔥',name:'30-Day Streak',current:23,total:30,color:'var(--amber)',reward:'+500 XP'},
+  {icon:'🏆',name:'ISTQB Exam — 80%+',current:2,total:3,color:'var(--green)',reward:'+1000 XP'},
+  {icon:'💼',name:'Interview Prep Master',current:27,total:50,color:'var(--purple)',reward:'+500 XP'},
+  {icon:'📖',name:'All Chapters Complete',current:3,total:6,color:'var(--teal)',reward:'+800 XP'},
+];
+
+const LEVEL_MAP_DATA = [
+  {emoji:'📖',label:'QA Basics',state:'done'},
+  {emoji:'🧪',label:'Test Types',state:'done'},
+  {emoji:'📋',label:'Docs',state:'done'},
+  {emoji:'🔄',label:'Agile',state:'current'},
+  {emoji:'🎓',label:'ISTQB',state:'locked'},
+  {emoji:'⚡',label:'Specialize',state:'locked'},
+];
+
+const XP_DATA = [
+  {day:'Mon',val:180},{day:'Tue',val:240},{day:'Wed',val:120},
+  {day:'Thu',val:300},{day:'Fri',val:200},{day:'Sat',val:80},{day:'Sun',val:120},
+];
+
+const LB_GLOBAL = [
+  {rank:1,emoji:'👑',name:'Maria K.',xp:4200,streak:45},
+  {rank:2,emoji:'🦅',name:'James T.',xp:3900,streak:31},
+  {rank:3,emoji:'🔮',name:'Priya R.',xp:3650,streak:28},
+  {rank:4,emoji:'⚡',name:'Carlos M.',xp:3400,streak:19},
+  {rank:5,emoji:'🌊',name:'Sarah L.',xp:3200,streak:22},
+  {rank:6,emoji:'🔭',name:'Ahmed K.',xp:3050,streak:15},
+  {rank:7,emoji:'🔍',name:'You',xp:2840,streak:23,you:true},
+  {rank:8,emoji:'🌿',name:'Lucia V.',xp:2700,streak:17},
+];
+
+const LB_LEAGUE = [
+  {rank:1,emoji:'🦅',name:'TestMaster99',xp:1840,streak:23},
+  {rank:2,emoji:'🔮',name:'QANinja',xp:1720,streak:18},
+  {rank:3,emoji:'⚡',name:'BugSlayer',xp:1650,streak:14},
+  {rank:4,emoji:'🔍',name:'You',xp:1580,streak:23,you:true},
+  {rank:5,emoji:'🌿',name:'TestPilot',xp:1420,streak:11},
+  {rank:6,emoji:'🌊',name:'DefectHunter',xp:1350,streak:9},
+  {rank:7,emoji:'🎯',name:'QA_Warrior',xp:1200,streak:7},
+];
+
+// ══════════════════════════════════════════
+// RENDER FUNCTIONS
+// ══════════════════════════════════════════
+
+function renderAll() {
+  renderXPBar();
+  renderStreak();
+  renderXPChart();
+  renderAchievements();
+  renderLevelMap();
+  renderBadges();
+  renderLeaderboard();
+}
+
+function renderXPBar() {
+  const pct = (2840 / 3500) * 100;
+  setTimeout(() => {
+    document.getElementById('heroXPBar').style.width = pct + '%';
+  }, 300);
+}
+
+function renderStreak() {
+  const cal = document.getElementById('streakCal');
+  const days = ['M','T','W','T','F','S','S'];
+  const today = 2; // index 0-6, Wed = 2
+  // Last 21 days
+  let html = '';
+  for (let i = 0; i < 21; i++) {
+    const dayIdx = i % 7;
+    const isToday = i === 20;
+    const isDone = i < 20 && i >= 20 - 23 + 1;
+    html += `<div class="sday ${isToday?'today':isDone?'done':''}">${days[dayIdx]}</div>`;
+  }
+  cal.innerHTML = html;
+}
+
+function renderXPChart() {
+  const max = Math.max(...XP_DATA.map(d => d.val));
+  const chart = document.getElementById('xpChart');
+  const dayEls = document.getElementById('xpDays');
+  chart.innerHTML = '';
+  dayEls.innerHTML = '';
+  XP_DATA.forEach((d, i) => {
+    const pct = (d.val / max) * 100;
+    const bar = document.createElement('div');
+    bar.className = 'xp-bar-item';
+    bar.style.height = '0%';
+    bar.dataset.val = `+${d.val} XP`;
+    chart.appendChild(bar);
+    setTimeout(() => { bar.style.height = pct + '%'; }, 200 + i * 60);
+
+    const label = document.createElement('div');
+    label.className = 'xd';
+    label.textContent = d.day;
+    dayEls.appendChild(label);
+  });
+}
+
+function renderAchievements() {
+  document.getElementById('achieveList').innerHTML = ACHIEVEMENTS.map(a => {
+    const pct = (a.current / a.total) * 100;
+    return `<div class="achieve-item">
+      <div class="ai-icon">${a.icon}</div>
+      <div class="ai-info">
+        <div class="ai-name">${a.name}</div>
+        <div class="ai-bar-wrap"><div class="ai-bar" style="width:0%;background:${a.color}" data-pct="${pct}"></div></div>
+        <div class="ai-label">${a.current} / ${a.total}</div>
+      </div>
+      <div class="ai-reward" style="background:rgba(240,192,64,.1);color:var(--amber);border:1px solid rgba(240,192,64,.2)">${a.reward}</div>
+    </div>`;
+  }).join('');
+  setTimeout(() => {
+    document.querySelectorAll('.ai-bar').forEach(b => { b.style.width = b.dataset.pct + '%'; });
+  }, 300);
+}
+
+function renderLevelMap() {
+  const container = document.getElementById('levelMap');
+  const row = document.createElement('div');
+  row.className = 'lm-row';
+  const infoRow = document.createElement('div');
+  infoRow.className = 'lm-info';
+
+  LEVEL_MAP_DATA.forEach((node, i) => {
+    const nd = document.createElement('div');
+    nd.className = `lm-node ${node.state}`;
+    nd.textContent = node.emoji;
+    nd.title = node.label;
+    nd.onclick = () => nodeClick(node);
+    row.appendChild(nd);
+
+    if (i < LEVEL_MAP_DATA.length - 1) {
+      const conn = document.createElement('div');
+      conn.className = `lm-connector ${node.state === 'done' ? 'done' : ''}`;
+      row.appendChild(conn);
+    }
+
+    const lbl = document.createElement('div');
+    lbl.className = `lm-label ${node.state}`;
+    lbl.textContent = node.label;
+    infoRow.appendChild(lbl);
+
+    if (i < LEVEL_MAP_DATA.length - 1) {
+      const spacer = document.createElement('div');
+      spacer.style.flex = '1';
+      infoRow.appendChild(spacer);
+    }
+  });
+  container.appendChild(row);
+  container.appendChild(infoRow);
+}
+
+function nodeClick(node) {
+  if (node.state === 'locked') {
+    showXPPop('🔒 Complete previous levels first');
+    return;
+  }
+  showBadgePopup('📖', node.label, 'Click to continue this module');
+}
+
+function renderBadges() {
+  document.getElementById('badgesGrid').innerHTML = BADGES.map(b => `
+    <div class="badge-item ${b.unlocked?'unlocked':'locked'}" onclick="${b.unlocked?`badgeClick('${b.id}')`:''}">
+      ${b.new ? '<div class="new-badge">NEW</div>' : ''}
+      ${!b.unlocked ? '<div class="b-locked-icon">🔒</div>' : ''}
+      <span class="b-emoji">${b.emoji}</span>
+      <div class="b-name">${b.name}</div>
+      <div class="b-desc">${b.desc}</div>
+      <div class="b-xp" style="background:rgba(240,192,64,.1);color:var(--amber)">+${b.xp} XP</div>
+    </div>
+  `).join('');
+}
+
+function renderLeaderboard() {
+  document.getElementById('lbGlobal').innerHTML =
+    `<div class="lb-header"><div class="lb-title">🌍 Global Top 8</div><div class="lb-period">THIS WEEK</div></div>` +
+    LB_GLOBAL.map(u => lbRow(u)).join('');
+
+  document.getElementById('lbLeague').innerHTML =
+    `<div class="lb-header"><div class="lb-title">🔵 Detective Division</div><div class="lb-period">WEEKLY LEAGUE</div></div>` +
+    LB_LEAGUE.map(u => lbRow(u)).join('');
+}
+
+function lbRow(u) {
+  const rankClass = u.rank===1?'gold':u.rank===2?'silver':u.rank===3?'bronze':'';
+  const rankIcon = u.rank===1?'🥇':u.rank===2?'🥈':u.rank===3?'🥉':u.rank;
+  return `<div class="lb-row ${u.you?'you':''}">
+    <div class="lb-rank ${rankClass}">${rankIcon}</div>
+    <div class="lb-avatar" style="background:var(--d3)">${u.emoji}</div>
+    <div class="lb-name">${u.name}${u.you?'<span class="lb-you-tag">YOU</span>':''}</div>
+    <div class="lb-streak">🔥${u.streak}</div>
+    <div class="lb-xp">${u.xp.toLocaleString()} XP</div>
+  </div>`;
+}
+
+// ══════════════════════════════════════════
+// INTERACTIONS
+// ══════════════════════════════════════════
+
+function switchTab(tab, btn) {
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  ['progress','badges','leaderboard'].forEach(t => {
+    document.getElementById(`tab-${t}`).style.display = t === tab ? 'block' : 'none';
+  });
+}
+
+function claimDaily() {
+  triggerConfetti();
+  showXPPop('+150 XP ⚡');
+  setTimeout(() => showBadgePopup('⚡','Daily Challenge!','Keep your streak alive, Watson!'), 600);
+  document.querySelector('.daily-btn').textContent = '✓ Challenge Started!';
+  document.querySelector('.daily-btn').disabled = true;
+  document.querySelector('.daily-btn').style.background = 'var(--green)';
+}
+
+function badgeClick(id) {
+  const b = BADGES.find(x => x.id === id);
+  if (!b) return;
+  showBadgePopup(b.emoji, b.name, `+${b.xp} XP · Tap to share on LinkedIn`);
+}
+
+function showBadgePopup(icon, name, sub) {
+  const p = document.getElementById('badgePopup');
+  document.getElementById('bpIcon').textContent = icon;
+  document.getElementById('bpName').textContent = name;
+  document.getElementById('bpSub').textContent = sub;
+  p.classList.add('show');
+  setTimeout(() => p.classList.remove('show'), 3000);
+}
+
+function showXPPop(text) {
+  const el = document.createElement('div');
+  el.className = 'xp-pop';
+  el.textContent = text;
+  el.style.left = (40 + Math.random() * 60) + '%';
+  el.style.top = '30%';
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 1500);
+
+  // Update topbar XP
+  const cur = parseInt(document.getElementById('topXP').textContent.replace(/,/g,''));
+  document.getElementById('topXP').textContent = (cur + 150).toLocaleString();
+}
+
+function triggerConfetti() {
+  const colors = ['var(--teal)','var(--green)','var(--amber)','var(--purple)','#ff6b6b','#4ecdc4'];
+  const wrap = document.getElementById('confettiWrap');
+  for (let i = 0; i < 60; i++) {
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    piece.style.left = Math.random() * 100 + 'vw';
+    piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+    piece.style.animationDuration = (1.5 + Math.random() * 2) + 's';
+    piece.style.animationDelay = Math.random() * .5 + 's';
+    piece.style.width = piece.style.height = (6 + Math.random() * 8) + 'px';
+    piece.style.borderRadius = Math.random() > .5 ? '50%' : '2px';
+    wrap.appendChild(piece);
+    setTimeout(() => piece.remove(), 3500);
+  }
+}
+
+// ══════════════════════════════════════════
+// STREAK FREEZE BUTTON — easter egg
+// ══════════════════════════════════════════
+let clickCount = 0;
+document.querySelector('.streak-flame').addEventListener('click', () => {
+  clickCount++;
+  if (clickCount === 3) {
+    showBadgePopup('❄️','Streak Freeze!','Your streak is protected for 24h');
+    clickCount = 0;
+  } else {
+    showXPPop(['🔥','🔥🔥','❄️?'][clickCount-1]);
+  }
+});
+
+// ══════════════════════════════════════════
+// INIT — simulate unlocking new badge on load
+// ══════════════════════════════════════════
+window.addEventListener('load', () => {
+  renderAll();
+  // Show new badge after 1.5s
+  setTimeout(() => {
+    showBadgePopup('🎯','Sharp Eye Unlocked!','+250 XP · 90%+ accuracy this week');
+    triggerConfetti();
+  }, 1500);
+});
+</script>
+</body>
+</html>
