@@ -608,7 +608,7 @@ function finish() {
   // Save profile
   const profile = { ...answers, cert: [...multiSelected], createdAt: new Date().toISOString() };
   localStorage.setItem('qalingo_profile', JSON.stringify(profile));
-  alert('🔍 Profile saved! In the real app, this launches your first lesson.\n\nProfile: ' + JSON.stringify(profile, null, 2));
+  window.location.href = 'qalingo-lesson-app.html';
 }
 </script>
 </body>
