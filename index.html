@@ -1,0 +1,2169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-531352018"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-531352018');
+
+    // Track key events
+    function trackEvent(action, category, label) {
+      if(typeof gtag !== 'undefined') {
+        gtag('event', action, {event_category: category, event_label: label});
+      }
+    }
+  </script>
+<!-- QALingo v2.5 -- cache bust -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QALingo — Learn QA. Get Certified. Get Hired.</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --nav-bg: rgba(8,12,16,.95);
+  --bnav-bg: rgba(8,12,16,.97);
+
+  --teal:#1aab98;--teal-d:#0f7a6e;--teal-g:rgba(26,171,152,.13);
+  --green:#7ec94a;--green-g:rgba(126,201,74,.1);
+  --amber:#f0c040;--red:#e05555;
+  --dark:#080c10;--d2:#0d1319;--d3:#131c26;
+  --card:#111820;--border:#1e2e3e;--bhi:#2a4055;
+  --text:#dde8f0;--muted:#8aa4bc;--white:#f0f4f8;
+}
+html{scroll-behavior:smooth}
+body{background:var(--dark);color:var(--text);font-family:'DM Sans',sans-serif;overflow-x:hidden;font-size:16px;line-height:1.7;transition:background .25s,color .25s;cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='13' cy='13' r='9' fill='none' stroke='%231aab98' stroke-width='2.5'/%3E%3Ccircle cx='13' cy='13' r='5' fill='rgba(26%2C171%2C152%2C0.15)'/%3E%3Cline x1='20' y1='20' x2='28' y2='28' stroke='%231aab98' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E") 13 13, auto}
+/* MAGNIFYING GLASS CURSOR — Pointer cursor on interactive elements - smaller magnifier */
+/* MAGNIFYING GLASS CURSOR */
+a,button,input,textarea,select,[onclick],[role='button']{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='13' cy='13' r='9' fill='rgba(26%2C171%2C152%2C0.2)' stroke='%231aab98' stroke-width='2.5'/%3E%3Ccircle cx='13' cy='13' r='4' fill='%231aab98'/%3E%3Cline x1='20' y1='20' x2='28' y2='28' stroke='%231aab98' stroke-width='2.8' stroke-linecap='round'/%3E%3C/svg%3E") 13 13, pointer}
+
+
+
+
+
+
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:14px 40px;display:flex;align-items:center;justify-content:space-between;background:var(--nav-bg);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.nlogo{font-family:'Syne',sans-serif;font-weight:800;font-size:19px;display:flex;align-items:center;gap:10px}
+.nlogo .qa{color:var(--teal)}.nlogo .li{color:var(--green)}
+.nlogo img{width:30px;height:30px;object-fit:contain;border-radius:7px}
+.nright{display:flex;align-items:center;gap:10px}
+.ttog{background:var(--d3);border:1px solid var(--border);border-radius:20px;padding:6px 12px;cursor:pointer;font-size:12px;color:var(--text);font-family:'DM Sans',sans-serif;font-weight:500;transition:all .15s}
+.ttog:hover{border-color:var(--teal)}
+.ncta{background:var(--teal);color:#fff;border:none;padding:10px 22px;border-radius:10px;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;cursor:pointer;transition:all .15s;letter-spacing:.2px;box-shadow:0 4px 16px rgba(26,171,152,.3)}
+.ncta:hover{background:var(--teal-d);transform:translateY(-1px)}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:100px 24px 80px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(26,171,152,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(26,171,152,.04) 1px,transparent 1px);background-size:56px 56px;mask-image:radial-gradient(ellipse 80% 60% at 50% 50%,black 20%,transparent 80%)}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none}
+.orb1{width:500px;height:500px;background:radial-gradient(circle,rgba(26,171,152,.1),transparent 70%);top:-100px;left:50%;transform:translateX(-50%);animation:op 6s ease-in-out infinite}
+.orb2{width:280px;height:280px;background:radial-gradient(circle,rgba(126,201,74,.07),transparent 70%);bottom:0;right:-60px;animation:op 8s ease-in-out infinite reverse}
+@keyframes op{0%,100%{opacity:.7}50%{opacity:1}}
+@keyframes fu{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fl{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-12px) rotate(2deg)}}
+@keyframes bl{0%,100%{opacity:1}50%{opacity:.3}}
+
+.hbadge{display:inline-flex;align-items:center;gap:8px;background:rgba(26,171,152,.12);border:1px solid rgba(26,171,152,.3);border-radius:20px;padding:8px 18px;font-family:'DM Mono',monospace;font-size:11px;color:var(--teal);letter-spacing:.5px;margin-bottom:22px;animation:fu .6s ease both}
+.bdot{width:6px;height:6px;background:var(--teal);border-radius:50%;animation:bl 2s ease-in-out infinite}
+.qimg{width:150px;height:auto;margin-bottom:14px;animation:fl 4s ease-in-out infinite,fu .6s ease .1s both;filter:drop-shadow(0 0 30px rgba(26,171,152,.35))}
+h1.hero-h{font-family:'Syne',sans-serif;font-size:clamp(38px,8vw,82px);font-weight:800;line-height:.95;letter-spacing:-3px;margin-bottom:8px;animation:fu .6s ease .15s both}
+h1.hero-h .l1{color:var(--white);display:block}
+h1.hero-h .l2{display:block;background:linear-gradient(135deg,var(--teal),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+h1.hero-h .l3{display:block;color:var(--white);font-weight:800}
+.hsub{font-size:clamp(16px,2.5vw,18px);color:var(--muted);max-width:480px;line-height:1.6;margin:18px auto 6px;animation:fu .6s ease .2s both}
+.hsub em{color:var(--text);font-style:normal;font-weight:500}
+.qtag{font-style:italic;font-size:14px;color:var(--teal);margin-bottom:26px;animation:fu .6s ease .25s both}
+
+.wform{display:flex;gap:10px;max-width:440px;width:100%;margin:0 auto 10px;animation:fu .6s ease .3s both}
+.winput{flex:1;background:var(--d3);border:1.5px solid var(--bhi);border-radius:10px;padding:13px 16px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:all .2s}
+.winput::placeholder{color:var(--muted)}
+.winput:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(26,171,152,.12)}
+.winput.err{border-color:var(--red);box-shadow:0 0 0 3px rgba(224,85,85,.12)}
+.wbtn{background:linear-gradient(135deg,var(--teal),var(--teal-d));color:#fff;border:none;padding:15px 24px;border-radius:12px;font-family:'Syne',sans-serif;font-weight:800;font-size:15px;cursor:pointer;white-space:nowrap;transition:all .15s;box-shadow:0 6px 24px rgba(26,171,152,.35);letter-spacing:.3px}
+.wbtn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(26,171,152,.35)}
+.fnote{font-size:11px;color:var(--muted);animation:fu .6s ease .35s both}
+.fnote span{color:var(--green)}
+
+/* SUCCESS */
+.sscreen{display:none;background:var(--card);border:1px solid rgba(26,171,152,.3);border-radius:16px;padding:24px;max-width:440px;margin:0 auto;text-align:center;animation:fu .5s ease both}
+.sscreen.on{display:block}
+.smsc{font-size:44px;margin-bottom:10px;display:block;animation:fl 3s ease-in-out infinite}
+.stit{font-family:'Syne',sans-serif;font-weight:800;font-size:20px;color:var(--green);margin-bottom:5px}
+.swat{font-style:italic;font-size:13px;color:var(--teal);margin-bottom:10px}
+.ssub{font-size:13px;color:var(--muted);line-height:1.5}
+
+.sproof{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:36px;flex-wrap:wrap;animation:fu .6s ease .4s both}
+.avts{display:flex}
+.avt{width:30px;height:30px;border-radius:50%;border:2px solid var(--dark);margin-left:-8px;font-size:13px;display:flex;align-items:center;justify-content:center;background:var(--d3)}
+.avt:first-child{margin-left:0}
+.ptxt{font-size:13px;color:var(--muted)}
+.ptxt strong{color:var(--text)}
+
+.dvd{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:0 40px}
+section{padding:96px 24px;max-width:1060px;margin:0 auto}
+.slbl{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--teal);margin-bottom:16px;display:flex;align-items:center;gap:12px;font-weight:500}
+.slbl::after{content:'';flex:1;height:1px;background:var(--border)}
+.sh{font-family:'Syne',sans-serif;font-size:clamp(28px,4vw,44px);font-weight:800;letter-spacing:-1.5px;line-height:1.05;margin-bottom:12px;color:var(--white)}
+.ssub{font-size:17px;color:var(--muted);max-width:560px;line-height:1.75;margin-bottom:48px}
+
+/* STEPS */
+.sgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border);border-radius:16px;overflow:hidden}
+.scard{background:var(--card);padding:36px 28px;transition:background .15s}
+.scard:hover{background:var(--d3)}
+.snum{font-family:'Syne',sans-serif;font-size:52px;font-weight:800;color:rgba(26,171,152,.08);line-height:1;margin-bottom:8px}
+.sico{font-size:24px;margin-bottom:8px;display:block}
+.stitle{font-family:'Syne',sans-serif;font-weight:700;font-size:14px;color:var(--white);margin-bottom:5px}
+.sdesc{font-size:15px;color:var(--muted);line-height:1.7}
+
+/* DEMO */
+.dbox{background:var(--card);border:1px solid var(--border);border-radius:18px;overflow:hidden;margin-bottom:16px}
+.dhdr{background:linear-gradient(135deg,rgba(26,171,152,.09),rgba(126,201,74,.05));border-bottom:1px solid var(--border);padding:18px 26px;display:flex;align-items:center;gap:12px}
+.dbadge{background:var(--teal);color:#fff;font-family:'Syne',sans-serif;font-weight:700;font-size:11px;padding:3px 9px;border-radius:6px;letter-spacing:.5px}
+.dtit{font-family:'Syne',sans-serif;font-weight:700;font-size:15px;color:var(--white)}
+.dbody{padding:26px}
+
+.qdots{display:flex;gap:6px;margin-bottom:18px}
+.qdot{width:30px;height:6px;border-radius:3px;background:var(--border);transition:background .3s}
+.qdot.dn{background:var(--green)}.qdot.cr{background:var(--teal)}
+
+.qq{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--white);margin-bottom:5px;letter-spacing:-.3px}
+.qhnt{font-size:12px;color:var(--muted);margin-bottom:18px;font-style:italic}
+.qopts{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
+.qopt{display:flex;align-items:center;gap:14px;background:var(--d3);border:2px solid var(--border);border-radius:14px;padding:16px 20px;cursor:pointer;transition:all .15s;text-align:left;width:100%;font-size:15px;color:var(--text)}
+.qopt:hover:not(.lk){border-color:var(--teal);background:rgba(26,171,152,.05);transform:translateX(3px)}
+.qopt.ok{border-color:var(--green);background:rgba(126,201,74,.08)}
+.qopt.ng{border-color:var(--red);background:rgba(224,85,85,.08)}
+.qopt.lk{cursor:default}
+.oltr{width:24px;height:24px;border-radius:6px;background:var(--card);border:1.5px solid var(--bhi);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);flex-shrink:0;transition:all .15s}
+.qopt:hover:not(.lk) .oltr{background:var(--teal-g);border-color:var(--teal);color:var(--teal)}
+.qopt.ok .oltr{background:var(--green);border-color:var(--green);color:#fff}
+.qopt.ng .oltr{background:var(--red);border-color:var(--red);color:#fff}
+
+.qfb{display:none;background:var(--d3);border:1px solid var(--bhi);border-radius:13px;padding:14px 16px;margin-top:10px;animation:fu .3s ease both}
+.qfb.on{display:flex;gap:12px;align-items:flex-start}
+.qav{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--teal-d),var(--teal));display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}
+.qav img{width:100%;height:100%;object-fit:contain}
+.qavlbl{font-family:'DM Mono',monospace;font-size:9px;color:var(--teal);letter-spacing:1px;margin-bottom:3px}
+.qavmsg{font-size:13px;color:var(--text);line-height:1.5}
+.qavmsg strong{color:var(--teal)}.qavmsg em{color:var(--amber);font-style:normal}
+
+.nqbtn{background:var(--teal);color:#fff;border:none;border-radius:12px;padding:14px 28px;font-family:'Syne',sans-serif;font-weight:800;font-size:15px;cursor:pointer;transition:all .15s;margin-top:14px;display:none;box-shadow:0 4px 16px rgba(26,171,152,.3);letter-spacing:.2px}
+.nqbtn:hover{transform:translateY(-1px);box-shadow:0 5px 16px rgba(26,171,152,.3)}
+
+.qcomp{display:none;text-align:center;padding:16px}
+.qctroph{font-size:52px;margin-bottom:10px;display:block;animation:fl 3s ease-in-out infinite}
+.qch{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--white);margin-bottom:5px}
+.qcscore{font-family:'Syne',sans-serif;font-size:44px;font-weight:800;margin-bottom:3px}
+.qcwat{font-style:italic;font-size:13px;color:var(--teal);margin-bottom:18px}
+.tfbtn{background:linear-gradient(135deg,var(--teal),var(--teal-d));color:#fff;border:none;border-radius:14px;padding:16px 32px;font-family:'Syne',sans-serif;font-weight:800;font-size:16px;cursor:pointer;transition:all .15s;box-shadow:0 6px 24px rgba(26,171,152,.35);letter-spacing:.3px}
+.tfbtn:hover{transform:translateY(-2px)}
+
+/* INTERVIEW */
+.icard{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:36px;margin-bottom:16px}
+.iclbl{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--amber);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.icq{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--white);margin-bottom:5px;letter-spacing:-.3px}
+.ichnt{font-size:12px;color:var(--muted);margin-bottom:14px;font-style:italic}
+.ata{width:100%;min-height:120px;background:var(--d3);border:1.5px solid var(--border);border-radius:11px;padding:16px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.7;resize:vertical;outline:none;transition:border-color .2s}
+.ata:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(26,171,152,.1)}
+.ata::placeholder{color:var(--muted)}
+.chnt{font-size:11px;color:var(--muted);margin-top:3px;text-align:right;font-family:'DM Mono',monospace}
+.sabtn{background:var(--teal);color:#fff;border:none;border-radius:12px;padding:14px 28px;font-family:'Syne',sans-serif;font-weight:800;font-size:15px;cursor:pointer;transition:all .15s;margin-top:14px;box-shadow:0 4px 16px rgba(26,171,152,.3);letter-spacing:.2px}
+.sabtn:hover{transform:translateY(-1px);box-shadow:0 5px 16px rgba(26,171,152,.3)}
+.nqibtn{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:9px;padding:11px 18px;font-family:'Syne',sans-serif;font-weight:600;font-size:12px;cursor:pointer;transition:all .15s;margin-top:10px;margin-left:8px}
+.nqibtn:hover{border-color:var(--bhi);color:var(--text)}
+.ifb{display:none;margin-top:14px;animation:fu .35s ease both}
+.iscores{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.isb{background:var(--d3);border-radius:10px;padding:11px;text-align:center}
+.isbv{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;margin-bottom:2px}
+.isbl{font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:.5px}
+.istit{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.ipt{font-size:13px;color:var(--text);line-height:1.5;padding:5px 0;display:flex;gap:7px}
+.imodel{background:var(--d3);border-left:3px solid var(--teal);border-radius:0 9px 9px 0;padding:14px 18px;font-size:15px;color:var(--muted);line-height:1.7;font-style:italic;margin-top:6px}
+
+/* FLASHCARDS */
+.fcwrap{perspective:1000px;-webkit-perspective:1000px;margin:0 auto 18px;max-width:480px}
+.fc{width:100%;height:200px;position:relative;transform-style:preserve-3d;-webkit-transform-style:preserve-3d;transition:transform .5s cubic-bezier(.4,0,.2,1);-webkit-transition:-webkit-transform .5s cubic-bezier(.4,0,.2,1);cursor:pointer}
+.fc.flp{transform:rotateY(180deg)}
+.fcf{position:absolute;inset:0;border-radius:16px;padding:24px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-transform:translateZ(0);transform:translateZ(0)}
+.fcfr{background:linear-gradient(135deg,var(--card),var(--d3));border:1px solid var(--border)}
+.fcbk{background:linear-gradient(135deg,rgba(26,171,152,.08),rgba(126,201,74,.05));border:1px solid rgba(26,171,152,.25);transform:rotateY(180deg)}
+.fclbl{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.fctrm{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--white);margin-bottom:6px}
+.fchnt{font-size:11px;color:var(--muted)}
+.fcdef{font-size:16px;color:var(--text);line-height:1.7}
+.fctap{font-size:10px;color:var(--teal);margin-top:10px;font-family:'DM Mono',monospace}
+.fcctrl{display:flex;align-items:center;justify-content:space-between;max-width:480px;margin:0 auto 14px}
+.fcbtn{background:var(--card);border:1px solid var(--border);border-radius:9px;padding:9px 18px;font-family:'Syne',sans-serif;font-weight:600;font-size:12px;color:var(--text);cursor:pointer;transition:all .15s}
+.fcbtn:hover{border-color:var(--bhi)}
+.fccnt{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted)}
+.fcrrow{display:flex;gap:10px;max-width:480px;margin:0 auto}
+.fcrb{flex:1;border:none;border-radius:9px;padding:11px;font-family:'Syne',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:all .15s;display:none}
+.fcrb.on{display:block}
+.fck{background:rgba(126,201,74,.12);color:var(--green);border:1px solid rgba(126,201,74,.25)}
+.fck:hover{background:rgba(126,201,74,.2)}
+.fca{background:rgba(224,85,85,.1);color:var(--red);border:1px solid rgba(224,85,85,.2)}
+.fca:hover{background:rgba(224,85,85,.18)}
+
+/* PATH */
+.pi{display:flex;align-items:center;gap:16px;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:10px;transition:border-color .15s}
+.pi:hover{border-color:var(--bhi)}
+.pnum{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:12px;flex-shrink:0}
+.pname{font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--white)}
+.ptopics{font-size:13px;color:var(--muted);margin-top:2px;line-height:1.5}
+.ptag{font-family:'DM Mono',monospace;font-size:10px;padding:2px 7px;border-radius:4px;margin-left:auto;flex-shrink:0}
+
+/* FEATURES */
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ft{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;transition:all .2s;position:relative;overflow:hidden}
+.ft:hover{border-color:var(--bhi);transform:translateY(-3px)}
+.ft::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--teal),var(--green));opacity:0;transition:opacity .2s}
+.ft:hover::before{opacity:1}
+.ft.wide{grid-column:span 2}
+.ftico{font-size:26px;margin-bottom:10px;display:block}
+.fttit{font-family:'Syne',sans-serif;font-weight:700;font-size:15px;color:var(--white);margin-bottom:5px}
+.ftdsc{font-size:15px;color:var(--muted);line-height:1.7}
+
+/* CREATOR */
+.crcard{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:40px;display:flex;gap:32px;align-items:flex-start}
+.cravt{width:76px;height:76px;border-radius:16px;background:linear-gradient(135deg,var(--teal-d),var(--teal));display:flex;align-items:center;justify-content:center;font-size:34px;flex-shrink:0;box-shadow:0 8px 24px rgba(26,171,152,.25)}
+.crname{font-family:'Syne',sans-serif;font-size:19px;font-weight:800;color:var(--white);margin-bottom:2px}
+.crtit{font-size:11px;color:var(--teal);font-family:'DM Mono',monospace;letter-spacing:.5px;margin-bottom:12px}
+.crbio{font-size:16px;color:var(--muted);line-height:1.8;margin-bottom:14px}
+.crbio strong{color:var(--text)}
+.crquote{background:var(--d3);border-left:3px solid var(--teal);border-radius:0 11px 11px 0;padding:12px 16px;font-style:italic;font-size:14px;color:var(--teal);line-height:1.5;margin-bottom:14px}
+.crstats{display:flex;gap:18px;flex-wrap:wrap}
+.crst{text-align:center}
+.crstv{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--white)}
+.crstl{font-size:10px;color:var(--muted);font-family:'DM Mono',monospace}
+
+/* TESTIMONIALS */
+.tgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:36px}
+.tc{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px}
+.tctxt{font-size:15px;color:var(--text);line-height:1.7;margin-bottom:12px;font-style:italic}
+.tcauth{display:flex;align-items:center;gap:10px}
+.tcav{width:32px;height:32px;border-radius:50%;font-size:15px;display:flex;align-items:center;justify-content:center;background:var(--d3)}
+.tcname{font-family:'Syne',sans-serif;font-weight:700;font-size:12px;color:var(--white)}
+.tcrole{font-size:11px;color:var(--muted)}
+
+/* FINAL CTA */
+.fcta{text-align:center;padding:72px 24px 96px;position:relative;overflow:hidden}
+.fcta::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:560px;height:560px;background:radial-gradient(circle,rgba(26,171,152,.07),transparent 65%);pointer-events:none}
+.fctah{font-family:'Syne',sans-serif;font-size:clamp(26px,5vw,48px);font-weight:800;letter-spacing:-2px;line-height:1.05;color:var(--white);margin-bottom:8px}
+.fctah span{background:linear-gradient(135deg,var(--teal),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.fctasub{font-size:15px;color:var(--muted);margin-bottom:26px}
+
+footer{border-top:1px solid var(--border);padding:22px 40px;display:flex;align-items:center;justify-content:space-between}
+.flogo{font-family:'Syne',sans-serif;font-weight:800;font-size:15px}
+.flogo .qa{color:var(--teal)}.flogo .li{color:var(--green)}
+.fcopy{font-size:12px;color:var(--muted);font-family:'DM Mono',monospace}
+
+.bnav{position:fixed;bottom:0;left:0;right:0;background:var(--bnav-bg);border-top:1px solid var(--border);padding:9px 14px;z-index:200;display:flex;justify-content:center;gap:7px;flex-wrap:wrap;backdrop-filter:blur(12px)}
+.bnav a{text-decoration:none;background:var(--d3);border:1px solid var(--border);border-radius:8px;padding:7px 12px;font-family:'Syne',sans-serif;font-weight:700;font-size:12px;color:var(--text);transition:all .15s}
+.bnav a:hover{border-color:var(--teal);color:var(--teal)}
+.bnav a.act{background:var(--teal);border-color:var(--teal);color:#fff}
+
+
+
+
+/* ── LANGUAGE SELECTOR ── */
+.lang-sel{display:flex;align-items:center;gap:6px;background:var(--d3);border:1px solid var(--border);border-radius:20px;padding:4px;cursor:pointer}
+.lang-btn{background:transparent;border:none;border-radius:16px;padding:5px 10px;font-family:'Syne',sans-serif;font-weight:700;font-size:11px;color:var(--muted);cursor:pointer;transition:all .15s;letter-spacing:.5px}
+.lang-btn.active{background:var(--teal);color:#fff}
+.lang-btn:hover:not(.active){color:var(--text)}
+
+/* ── QA CHALLENGE BUTTONS ── */
+.wbtn-challenge {
+  background: linear-gradient(135deg, var(--teal), var(--teal-d));
+  color: #fff;
+  border: none;
+  padding: 16px 32px;
+  border-radius: 14px;
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 17px;
+  cursor: pointer;
+  transition: all .2s;
+  box-shadow: 0 8px 32px rgba(26,171,152,.4);
+  letter-spacing: .3px;
+  position: relative;
+  overflow: hidden;
+}
+.wbtn-challenge::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,.15), transparent);
+  opacity: 0;
+  transition: opacity .2s;
+}
+.wbtn-challenge:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px rgba(26,171,152,.5);
+}
+.wbtn-challenge:hover::before { opacity: 1; }
+
+.wbtn-waitlist {
+  background: transparent;
+  color: var(--muted);
+  border: 1.5px solid var(--border);
+  padding: 16px 28px;
+  border-radius: 14px;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all .2s;
+}
+.wbtn-waitlist:hover {
+  border-color: var(--teal);
+  color: var(--teal);
+  transform: translateY(-2px);
+}
+
+/* ── CHALLENGE MODAL ── */
+.challenge-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.75);
+  backdrop-filter: blur(8px);
+  z-index: 500;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  animation: fadeIn .25s ease both;
+}
+.challenge-overlay.open { display: flex; }
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+
+.challenge-modal {
+  background: var(--card);
+  border: 1px solid var(--bhi);
+  border-radius: 24px;
+  padding: 40px;
+  max-width: 580px;
+  width: 100%;
+  position: relative;
+  animation: slideUp2 .35s cubic-bezier(.34,1.2,.64,1) both;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+@keyframes slideUp2 { from{opacity:0;transform:translateY(40px)} to{opacity:1;transform:translateY(0)} }
+
+.ch-close {
+  position: absolute;
+  top: 16px; right: 16px;
+  background: var(--d3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--muted);
+  transition: all .15s;
+}
+.ch-close:hover { border-color: var(--red); color: var(--red); }
+
+/* PROGRESS BAR */
+.ch-progress-wrap {
+  margin-bottom: 32px;
+}
+.ch-prog-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.ch-prog-title {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--teal);
+  font-weight: 500;
+}
+.ch-prog-count {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  color: var(--muted);
+}
+.ch-prog-bar {
+  height: 6px;
+  background: var(--d3);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.ch-prog-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--teal), var(--green));
+  border-radius: 6px;
+  transition: width .5s cubic-bezier(.34,1.2,.64,1);
+}
+
+/* STEPS INSTRUCTION */
+.ch-steps {
+  display: flex;
+  gap: 0;
+  margin-bottom: 32px;
+  background: var(--d3);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+}
+.ch-step {
+  flex: 1;
+  padding: 14px 16px;
+  text-align: center;
+  border-right: 1px solid var(--border);
+}
+.ch-step:last-child { border-right: none; }
+.ch-step-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  color: var(--teal);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+.ch-step-txt {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+/* QUESTION */
+.ch-q-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+.ch-question {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(22px, 4vw, 28px);
+  font-weight: 800;
+  color: var(--white);
+  line-height: 1.2;
+  letter-spacing: -.5px;
+  margin-bottom: 28px;
+}
+
+/* INPUT */
+.ch-input-wrap { position: relative; margin-bottom: 16px; }
+.ch-input {
+  width: 100%;
+  background: var(--d3);
+  border: 2px solid var(--bhi);
+  border-radius: 14px;
+  padding: 18px 20px;
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  outline: none;
+  transition: all .2s;
+  min-height: 100px;
+  resize: vertical;
+}
+.ch-input::placeholder { color: var(--muted); }
+.ch-input:focus {
+  border-color: var(--teal);
+  box-shadow: 0 0 0 4px rgba(26,171,152,.12);
+}
+.ch-input.correct-border { border-color: var(--green); }
+.ch-input.wrong-border { border-color: var(--red); }
+.ch-char {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  text-align: right;
+  margin-top: 6px;
+}
+
+/* CHECK BUTTON */
+.ch-check-btn {
+  width: 100%;
+  background: linear-gradient(135deg, var(--teal), var(--teal-d));
+  color: #fff;
+  border: none;
+  border-radius: 14px;
+  padding: 17px;
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all .2s;
+  box-shadow: 0 6px 24px rgba(26,171,152,.35);
+  letter-spacing: .3px;
+  margin-top: 4px;
+}
+.ch-check-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 32px rgba(26,171,152,.45);
+}
+.ch-check-btn:disabled { opacity: .5; cursor: default; transform: none; }
+
+/* FEEDBACK */
+.ch-feedback {
+  display: none;
+  margin-top: 20px;
+  animation: fu .35s ease both;
+}
+.ch-feedback.show { display: flex; gap: 14px; align-items: flex-start; }
+.ch-fb-avatar {
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--teal-d), var(--teal));
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(26,171,152,.3);
+}
+.ch-fb-avatar img { width: 100%; height: 100%; object-fit: contain; }
+.ch-fb-body {
+  flex: 1;
+  background: var(--d3);
+  border: 1px solid var(--bhi);
+  border-radius: 0 14px 14px 14px;
+  padding: 16px 18px;
+}
+.ch-fb-name {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+.ch-fb-msg {
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.6;
+}
+.ch-fb-msg strong { color: var(--green); }
+.ch-fb-msg em { color: var(--amber); font-style: normal; }
+
+/* NEXT BUTTON */
+.ch-next-btn {
+  width: 100%;
+  background: var(--teal);
+  color: #fff;
+  border: none;
+  border-radius: 14px;
+  padding: 16px;
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all .2s;
+  margin-top: 16px;
+  display: none;
+  box-shadow: 0 4px 16px rgba(26,171,152,.3);
+}
+.ch-next-btn:hover { transform: translateY(-2px); }
+
+/* COMPLETE */
+.ch-complete {
+  display: none;
+  text-align: center;
+  padding: 20px 0;
+  animation: fu .4s ease both;
+}
+.ch-complete-trophy { font-size: 64px; margin-bottom: 16px; display: block; animation: fl 3s ease-in-out infinite; }
+.ch-complete-h {
+  font-family: 'Syne', sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--white);
+  letter-spacing: -1px;
+  margin-bottom: 6px;
+}
+.ch-complete-score {
+  font-family: 'Syne', sans-serif;
+  font-size: 52px;
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+.ch-complete-watson {
+  font-style: italic;
+  font-size: 15px;
+  color: var(--teal);
+  margin-bottom: 28px;
+  line-height: 1.5;
+}
+.ch-cta-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.ch-retry-btn {
+  background: transparent;
+  border: 1.5px solid var(--border);
+  color: var(--muted);
+  border-radius: 12px;
+  padding: 13px 24px;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all .15s;
+}
+.ch-retry-btn:hover { border-color: var(--teal); color: var(--teal); }
+.ch-full-btn {
+  background: linear-gradient(135deg, var(--teal), var(--teal-d));
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 13px 24px;
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all .15s;
+  box-shadow: 0 4px 16px rgba(26,171,152,.3);
+}
+.ch-full-btn:hover { transform: translateY(-2px); }
+
+
+/* ── SCROLL ANIMATIONS ── */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .6s ease,transform .6s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-left{opacity:0;transform:translateX(-28px);transition:opacity .6s ease,transform .6s ease}
+.reveal-left.visible{opacity:1;transform:translateX(0)}
+.reveal-scale{opacity:0;transform:scale(.95);transition:opacity .5s ease,transform .5s ease}
+.reveal-scale.visible{opacity:1;transform:scale(1)}
+
+/* ── IMPROVED STEP CARDS ── */
+.scard{position:relative;overflow:hidden}
+.scard::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--teal),var(--green));transform:scaleX(0);transform-origin:left;transition:transform .3s ease}
+.scard:hover::after{transform:scaleX(1)}
+
+/* ── IMPROVED FEATURE CARDS ── */
+.ft{position:relative}
+.ft-icon-wrap{width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,rgba(26,171,152,.15),rgba(26,171,152,.05));border:1px solid rgba(26,171,152,.2);display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:14px;transition:all .2s}
+.ft:hover .ft-icon-wrap{background:linear-gradient(135deg,rgba(26,171,152,.25),rgba(26,171,152,.1));transform:scale(1.08)}
+
+/* ── PATH ITEMS IMPROVED ── */
+.pi{transition:all .2s}
+.pi:hover{transform:translateX(6px);border-color:var(--teal) !important}
+
+/* ── BADGE PULSE ── */
+.bdot{animation:bl 2s ease-in-out infinite}
+@keyframes pulse-ring{0%{transform:scale(.95);box-shadow:0 0 0 0 rgba(26,171,152,.4)}70%{transform:scale(1);box-shadow:0 0 0 8px rgba(26,171,152,0)}100%{transform:scale(.95);box-shadow:0 0 0 0 rgba(26,171,152,0)}}
+
+
+/* ── QA PHRASE OF THE DAY ── */
+.potd-wrap{max-width:1060px;margin:0 auto;padding:0 24px 0}
+.potd-card{background:linear-gradient(135deg,rgba(26,171,152,.08),rgba(126,201,74,.05));border:1px solid rgba(26,171,152,.25);border-radius:18px;padding:28px 32px;position:relative;overflow:hidden;transition:border-color .2s}
+.potd-card:hover{border-color:rgba(26,171,152,.45)}
+.potd-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--teal),var(--green))}
+.potd-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px}
+.potd-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--teal);display:flex;align-items:center;gap:8px;font-weight:500}
+.potd-dot{width:7px;height:7px;background:var(--teal);border-radius:50%;animation:bl 2s ease-in-out infinite}
+.potd-date{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.5px}
+.potd-quote{font-family:'Syne',sans-serif;font-size:clamp(16px,3vw,22px);font-weight:700;color:var(--white);line-height:1.4;letter-spacing:-.3px;margin-bottom:12px;font-style:italic}
+.potd-quote::before{content:'"';color:var(--teal);font-size:1.4em;line-height:0;vertical-align:-.3em;margin-right:3px}
+.potd-quote::after{content:'"';color:var(--teal);font-size:1.4em;line-height:0;vertical-align:-.3em;margin-left:3px}
+.potd-author{font-size:13px;color:var(--muted);font-family:'DM Mono',monospace}
+.potd-author span{color:var(--teal)}
+.potd-share{background:transparent;border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-family:'Syne',sans-serif;font-weight:600;font-size:11px;color:var(--muted);cursor:pointer;transition:all .15s;margin-top:14px;display:inline-block}
+.potd-share:hover{border-color:var(--teal);color:var(--teal)}
+
+/* ── FAQ ── */
+.faq-list{display:flex;flex-direction:column;gap:8px}
+.faq-item{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:border-color .15s}
+.faq-item:hover{border-color:var(--bhi)}
+.faq-item.open{border-color:var(--teal)}
+.faq-q{width:100%;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px 26px;background:transparent;border:none;cursor:pointer;text-align:left;font-family:'Syne',sans-serif;font-weight:700;font-size:15px;color:var(--white);transition:color .15s;line-height:1.4}
+.faq-item:hover .faq-q{color:var(--teal)}
+.faq-item.open .faq-q{color:var(--teal)}
+.faq-arr{color:var(--muted);font-size:12px;flex-shrink:0;transition:transform .25s}
+.faq-item.open .faq-arr{transform:rotate(180deg);color:var(--teal)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .35s ease,padding .25s;padding:0 22px;font-size:15px;color:var(--muted);line-height:1.7}
+.faq-item.open .faq-a{max-height:300px;padding:4px 26px 24px}
+
+/* ── GLOSSARY ── */
+.glos-search-wrap{margin-bottom:24px}
+.glos-search{width:100%;background:var(--d3);border:1.5px solid var(--bhi);border-radius:12px;padding:14px 20px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:16px;outline:none;transition:all .2s}
+.glos-search:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(26,171,152,.12)}
+.glos-search::placeholder{color:var(--muted)}
+.glos-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.glos-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 18px;transition:border-color .15s}
+.glos-card:hover{border-color:var(--bhi)}
+.glos-term{font-family:'Syne',sans-serif;font-weight:800;font-size:16px;color:var(--teal);margin-bottom:6px}
+.glos-def{font-size:15px;color:var(--muted);line-height:1.7}
+.glos-tag{display:inline-block;font-family:'DM Mono',monospace;font-size:10px;padding:2px 7px;border-radius:4px;margin-top:6px;background:rgba(26,171,152,.1);color:var(--teal)}
+
+/* ── FEEDBACK ── */
+.fbuz-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:40px;max-width:680px;margin:0 auto}
+.fbuz-header{display:flex;align-items:center;gap:14px;margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+.fbuz-types{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.fbuz-type{background:var(--d3);border:1.5px solid var(--border);border-radius:8px;padding:8px 14px;font-family:'Syne',sans-serif;font-weight:600;font-size:13px;color:var(--muted);cursor:pointer;transition:all .15s}
+.fbuz-type:hover{border-color:var(--teal);color:var(--teal)}
+.fbuz-type.active{background:var(--teal-g);border-color:var(--teal);color:var(--teal)}
+.fbuz-input{width:100%;background:var(--d3);border:1.5px solid var(--border);border-radius:10px;padding:13px 16px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;outline:none;transition:all .2s;margin-bottom:10px;display:block}
+.fbuz-input:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(26,171,152,.1)}
+.fbuz-input::placeholder{color:var(--muted)}
+.fbuz-ta{width:100%;min-height:130px;background:var(--d3);border:1.5px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.7;resize:vertical;outline:none;transition:all .2s}
+.fbuz-ta:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(26,171,152,.1)}
+.fbuz-ta::placeholder{color:var(--muted)}
+.fbuz-btn{background:linear-gradient(135deg,var(--teal),var(--teal-d));color:#fff;border:none;border-radius:12px;padding:16px 32px;font-family:'Syne',sans-serif;font-weight:800;font-size:16px;cursor:pointer;transition:all .15s;margin-top:16px;box-shadow:0 6px 24px rgba(26,171,152,.35);letter-spacing:.3px}
+.fbuz-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(26,171,152,.35)}
+.fbuz-success{display:none;text-align:center;padding:24px;animation:fu .4s ease both}
+.fbuz-success.on{display:block}
+
+@media(max-width:768px){.glos-grid{grid-template-columns:1fr}.fbuz-types{gap:6px}}
+
+@media(max-width:768px){
+  nav{padding:12px 16px}
+  .sgrid,.fgrid,.tgrid{grid-template-columns:1fr}
+  .ft.wide{grid-column:span 1}
+  .crcard{flex-direction:column}
+  .wform{flex-direction:column}
+  footer{flex-direction:column;gap:10px;text-align:center}
+  .dvd{margin:0 16px}
+  section{padding:52px 16px}
+  .iscores{grid-template-columns:repeat(3,1fr)}
+}
+
+/* BACK TO MAIN MENU */
+.back-home{position:fixed;top:70px;left:16px;z-index:150;display:flex;align-items:center;gap:7px;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:8px 14px;font-family:'Syne',sans-serif;font-weight:700;font-size:12px;color:var(--muted);text-decoration:none;transition:all .15s;backdrop-filter:blur(8px);box-shadow:0 2px 12px rgba(0,0,0,.2)}
+.back-home:hover{border-color:var(--teal);color:var(--teal);transform:translateX(-2px)}
+
+</style>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+<meta http-equiv="Pragma" content="no-cache"/>
+<meta http-equiv="Expires" content="0"/>
+  
+  <script>
+    // THEME SYSTEM - runs immediately in <head>
+    var DARK_THEME = {
+      '--dark':'#080c10','--d2':'#0d1319','--d3':'#131c26',
+      '--card':'#111820','--border':'#1e2e3e','--bhi':'#2a4055',
+      '--text':'#dde8f0','--muted':'#8aa4bc','--white':'#f0f4f8',
+      '--nav-bg':'rgba(8,12,16,.95)','--bnav-bg':'rgba(8,12,16,.97)'
+    };
+    var LIGHT_THEME = {
+      '--dark':'#eef4fb','--d2':'#e0ecf7','--d3':'#cfe0f0',
+      '--card':'#f8fbff','--border':'#b8d4e8','--bhi':'#90b8d5',
+      '--text':'#0f1f35','--muted':'#3d607a','--white':'#0a1828',
+      '--nav-bg':'rgba(238,244,251,.97)','--bnav-bg':'rgba(238,244,251,.97)'
+    };
+    var isLight = localStorage.getItem('qt') === 'l';
+    function applyThemeVars(theme) {
+      Object.entries(theme).forEach(function(e) {
+        document.documentElement.style.setProperty(e[0], e[1]);
+      });
+    }
+    function toggleTheme() {
+      isLight = !isLight;
+      applyThemeVars(isLight ? LIGHT_THEME : DARK_THEME);
+      var btn = document.getElementById('themeBtn');
+      if(btn) btn.textContent = isLight ? '🌙 Dark' : '☀️ Light';
+      localStorage.setItem('qt', isLight ? 'l' : 'd');
+    }
+    if(isLight) applyThemeVars(LIGHT_THEME);
+  </script>
+</head>
+<body>
+
+<nav>
+  <div class="nlogo">
+    <img src="q-mascot.png" alt="Q" onerror="this.style.display='none'"/>
+    <span><span class="qa">QA</span><span class="li">Lingo</span></span>
+  </div>
+  <div class="nright">
+    <div class="lang-sel" id="langSel">
+      <button class="lang-btn active" id="btnEN" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" id="btnES" onclick="setLang('es')">ES</button>
+    </div>
+    <button class="ttog" onclick="toggleTheme()" id="themeBtn">☀️ Light</button>
+    <button class="ncta" onclick="scrollToW()" data-i18n="joinWaitlist">Join Waitlist</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="orb orb1"></div><div class="orb orb2"></div>
+  <div class="hbadge"><div class="bdot"></div>NOW ACCEPTING EARLY ACCESS</div>
+  <img src="q-mascot.png" alt="Q — QALingo Detective" class="qimg" onerror="this.outerHTML='<span style=&quot;font-size:80px;display:block;margin-bottom:14px;animation:fl 4s ease-in-out infinite&quot;>🔍</span>'"/>
+  <h1 class="hero-h">
+    <span class="l1">Learn QA.</span>
+    <span class="l2">Get Certified.</span>
+    <span class="l3">Get Hired.</span>
+  </h1>
+  <p class="hsub">The <em>Duolingo-style app</em> for QA professionals. Master testing fundamentals, crush your ISTQB exam, and nail interviews — <em>5 minutes a day.</em></p>
+  <p class="qtag">"QAlemental, Dear Watson." — Q, your QA detective guide</p>
+
+  <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:10px;animation:fu .6s ease .3s both">
+    <button class="wbtn-challenge" onclick="openChallenge()">🔍 Start QA Challenge</button>
+    <button class="wbtn-waitlist" onclick="document.getElementById('demo').scrollIntoView({behavior:'smooth'})">Explore Features ↓</button>
+  </div>
+  <div class="wform" id="wf1" style="display:none">
+    <input type="email" class="winput" id="em1" placeholder="your@email.com"/>
+    <button class="wbtn" onclick="signup(1)">Get Early Access →</button>
+  </div>
+  <div class="sscreen" id="ss1">
+    <span class="smsc">🔍</span>
+    <div class="stit">QAlemental!</div>
+    <div class="swat">"Excellent deduction, Watson. You're on the list."</div>
+    <div class="ssub">We'll reach out when QALingo launches. Keep your streak warm. 🔥</div>
+  </div>
+  <p class="fnote" id="fn1"><span>Free to join.</span> No spam. Just QA detective vibes.</p>
+
+  <div class="sproof">
+    <div class="avts"><div class="avt">👩‍💻</div><div class="avt">👨‍💼</div><div class="avt">🧑‍🔬</div><div class="avt">👨‍🎓</div><div class="avt">👩‍💻</div></div>
+    <p class="ptxt"><strong>240+ testers</strong> already on the waitlist</p>
+  </div>
+</div>
+
+<div class="dvd"></div>
+
+<!-- HOW IT WORKS -->
+<section>
+  <div class="slbl">How it works</div>
+  <h2 class="sh">QA training, Duolingo-style.</h2>
+  <p class="ssub">No boring PDFs. No 3-hour videos. Active practice guided by Q — your sarcastic Sherlock Holmes detective.</p>
+  <div class="sgrid">
+    <div class="scard"><div class="snum">01</div><div class="ft-icon-wrap" style="margin-bottom:12px">🎯</div><div class="stitle">Tell Q your goal</div><p class="sdesc">Job hunting? ISTQB prep? Upskilling? Q builds your personal path in 2 questions. No fluff.</p></div>
+    <div class="scard"><div class="snum">02</div><div class="ft-icon-wrap" style="margin-bottom:12px">⚡</div><div class="stitle">5 minutes a day</div><p class="sdesc">Short lessons, real scenarios, instant Q feedback. Miss a day and Q is not impressed. At all.</p></div>
+    <div class="scard"><div class="snum">03</div><div class="ft-icon-wrap" style="margin-bottom:12px">🏆</div><div class="stitle">Certify & get hired</div><p class="sdesc">Pass ISTQB. Ace interviews. Share your badge on LinkedIn. Land the remote role you deserve.</p></div>
+  </div>
+</section>
+
+<div class="dvd"></div>
+
+<!-- FREE DEMO -->
+<section id="demo">
+  <div class="slbl">Free Demo</div>
+  <h2 class="sh">Try it right now.</h2>
+  <p class="ssub">3 questions. Real feedback from Q. No sign-up needed. Q is watching.</p>
+  <div class="dbox">
+    <div class="dhdr">
+      <div class="dbadge">FREE DEMO</div>
+      <div class="dtit">QA Foundations Mini Quiz</div>
+      <div style="margin-left:auto;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted)">3 questions · ~2 min</div>
+    </div>
+    <div class="dbody">
+      <div class="qdots" id="quizDots"></div>
+      <div id="qarea">
+        <div class="qq" id="qq"></div>
+        <div class="qhnt" id="qhnt"></div>
+        <div class="qopts" id="qopts"></div>
+        <div class="qfb" id="qfb">
+          <div class="qav"><img src="q-mascot.png" alt="Q" style="width:100%;height:100%;object-fit:contain" onerror="this.parentElement.innerHTML='🔍'"/></div>
+          <div><div class="qavlbl">Q — QA DETECTIVE</div><div class="qavmsg" id="qfbmsg"></div></div>
+        </div>
+        <button class="nqbtn" id="nqbtn" onclick="nextQ()">Next question →</button>
+      </div>
+      <div class="qcomp" id="qcomp">
+        <span class="qctroph" id="qctr">🏆</span>
+        <div class="qch" id="qch">Case Closed!</div>
+        <div class="qcscore" id="qcsc" style="color:var(--green)">3/3</div>
+        <div class="qcwat" id="qcwt">"QAlemental, Dear Watson."</div>
+        <button class="tfbtn" onclick="window.location.href='qalingo-lesson-app.html'">Try the Full Lesson →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="dvd"></div>
+
+<!-- DAILY INTERVIEW -->
+<section id="iq">
+  <div class="slbl">Daily Interview Question</div>
+  <h2 class="sh">Practice like it's real.</h2>
+  <p class="ssub">Write your answer. Q gives you structured feedback — structure, depth, clarity. Just like a real debrief.</p>
+  <div class="icard">
+    <div class="iclbl">📅 Today's Question <span style="color:var(--muted);font-size:9px;margin-left:8px" id="iqlvl">JUNIOR LEVEL</span></div>
+    <div class="icq" id="iqq"></div>
+    <div class="ichnt" id="iqhnt"></div>
+    <div class="content-note" style="font-size:12px;color:var(--amber);margin-bottom:14px;font-family:'DM Mono',monospace">📌 Content is in English to prepare you for international remote interviews.</div>
+    <textarea class="ata" id="iqa" placeholder="Write your answer... Think: definition → example → impact." oninput="updiqch()"></textarea>
+    <div class="chnt"><span id="iqch">0</span> chars · aim for 80+</div>
+    <button class="sabtn" onclick="subiq()">Get Q's Feedback →</button>
+    <button class="nqibtn" onclick="nextiq()">New question ↻</button>
+    <div class="ifb" id="iqfb">
+      <div class="qfb on" style="margin-bottom:14px">
+        <div class="qav"><img src="q-mascot.png" alt="Q" style="width:100%;height:100%;object-fit:contain" onerror="this.parentElement.innerHTML='🔍'"/></div>
+        <div><div class="qavlbl">Q — QA DETECTIVE</div><div class="qavmsg" id="iqmsg"></div></div>
+      </div>
+      <div class="iscores" id="iqsc"></div>
+      <div class="istit" style="margin-bottom:6px">✅ Strengths</div><div id="iqstr"></div>
+      <div class="istit" style="margin-top:10px;margin-bottom:6px">📌 What to add next time</div><div id="iqimp"></div>
+      <div class="istit" style="margin-top:10px;margin-bottom:6px">💡 Model answer</div>
+      <div class="imodel" id="iqmod"></div>
+    </div>
+  </div>
+</section>
+
+<div class="dvd"></div>
+
+<!-- FLASHCARDS -->
+<section id="flashcards">
+  <div class="slbl">Flashcards</div>
+  <h2 class="sh">Flip. Learn. Repeat.</h2>
+  <p class="ssub">Tap the card to reveal. Tell Q if you knew it. Q remembers what to repeat — spaced repetition style.</p>
+  <div class="fcwrap">
+    <div class="fc" id="fcard" onclick="flipCard()">
+      <div class="fcf fcfr">
+        <div class="fclbl">TERM</div>
+        <div class="fctrm" id="fctrm"></div>
+        <div class="fchnt" id="fchnt"></div>
+        <div class="fctap">Tap to reveal →</div>
+      </div>
+      <div class="fcf fcbk">
+        <div class="fclbl">DEFINITION</div>
+        <div class="fcdef" id="fcdef"></div>
+      </div>
+    </div>
+  </div>
+  <div class="fcctrl">
+    <button class="fcbtn" onclick="prevFC()">← Prev</button>
+    <div class="fccnt" id="fccnt">1 / 20</div>
+    <button class="fcbtn" onclick="nextFC()">Next →</button>
+  </div>
+  <div class="fcrrow">
+    <button class="fcrb fck" id="bkn" onclick="markFC(true)">✓ Got it!</button>
+    <button class="fcrb fca" id="bag" onclick="markFC(false)">↩ Again</button>
+  </div>
+  <div class="qfb" id="fcfb" style="margin-top:14px;max-width:480px;margin-left:auto;margin-right:auto">
+    <div class="qav"><img src="q-mascot.png" alt="Q" style="width:100%;height:100%;object-fit:contain" onerror="this.parentElement.innerHTML='🔍'"/></div>
+    <div><div class="qavlbl">Q — QA DETECTIVE</div><div class="qavmsg" id="fcmsg"></div></div>
+  </div>
+</section>
+
+<div class="dvd"></div>
+
+<!-- CURRICULUM -->
+<section>
+  <div class="slbl">Curriculum</div>
+  <h2 class="sh">Your path from zero to hired.</h2>
+  <p class="ssub">Six progressive levels. Built by a QA pro with 10+ years and ISTQB certification.</p>
+  <div class="pi"><div class="pnum" style="background:rgba(126,201,74,.15);color:#a3e071">0</div><div><div class="pname">QA Foundations</div><div class="ptopics">What is QA · Bug vs Defect · Testing mindset · SDLC basics</div></div><div class="ptag" style="background:rgba(126,201,74,.12);color:#a3e071">12 lessons</div></div>
+  <div class="pi"><div class="pnum" style="background:rgba(26,171,152,.15);color:var(--teal)">1</div><div><div class="pname">Types of Testing</div><div class="ptopics">Functional · Regression · Smoke · Exploratory · UAT</div></div><div class="ptag" style="background:rgba(26,171,152,.12);color:var(--teal)">18 lessons</div></div>
+  <div class="pi"><div class="pnum" style="background:rgba(100,140,220,.15);color:#8ab4f8">2</div><div><div class="pname">QA Documentation</div><div class="ptopics">Test Cases · Bug Reports · Test Plans · Severity & Priority</div></div><div class="ptag" style="background:rgba(100,140,220,.12);color:#8ab4f8">15 lessons</div></div>
+  <div class="pi"><div class="pnum" style="background:rgba(240,192,64,.15);color:var(--amber)">3</div><div><div class="pname">Agile & Scrum for QA</div><div class="ptopics">Sprints · Ceremonies · Definition of Done · Scrum prep</div></div><div class="ptag" style="background:rgba(240,192,64,.12);color:var(--amber)">14 lessons</div></div>
+  <div class="pi" style="border-color:rgba(26,171,152,.3)"><div class="pnum" style="background:rgba(180,80,200,.15);color:#d48cf7">4</div><div><div class="pname">ISTQB Foundation Prep ⭐</div><div class="ptopics">All 6 chapters · 300+ questions · Full exam simulation</div></div><div class="ptag" style="background:rgba(180,80,200,.12);color:#d48cf7">30 lessons</div></div>
+  <div class="pi"><div class="pnum" style="background:rgba(220,80,80,.15);color:#f78c8c">5</div><div><div class="pname">Specialization Tracks</div><div class="ptopics">API Testing · Mobile QA · Automation intro · CI/CD</div></div><div class="ptag" style="background:rgba(220,80,80,.12);color:#f78c8c">20+ lessons</div></div>
+</section>
+
+<div class="dvd"></div>
+
+<!-- FEATURES -->
+<section>
+  <div class="slbl">Features</div>
+  <h2 class="sh">Everything a QA detective needs.</h2>
+  <div class="fgrid">
+    <div class="ft"><div class="ft-icon-wrap">📚</div><div class="fttit">6 Learning Levels</div><p class="ftdsc">From QA basics to specialization. Progressive, adaptive, built for real-world practice.</p></div>
+    <div class="ft"><div class="ft-icon-wrap">🎓</div><div class="fttit">ISTQB Exam Simulator</div><p class="ftdsc">300+ questions. Timed mock exams. Explanations for every wrong answer. Not just "incorrect."</p></div>
+    <div class="ft wide"><div class="ft-icon-wrap">💼</div><div class="fttit">Drip Interview Prep</div><p class="ftdsc">One interview question per day. AI evaluates structure, depth, and real-world grounding. Q tells you exactly what hiring managers want to hear — and what they don't.</p></div>
+    <div class="ft"><div class="ft-icon-wrap">🔥</div><div class="fttit">Streaks & Gamification</div><p class="ftdsc">XP, lives, badges, leaderboards. Miss a day and Q sends a strongly-worded reminder.</p></div>
+    <div class="ft"><div class="ft-icon-wrap">🃏</div><div class="fttit">Flashcards + Spaced Repetition</div><p class="ftdsc">Q remembers what you got wrong and serves it again. And again. Until you nail it.</p></div>
+  </div>
+</section>
+
+<div class="dvd"></div>
+
+<!-- MEET THE CREATOR -->
+<section id="creator">
+  <div class="slbl">Meet the Creator</div>
+  <h2 class="sh">Built by a QA pro, for QA pros.</h2>
+  <div class="crcard">
+    <div class="cravt">🔍</div>
+    <div style="flex:1">
+      <div class="crname">Omar A.</div>
+      <div class="crtit">QA SPECIALIST · ISTQB CERTIFIED · 10+ YEARS</div>
+      <div class="crbio">
+        QALingo is an app made by a QA professional who got tired of preparing for interviews with boring PDFs and long videos.<br><br>
+        I decided to create a <strong>practical, fun, and effective method</strong> — a Duolingo for QA where you can review fundamentals, prep for ISTQB, and nail interview questions in just 5 minutes a day.<br><br>
+        With the help of <strong>Q</strong> — that blue bug detective with the soul of James Bond and the mind of Sherlock Holmes — learning no longer feels like studying... <em>it feels like solving interesting cases.</em><br><br>
+        You are Watson. And I will help you solve the most inhospitable mysteries of QA.
+      </div>
+      <div class="crquote">"QAlemental, dear Watson."</div>
+      <div class="crstats">
+        <div class="crst"><div class="crstv">10+</div><div class="crstl">YEARS IN QA</div></div>
+        <div class="crst"><div class="crstv">ISTQB</div><div class="crstl">CERTIFIED</div></div>
+        <div class="crst"><div class="crstv">TCS</div><div class="crstl">CITIDIRECT</div></div>
+        <div class="crst"><div class="crstv">Bilingual</div><div class="crstl">EN / ES</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="dvd"></div>
+
+<!-- TESTIMONIALS -->
+<section>
+  <div class="slbl">Early feedback</div>
+  <h2 class="sh">The QA community is excited.</h2>
+  <div class="tgrid">
+    <div class="tc"><p class="tctxt">"I've been preparing for ISTQB for months with PDFs and YouTube. This is exactly what I needed — something that makes me come back every day."</p><div class="tcauth"><div class="tcav">👩‍💻</div><div><div class="tcname">Maria K.</div><div class="tcrole">Junior QA · Poland</div></div></div></div>
+    <div class="tc"><p class="tctxt">"The interview prep drip feature alone would have saved me in my last job hunt. I always froze on 'how do you decide when to stop testing.'"</p><div class="tcauth"><div class="tcav">👨‍💼</div><div><div class="tcname">James T.</div><div class="tcrole">Mid QA Engineer · UK</div></div></div></div>
+    <div class="tc"><p class="tctxt">"I want this for my whole team. We onboard junior QAs every quarter and ramp-up is painful. This could cut it in half."</p><div class="tcauth"><div class="tcav">🧑‍🔬</div><div><div class="tcname">Carlos R.</div><div class="tcrole">QA Lead · Colombia</div></div></div></div>
+  </div>
+</section>
+
+<div class="dvd"></div>
+
+<!-- FINAL CTA -->
+
+
+<div class="dvd"></div>
+
+<!-- QA PHRASE OF THE DAY -->
+<div class="potd-wrap" id="potd">
+  <div class="slbl" style="margin-bottom:16px">Phrase of the Day</div>
+  <div class="potd-card">
+    <div class="potd-top">
+      <div class="potd-label"><div class="potd-dot"></div>QA PHRASE OF THE DAY</div>
+      <div class="potd-date" id="potdDate"></div>
+    </div>
+    <div class="potd-quote" id="potdQuote"></div>
+    <div class="potd-author" id="potdAuthor"></div>
+    <button class="potd-share" onclick="sharePotd()">📋 Copy phrase</button>
+  </div>
+</div>
+
+<div class="dvd"></div>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="slbl">FAQ</div>
+  <h2 class="sh">Questions Q gets asked a lot.</h2>
+  <p class="ssub">The most common questions — answered with the precision of a seasoned detective.</p>
+  <div class="faq-list" id="faqList">
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFAQ(this)">
+        <span>Do I need programming experience to use QALingo?</span>
+        <span class="faq-arr">▼</span>
+      </button>
+      <div class="faq-a">
+        Absolutely not. QALingo is designed for QA professionals at all levels — including those who have never written a line of code. Manual testing, documentation, test strategy, and interview prep are all code-free. The specialization tracks do introduce automation concepts, but they start from zero.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFAQ(this)">
+        <span>Is QALingo only for people who want ISTQB certification?</span>
+        <span class="faq-arr">▼</span>
+      </button>
+      <div class="faq-a">
+        Not at all. ISTQB prep is one of the six learning levels — but QALingo also covers QA foundations, types of testing, documentation, Agile/Scrum, interview preparation, and specialization tracks. You can focus on exactly what you need.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFAQ(this)">
+        <span>How is this different from studying with PDFs or YouTube?</span>
+        <span class="faq-arr">▼</span>
+      </button>
+      <div class="faq-a">
+        PDFs and YouTube are passive. You read or watch — and forget. QALingo is active: you answer, you fail, Q tells you exactly why, and you retain it. The gamification (streaks, XP, badges) creates the daily habit that passive studying never does. Plus Q is significantly more sarcastic than a PDF.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFAQ(this)">
+        <span>How long does it take to be ISTQB-ready?</span>
+        <span class="faq-arr">▼</span>
+      </button>
+      <div class="faq-a">
+        With 10–15 minutes per day, most learners are exam-ready in 6–8 weeks. With 20+ minutes per day and consistent practice, some complete it in 3–4 weeks. The key variable is your daily streak — Q will make sure you don't skip days.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFAQ(this)">
+        <span>Is QALingo available in Spanish?</span>
+        <span class="faq-arr">▼</span>
+      </button>
+      <div class="faq-a">
+        The current MVP is in English — the primary language of international remote QA roles. A Spanish version is planned for a future release. If Spanish is a priority for you, let us know in the feedback box below — it helps us prioritize.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFAQ(this)">
+        <span>Is there a free version?</span>
+        <span class="faq-arr">▼</span>
+      </button>
+      <div class="faq-a">
+        Yes. The free tier includes Levels 0 and 1, 5 hearts per day, and 3 interview prep questions per week. The Pro plan ($12/month) unlocks everything — all 6 levels, unlimited hearts, the full ISTQB exam simulator, and daily interview drip with AI feedback.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFAQ(this)">
+        <span>Who is Q exactly?</span>
+        <span class="faq-arr">▼</span>
+      </button>
+      <div class="faq-a">
+        Q is your QA detective guide — a blue bug detective with the soul of James Bond and the mind of Sherlock Holmes. Q is sharp, occasionally snarky, and always right. When you answer correctly, Q is impressed. When you don't — well, Q has opinions. You are Watson. Q will make sure you earn that title.
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="dvd"></div>
+
+<!-- GLOSSARY -->
+<section id="glossary">
+  <div class="slbl">QA Glossary</div>
+  <h2 class="sh">The detective's dictionary.</h2>
+  <p class="ssub">75 essential QA terms every professional should know cold. Searchable by category.</p>
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;text-align:center">
+    <div style="font-size:48px;margin-bottom:16px">📖</div>
+    <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:20px;color:var(--white);margin-bottom:8px">75 QA Terms — Fully Searchable</div>
+    <div style="font-size:15px;color:var(--muted);margin-bottom:24px;line-height:1.6">From Defect to Shift Left. ISTQB Principles to Test Design techniques.<br>Filter by category. Find any term in seconds.</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:24px">
+      <span style="background:rgba(26,171,152,.1);color:var(--teal);font-family:'DM Mono',monospace;font-size:11px;padding:4px 10px;border-radius:6px">Fundamentals</span>
+      <span style="background:rgba(126,201,74,.1);color:#a3e071;font-family:'DM Mono',monospace;font-size:11px;padding:4px 10px;border-radius:6px">Test Types</span>
+      <span style="background:rgba(155,111,247,.1);color:#c4a0ff;font-family:'DM Mono',monospace;font-size:11px;padding:4px 10px;border-radius:6px">Test Design</span>
+      <span style="background:rgba(240,192,64,.1);color:var(--amber);font-family:'DM Mono',monospace;font-size:11px;padding:4px 10px;border-radius:6px">ISTQB Principles</span>
+      <span style="background:rgba(74,144,217,.1);color:#7eb3f8;font-family:'DM Mono',monospace;font-size:11px;padding:4px 10px;border-radius:6px">Documentation</span>
+      <span style="background:rgba(224,85,85,.1);color:#f08080;font-family:'DM Mono',monospace;font-size:11px;padding:4px 10px;border-radius:6px">Metrics</span>
+    </div>
+    <a href="qalingo-glossary.html" style="display:inline-block;background:linear-gradient(135deg,var(--teal),#0f7a6e);color:#fff;text-decoration:none;border-radius:12px;padding:15px 32px;font-family:'Syne',sans-serif;font-weight:800;font-size:15px;box-shadow:0 6px 24px rgba(26,171,152,.35);letter-spacing:.3px">Open Glossary →</a>
+  </div>
+</section>
+
+<div class="dvd"></div>
+
+<!-- FEEDBACK BUZÓN -->
+<section id="feedback">
+  <div class="slbl">Feedback</div>
+  <h2 class="sh">Tell Q what you think.</h2>
+  <p class="ssub">This is your direct line to the detective. Suggestions, bugs, feature requests — Q reads every one.</p>
+
+  <div class="fbuz-card">
+    <div class="fbuz-header">
+      <div class="qav" style="width:44px;height:44px;border-radius:12px"><img src="q-mascot.png" alt="Q" style="width:100%;height:100%;object-fit:contain" onerror="this.parentElement.innerHTML='🔍'"/></div>
+      <div>
+        <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:15px;color:var(--white)">Q's Suggestion Box</div>
+        <div style="font-size:13px;color:var(--muted)">Every message goes directly to the QALingo team.</div>
+      </div>
+    </div>
+
+    <div class="fbuz-types">
+      <button class="fbuz-type active" onclick="setFBType(this,'suggestion')">💡 Suggestion</button>
+      <button class="fbuz-type" onclick="setFBType(this,'bug')">🐛 Bug Report</button>
+      <button class="fbuz-type" onclick="setFBType(this,'content')">📚 Content Request</button>
+      <button class="fbuz-type" onclick="setFBType(this,'other')">💬 Other</button>
+    </div>
+
+    <input type="text" class="fbuz-input" id="fbuzName" placeholder="Your name (optional)"/>
+    <input type="email" class="fbuz-input" id="fbuzEmail" placeholder="Your email (optional — if you want a reply)"/>
+    <textarea class="fbuz-ta" id="fbuzMsg" placeholder="Write your message here... Q is listening." oninput="updFBChar()"></textarea>
+    <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);text-align:right;margin-top:4px"><span id="fbChar">0</span>/500</div>
+
+    <button class="fbuz-btn" onclick="submitFeedback()">Send to Q →</button>
+
+    <div class="fbuz-success" id="fbuzSuccess">
+      <span style="font-size:32px">🔍</span>
+      <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:18px;color:var(--green);margin-bottom:4px">Message received, Watson.</div>
+      <div style="font-style:italic;font-size:14px;color:var(--teal)">"Every great investigation starts with a good tip. Thank you."</div>
+    </div>
+  </div>
+</section>
+
+<div class="dvd"></div>
+
+<div class="fcta">
+  <img src="q-mascot.png" alt="Q" style="width:110px;height:auto;margin:0 auto 18px;display:block;animation:fl 4s ease-in-out infinite;filter:drop-shadow(0 0 24px rgba(26,171,152,.4))" onerror="this.outerHTML='<span style=&quot;font-size:64px;display:block;margin-bottom:18px;animation:fl 4s ease-in-out infinite&quot;>🔍</span>'"/>
+  <h2 class="fctah">The case for better<br><span>QA learning</span> starts here.</h2>
+  <p class="fctasub">Join the waitlist. Be first when we launch. It's free.</p>
+  <div class="wform" id="wf2" style="justify-content:center">
+    <input type="email" class="winput" id="em2" placeholder="your@email.com" style="max-width:260px"/>
+    <button class="wbtn" onclick="signup(2)">Claim Early Access →</button>
+  </div>
+  <div class="sscreen" id="ss2" style="margin-top:14px">
+    <span class="smsc">🔍</span>
+    <div class="stit">QAlemental!</div>
+    <div class="swat">"Excellent deduction, Watson. You're on the list."</div>
+    <div class="ssub">We'll reach out when QALingo launches. 🔥</div>
+  </div>
+  <p class="fnote" style="margin-top:12px" id="fn2"><span>Free forever tier available.</span> No spam. Cancel anytime.</p>
+</div>
+
+<footer>
+  <div class="flogo"><span class="qa">QA</span><span class="li">Lingo</span></div>
+  <div class="fcopy">© 2025 QALingo · Built by a QA professional, for QA professionals.</div>
+</footer>
+
+<div class="bnav">
+  <a href="index.html" class="act">🏠 Home</a>
+  <a href="#demo">🎮 Demo</a>
+  <a href="qalingo-onboarding.html">🚀 Start QA Challenge</a>
+  <a href="qalingo-istqb-simulator.html">🎯 Exam</a>
+  <a href="qalingo-interview-prep.html">💼 Interview</a>
+  <a href="qalingo-glossary.html">📖 Glossary</a>
+  <a href="#feedback">💬 Feedback</a>
+  <a href="qalingo-gamification.html">🏆 Progress</a>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ═══ DATA ═══
+const QUIZ=[
+  {q:"What is the PRIMARY purpose of software testing?",
+   hint:"Think beyond 'finding bugs'.",
+   opts:["To prove the software has no defects","To evaluate software and detect differences between expected and actual results","To fix bugs found during development","To write test cases for developers"],
+   ans:1,
+   expl:"Testing evaluates and detects differences between expected and actual results. It can NEVER prove the absence of defects — that is ISTQB Principle 1.",
+   ok:"<strong style='color:var(--green)'>QAlemental, Dear Watson.</strong> Testing evaluates and detects — it cannot prove the absence of defects.",
+   ng:["Elementary mistake. Testing can NEVER prove absence of defects. That is Principle #1, Watson.","Fixing bugs is debugging, not testing. Different roles entirely.","Writing test cases is test design — a sub-activity, not the purpose."]},
+
+  {q:"A form accepts ages 18–65. Using Boundary Value Analysis, which values MUST be tested?",
+   hint:"Think at the boundary AND just outside it.",
+   opts:["18 and 65 only","17, 18, 65 and 66","18, 41 and 65","Any values between 18 and 65"],
+   ans:1,
+   expl:"BVA requires testing AT the boundaries (18 and 65) AND just outside them (17 and 66). Four values total — covering both edges and their invalid neighbors.",
+   ok:"<strong style='color:var(--green)'>Splendid deduction.</strong> BVA tests boundaries AND adjacent values. 17 (just below), 18 (min), 65 (max), 66 (just above).",
+   ng:["Only testing the boundaries misses the edges just outside. Sloppy detective work, Watson.","The midpoint adds zero boundary coverage. Think edges.","Testing random values inside is equivalence partitioning, not BVA."]},
+
+  {q:"The same regression tests ran for 8 months. No new bugs in 3 sprints. What does ISTQB say?",
+   hint:"There is a specific principle for exactly this situation.",
+   opts:["The software is now defect-free","The testers lack skill","Tests have lost effectiveness — the Pesticide Paradox","Developers improved their code"],
+   ans:2,
+   expl:"ISTQB Principle 5 — the Pesticide Paradox: running the same tests repeatedly stops finding new defects. Tests must be regularly reviewed and updated to remain effective.",
+   ok:"<strong style='color:var(--green)'>Precisely.</strong> Principle 5 — the Pesticide Paradox. Same tests, same blind spots. Update your test cases regularly.",
+   ng:["Rookie mistake. Testing can NEVER prove a system is defect-free. Principle #1.","No evidence for this. The ISTQB answer is always the Pesticide Paradox.","Possible — but the canonical ISTQB explanation is the Pesticide Paradox."]},
+
+  {q:"What is the difference between a failure and a defect?",
+   hint:"Think about when each one occurs — in the code vs at runtime.",
+   opts:["They are the same thing","A defect is in the code; a failure is the visible incorrect behavior at runtime","A failure is a human mistake; a defect is in the system","A defect is found in production; a failure is found in testing"],
+   ans:1,
+   expl:"A defect (bug) is an imperfection in the code or work product. A failure is the visible, incorrect behavior that occurs when a defect is triggered at runtime. Error → Defect → Failure.",
+   ok:"<strong style='color:var(--green)'>QAlemental.</strong> Defect is in the code. Failure is what the user sees at runtime. Error causes the defect. The chain is clear.",
+   ng:["They are not the same. One is in the code, the other is the visible symptom at runtime.","A failure is not a human mistake — that is an error. Know the chain: Error → Defect → Failure.","Location does not define them. Defects exist in code; failures occur at runtime, anywhere."]},
+
+  {q:"Which testing type verifies HOW WELL a system performs, not WHAT it does?",
+   hint:"Think about speed, load, and security — not features.",
+   opts:["Functional testing","Regression testing","Non-functional testing","User Acceptance Testing"],
+   ans:2,
+   expl:"Non-functional testing evaluates HOW WELL a system works — performance, security, usability, reliability, and compatibility. Functional testing checks WHAT the system does. Both are essential.",
+   ok:"<strong style='color:var(--green)'>Sharp deduction, Watson.</strong> Non-functional = how well. Performance, security, usability — all non-functional concerns.",
+   ng:["Functional testing checks WHAT the system does — its features and requirements. Not how well.","Regression testing verifies existing features still work after changes. Not performance.","UAT validates business requirements with end users. It is functional, not performance-focused."]}
+,
+  {q:"What is exploratory testing?",
+   hint:"Think: simultaneous design and execution, guided by a charter.",
+   opts:["A type of automated testing","Simultaneous test design and execution guided by a charter","Testing done only by end users","Running all test cases in random order"],
+   ans:1,
+   expl:"Exploratory testing is the simultaneous design and execution of tests guided by a test charter. It relies on the tester's skill and experience — adaptive, not scripted. It is structured freedom.",
+   ok:"<strong style='color:var(--green)'>QAlemental.</strong> Simultaneous design and execution, guided by a charter. The detective improvises with purpose.",
+   ng:["Exploratory testing is manual and experience-driven, not automated.","End users perform UAT — exploratory testing is done by experienced QA professionals.","Random execution without purpose is chaos, not exploratory testing."]},
+
+  {q:"What does 'shift-left testing' mean?",
+   hint:"Think about WHEN in the development cycle testing starts.",
+   opts:["Moving the test team to a different office","Starting testing earlier in the development lifecycle","Running tests from left to right on the screen","Automating all manual test cases"],
+   ans:1,
+   expl:"Shift-left means moving testing activities earlier in the SDLC — finding defects sooner when they are cheapest to fix. This includes reviewing requirements, static analysis, and early test design.",
+   ok:"<strong style='color:var(--green)'>Precisely, Watson.</strong> The earlier the defect is found, the cheaper the fix. Shift left, always.",
+   ng:["Location of the team has nothing to do with test strategy.","Shift-left is about timing in the SDLC, not screen direction.","Automation is a tool — shift-left is a strategy about when you test."]},
+
+  {q:"What is the V-model in software testing?",
+   hint:"Think about how each development phase maps to a test level.",
+   opts:["A model where testing only happens at the end","A development model where each phase has a corresponding test level","A visual tool for drawing test cases","A model for managing defects"],
+   ans:1,
+   expl:"In the V-model, each development phase on the left side has a corresponding test level on the right. Requirements map to acceptance testing, system design to system testing, component design to unit testing.",
+   ok:"<strong style='color:var(--green)'>QAlemental.</strong> Every left side has a right side. Each development phase produces a test level.",
+   ng:["Testing only at the end is the waterfall mistake — the V-model distributes testing across all phases.","The V-model is a development lifecycle model, not a drawing tool.","Defect management is a separate process — the V-model is about test levels and phases."]},
+
+  {q:"What is static testing?",
+   hint:"Key word: no code execution required.",
+   opts:["Testing that runs code against real data","Testing work products without executing the software","Testing only the static pages of a website","Automated testing that never changes"],
+   ans:1,
+   expl:"Static testing examines work products — requirements, design docs, code — without executing them. Reviews, walkthroughs, inspections, and static analysis are all forms of static testing.",
+   ok:"<strong style='color:var(--green)'>Correct, Watson.</strong> No execution needed. Read the evidence before running the experiment.",
+   ng:["That describes dynamic testing — which requires code execution.","Static testing is not about static web pages — it is about examining work products without running them.","Static testing is a technique, not a description of how often tests change."]},
+
+  {q:"Which ISTQB principle says testing depends on the context?",
+   hint:"A banking app and a gaming app require very different approaches.",
+   opts:["Principle 1 — Testing shows presence of defects","Principle 4 — Defect Clustering","Principle 6 — Testing is context-dependent","Principle 7 — Absence of Errors Fallacy"],
+   ans:2,
+   expl:"ISTQB Principle 6 — Context-Dependent Testing: the right testing approach depends entirely on the context. Safety-critical systems, mobile apps, and e-commerce platforms all require different strategies.",
+   ok:"<strong style='color:var(--green)'>QAlemental.</strong> Principle 6. One size does not fit all in QA. Context defines everything.",
+   ng:["Principle 1 is about defects being present, not about context.","Principle 4 is about defect clustering — where bugs tend to concentrate.","Principle 7 is the Absence of Errors Fallacy — bug-free does not mean useful."]},
+
+  {q:"What is Defect Density?",
+   hint:"Think: a ratio of defects to the size of the work product.",
+   opts:["The total number of bugs in a system","The number of defects per unit size of a work product","How quickly bugs are fixed","The severity level of bugs found"],
+   ans:1,
+   expl:"Defect Density = number of confirmed defects / size of the work product (e.g., per 1000 lines of code or per function point). It is a key metric for comparing quality across modules or releases.",
+   ok:"<strong style='color:var(--green)'>Precisely.</strong> Defects per unit size. It lets you compare quality across modules — not just count bugs.",
+   ng:["Total count alone tells you nothing about where the problems are concentrated.","Fix speed is Mean Time To Resolution — a different metric entirely.","Severity is about impact, not density. These are different quality dimensions."]}
+];
+
+const IQS=[
+  {lvl:'JUNIOR LEVEL',
+   q:'What is the difference between severity and priority in bug reporting?',
+   hnt:'💡 Who defines each? Give a concrete example.',
+   sc:{s:72,d:65,c:78},
+   str:['Attempted a direct definition of both terms.','Showed awareness they are different concepts.'],
+   imp:['Add a concrete example — e.g., a typo on the homepage (low severity, HIGH priority).','Clarify WHO sets each: QA sets severity, business/product sets priority.'],
+   mod:`Severity = technical impact on the system. Priority = business urgency. A typo on the homepage has LOW severity (nothing breaks) but HIGH priority (customers see it). A crash in a rarely-used admin panel has HIGH severity but lower priority. Severity is QA's call. Priority is the business's.`,
+   qmsg:`<strong>Not bad, Watson.</strong> But a real detective always brings receipts — <em>concrete examples.</em> Severity without an example is just vocabulary.`
+  },
+  {lvl:'JUNIOR LEVEL',
+   q:'Walk me through how you would write a test case for a login feature.',
+   hnt:'💡 Structure matters — show the components of a professional test case.',
+   sc:{s:80,d:70,c:85},
+   str:['Good instinct to mention positive and negative scenarios.','Awareness of test case as a structured document.'],
+   imp:['Always mention: ID, title, preconditions, steps, expected result, actual result.','Include edge cases: SQL injection, empty fields, account lockout after N attempts.'],
+   mod:`A test case needs: ID, title, preconditions (valid user exists), numbered steps, expected result, and actual result. For login I'd cover: valid credentials, invalid password, invalid email format, empty fields, SQL injection attempt, account lockout. Each case is atomic — one condition per case.`,
+   qmsg:`<em>Elementary structure, Watson.</em> But you forgot the edge cases. <strong>Hackers do not test the happy path. Neither should you.</strong>`
+  },
+  {lvl:'MID LEVEL',
+   q:'How do you decide when to stop testing?',
+   hnt:'💡 Risk acceptance and stakeholder alignment — not just coverage.',
+   sc:{s:75,d:80,c:72},
+   str:['Good instinct to mention exit criteria.','Awareness that testing has business implications.'],
+   imp:['Name specific exit criteria: pass rate %, open critical bugs, coverage thresholds.','Emphasize stakeholder communication — it is a GO/NO-GO decision, not yours alone.'],
+   mod:`Testing stops when pre-defined exit criteria are met: 100% of critical cases executed, no open critical/high bugs, regression pass rate above 95%, stakeholder sign-off received. I present remaining risk transparently so the product owner makes an informed go/no-go decision.`,
+   qmsg:`<strong>Good instinct.</strong> But the best QA detectives do not decide alone when to close a case. <em>They present the evidence. Stakeholders decide.</em>`
+  }
+];
+
+const FCS=[
+  {t:"Defect",h:"Also called bug or fault",d:"An imperfection in a work product that causes the product to fail to perform its required function."},
+  {t:"Failure",h:"What the USER sees",d:"An event when a component or system does not perform required functions within specified limits at runtime."},
+  {t:"Error",h:"The human action",d:"A human action that produces an incorrect result. Errors lead to defects; defects may lead to failures."},
+  {t:"Test Case",h:"The detective's evidence",d:"A set of preconditions, inputs, actions, expected results and postconditions to verify a specific requirement."},
+  {t:"Severity",h:"Technical impact",d:"The degree of impact a defect has on the operation of a component or system. Set by QA."},
+  {t:"Priority",h:"Business urgency",d:"The level of importance assigned to fix a defect. Determined by business based on customer impact."},
+  {t:"Smoke Testing",h:"Is the build alive?",d:"A test suite covering main functionality to determine if a build is stable enough for further testing."},
+  {t:"Regression Testing",h:"Did we break anything?",d:"Testing after modification to ensure defects have not been introduced or uncovered in unchanged areas."},
+  {t:"Boundary Value Analysis",h:"Test the edges",d:"Designing tests based on boundary values of equivalence partitions — min, max, and just outside."},
+  {t:"Equivalence Partitioning",h:"Test one, know them all",d:"Dividing inputs into partitions where the system behaves the same way, then testing one value from each."},
+  {t:"Exploratory Testing",h:"The detective improvises",d:"Simultaneous test design and execution guided by a charter. Adaptive, not scripted."},
+  {t:"Pesticide Paradox",h:"ISTQB Principle 5",d:"Running the same tests repeatedly stops finding new defects. Tests must be regularly reviewed and updated."},
+  {t:"Absence of Errors Fallacy",h:"ISTQB Principle 7",d:"A system that passes all tests can still be useless if it doesn't meet user needs. Bug-free ≠ useful."},
+  {t:"Static Testing",h:"No execution needed",d:"Testing work products without executing the software — reviews, walkthroughs, inspections, static analysis."},
+  {t:"Dynamic Testing",h:"Run it to find it",d:"Testing by executing the software. All test types that require the code to run are dynamic."},
+  {t:"Test Plan",h:"The investigation brief",d:"A document describing scope, approach, resources, schedule and objectives for testing activities."},
+  {t:"Defect Density",h:"Bugs per unit size",d:"The number of confirmed defects per unit size of a work product (e.g., per 1000 lines of code)."},
+  {t:"Risk-Based Testing",h:"Go where it hurts most",d:"Prioritizing test activities based on product risk — likelihood of failure multiplied by business impact."},
+  {t:"Entry Criteria",h:"Before we start",d:"Conditions that must be met before a test activity begins. Defines readiness to start testing."},
+  {t:"Exit Criteria",h:"When are we done?",d:"Conditions that must be met to declare a test activity complete. Enables the stop-testing decision."}
+];
+
+// ═══ STATE ═══
+let qi=0,qcorr=0,qans=false;
+let iqi=0;
+let fci=0,fcfl=false;
+
+// ═══ EMAIL ═══
+function isValid(e){return /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/.test(e)}
+function signup(n){
+  const em=document.getElementById('em'+n).value.trim();
+  if(!em||!isValid(em)){
+    const el=document.getElementById('em'+n);
+    el.classList.add('err');
+    el.placeholder='Enter a valid email — e.g. you@example.com';
+    setTimeout(()=>{el.classList.remove('err');el.placeholder='your@email.com'},2500);
+    return;
+  }
+  // Show success immediately
+  document.getElementById('wf'+n).style.display='none';
+  document.getElementById('fn'+n).style.display='none';
+  document.getElementById('ss'+n).classList.add('on');
+  // Track
+  trackEvent('waitlist_signup','engagement','form_'+n);
+  // Send to Loops.so
+  // SETUP INSTRUCTIONS:
+  // 1. Go to app.loops.so and create a free account
+  // 2. Settings > API > Create API Key
+  // 3. Audience > Lists > Create a list called "QALingo Waitlist"
+  // 4. Replace the values below with your real keys
+  var LOOPS_KEY = 'fd3d3829c60dfd863f7f5ce1b2be0aa2';
+  var LIST_ID = 'cmnnvkoy709kp0i1s3jbsdcjs';
+  if(LOOPS_KEY){
+    fetch('https://app.loops.so/api/v1/contacts/create',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+LOOPS_KEY},
+      body:JSON.stringify({email:em,source:'QALingo Waitlist',mailingLists:{[LIST_ID]:true},userGroup:'waitlist'})
+    }).catch(function(e){console.log('Loops:',e);});
+  }
+}
+function scrollToW(){document.getElementById('em1').scrollIntoView({behavior:'smooth',block:'center'});setTimeout(()=>document.getElementById('em1').focus(),600)}
+
+// ═══ QUIZ ═══
+function loadQ(){
+  const q=QUIZ[qi];
+  document.getElementById('qq').textContent=q.q;
+  document.getElementById('qhnt').textContent=q.hint;
+  document.getElementById('qfb').classList.remove('on');
+  document.getElementById('nqbtn').style.display='none';
+  qans=false;
+  const ltrs=['A','B','C','D'];
+  document.getElementById('qopts').innerHTML=q.opts.map((o,i)=>
+    `<button class="qopt" onclick="selQ(this,${i})"><div class="oltr">${ltrs[i]}</div><span>${o}</span></button>`
+  ).join('');
+  // Dynamic dots
+  const dotsEl = document.getElementById('quizDots');
+  if(dotsEl) dotsEl.innerHTML = QUIZ.map((_,i)=>
+    `<div class="qdot ${i<qi?'dn':i===qi?'cr':''}"></div>`
+  ).join('');
+}
+function selQ(btn,idx){
+  if(qans)return;qans=true;
+  const q=QUIZ[qi];
+  document.querySelectorAll('.qopt').forEach(o=>o.classList.add('lk'));
+  const isOk=idx===q.ans;
+  if(isOk){btn.classList.add('ok');qcorr++}
+  else{btn.classList.add('ng');document.querySelectorAll('.qopt')[q.ans].classList.add('ok')}
+  const fb=document.getElementById('qfb');
+  const msg=document.getElementById('qfbmsg');
+  const snarky=["Hmm. <em>Elementary mistake.</em> ","<em>Come now, Watson.</em> ","<em>Really?</em> Even a first-year constable knows this. "];
+  const qMsg = isOk
+    ? `<strong style="color:var(--green)">QAlemental, Dear Watson.</strong> ${q.ok}`
+    : `${snarky[Math.floor(Math.random()*3)]}${q.ng[idx]||'Study the explanation carefully.'}`;
+  // Add explanation
+  const explHtml = q.expl ? `<div style="margin-top:10px;padding:10px 14px;background:rgba(26,171,152,.08);border-left:3px solid var(--teal);border-radius:0 8px 8px 0;font-size:12px;color:var(--muted);line-height:1.6"><strong style="color:var(--teal);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px">EXPLANATION</strong><br>${q.expl}</div>` : '';
+  msg.innerHTML = qMsg + explHtml;
+  fb.classList.add('on');
+  const totalQ = QUIZ.length;
+  if(qi < totalQ-1) document.getElementById('nqbtn').style.display='block';
+  else setTimeout(showQComp,1400);
+}
+function nextQ(){
+  qi++;
+  if(qi<3){
+    loadQ();
+    
+  }
+}
+function showQComp(){
+  document.getElementById('qarea').style.display='none';
+  const c=document.getElementById('qcomp');c.style.display='block';
+  // Theme handled by head script
+  document.getElementById('qcsc').textContent=`${qcorr}/3`;
+  document.getElementById('qcsc').style.color=qcorr===3?'var(--green)':qcorr===2?'var(--amber)':'var(--red)';
+  document.getElementById('qctr').textContent=qcorr===3?'🏆':qcorr===2?'🎯':'📖';
+  document.getElementById('qch').textContent=qcorr===3?'Case Closed!':qcorr===2?'Good Effort!':'Keep Investigating';
+  const wlines=[
+    '"I\'ve seen more promising work from a first-year constable. But there\'s hope, Watson."',
+    '"A commendable effort. Two out of three. The case is almost cracked."',
+    '"QAlemental, Dear Watson. Flawless. You\'re ready for the real thing."'
+  ];
+  document.getElementById('qcwt').textContent=wlines[qcorr];
+}
+
+// ═══ INTERVIEW Q ═══
+function loadIQ(){
+  const q=IQS[iqi];
+  document.getElementById('iqlvl').textContent=q.lvl;
+  document.getElementById('iqq').textContent=q.q;
+  document.getElementById('iqhnt').textContent=q.hnt;
+  document.getElementById('iqa').value='';
+  document.getElementById('iqch').textContent='0';
+  document.getElementById('iqfb').style.display='none';
+}
+function updiqch(){document.getElementById('iqch').textContent=document.getElementById('iqa').value.length}
+function subiq(){
+  const ans=document.getElementById('iqa').value.trim();
+  if(ans.length<30){document.getElementById('iqa').style.borderColor='var(--red)';setTimeout(()=>document.getElementById('iqa').style.borderColor='',2000);return}
+  const q=IQS[iqi];
+  document.getElementById('iqmsg').innerHTML=q.qmsg;
+  document.getElementById('iqsc').innerHTML=[
+    {l:'STRUCTURE',v:q.sc.s,c:'#7eb3f8'},
+    {l:'DEPTH',v:q.sc.d,c:'var(--teal)'},
+    {l:'CLARITY',v:q.sc.c,c:'var(--green)'}
+  ].map(s=>`<div class="isb"><div class="isbv" style="color:${s.c}">${s.v}</div><div class="isbl">${s.l}</div></div>`).join('');
+  document.getElementById('iqstr').innerHTML=q.str.map(s=>`<div class="ipt">✅ ${s}</div>`).join('');
+  document.getElementById('iqimp').innerHTML=q.imp.map(i=>`<div class="ipt">📌 ${i}</div>`).join('');
+  document.getElementById('iqmod').textContent=q.mod;
+  document.getElementById('iqfb').style.display='block';
+  document.getElementById('iqfb').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function nextiq(){iqi=(iqi+1)%IQS.length;loadIQ()}
+
+// ═══ FLASHCARDS ═══
+function loadFC(){
+  const c=FCS[fci];
+  document.getElementById('fctrm').textContent=c.t;
+  document.getElementById('fchnt').textContent=c.h;
+  document.getElementById('fcdef').textContent=c.d;
+  document.getElementById('fccnt').textContent=`${fci+1} / ${FCS.length}`;
+  document.getElementById('fcard').classList.remove('flp');
+  document.getElementById('bkn').classList.remove('on');
+  document.getElementById('bag').classList.remove('on');
+  document.getElementById('fcfb').classList.remove('on');
+  fcfl=false;
+}
+function flipCard(){
+  document.getElementById('fcard').classList.toggle('flp');
+  fcfl=!fcfl;
+  if(fcfl){document.getElementById('bkn').classList.add('on');document.getElementById('bag').classList.add('on')}
+}
+function markFC(knew){
+  const c=FCS[fci];
+  const msg=document.getElementById('fcmsg');
+  const snarkyFail=["<em>Still?</em> Q is disappointed, Watson. But Q will be back.","<em>Hmm.</em> Even Moriarty knew this one. Try again.","The suspect escapes again. Q will ensure a rematch."];
+  if(knew){msg.innerHTML=`<strong style="color:var(--green)">Filed away, Watson.</strong> "${c.t}" is in the case files.`}
+  else{msg.innerHTML=`${snarkyFail[Math.floor(Math.random()*3)]} "<em>${c.t}</em>" will return.`}
+  document.getElementById('fcfb').classList.add('on');
+  setTimeout(()=>nextFC(),1600);
+}
+function nextFC(){fci=(fci+1)%FCS.length;loadFC()}
+function prevFC(){fci=(fci-1+FCS.length)%FCS.length;loadFC()}
+
+// ═══ THEME (moved to <head>) ═══
+function applyTheme(){
+  // Theme handled by <head> script via CSS vars
+  const btn = document.getElementById('themeBtn');
+  if(btn && localStorage.getItem('qt')==='l') btn.textContent='🌙 Dark';
+}
+applyTheme();
+
+const GLOSSARY = [
+  // FUNDAMENTALS
+  {t:'Defect',d:'An imperfection in a work product that causes the product to fail to meet requirements. Also called bug or fault.',tag:'Fundamentals'},
+  {t:'Error',d:'A human action that produces an incorrect result. Errors introduce defects into work products.',tag:'Fundamentals'},
+  {t:'Failure',d:'A visible deviation of a component or system from its expected behavior at runtime.',tag:'Fundamentals'},
+  {t:'Quality',d:'The degree to which a work product satisfies stated and implied needs when used under specified conditions.',tag:'Fundamentals'},
+  {t:'Quality Assurance',d:'Process-oriented activities that provide confidence that quality requirements will be fulfilled. Proactive and preventive.',tag:'Fundamentals'},
+  {t:'Quality Control',d:'Product-oriented activities that verify the product meets requirements. Reactive — finds defects after the fact.',tag:'Fundamentals'},
+  {t:'Root Cause',d:'The fundamental reason for the occurrence of a problem. Fixing root cause prevents recurrence.',tag:'Fundamentals'},
+  {t:'Test Basis',d:'The body of knowledge used as the basis for test analysis and design — requirements, specs, design docs.',tag:'Fundamentals'},
+  {t:'Test Object',d:'The work product to be tested — software, hardware, documentation, or a system as a whole.',tag:'Fundamentals'},
+  {t:'Testability',d:'The degree to which a test object can be tested effectively and efficiently.',tag:'Fundamentals'},
+
+  // TEST TYPES
+  {t:'Smoke Testing',d:'A broad, shallow test of the most critical functions to verify a build is stable enough for further testing.',tag:'Test Types'},
+  {t:'Sanity Testing',d:'A narrow focused test after a bug fix or change — verifying the specific area without full regression.',tag:'Test Types'},
+  {t:'Regression Testing',d:'Re-testing after modifications to ensure defects have not been introduced in unchanged functionality.',tag:'Test Types'},
+  {t:'Exploratory Testing',d:'Simultaneous test design and execution guided by a test charter. Adaptive, experience-based, not scripted.',tag:'Test Types'},
+  {t:'Functional Testing',d:'Testing that verifies what the system does — its features and functions against requirements.',tag:'Test Types'},
+  {t:'Non-Functional Testing',d:'Testing how well the system performs — performance, security, usability, reliability, compatibility.',tag:'Test Types'},
+  {t:'Performance Testing',d:'Testing to determine how a system performs in terms of speed, scalability, and stability under load.',tag:'Test Types'},
+  {t:'Load Testing',d:'Testing behavior under expected and peak load conditions to identify bottlenecks.',tag:'Test Types'},
+  {t:'Stress Testing',d:'Testing beyond normal capacity to find the breaking point and how the system fails.',tag:'Test Types'},
+  {t:'Security Testing',d:'Testing to identify vulnerabilities, threats, and risks in a software application.',tag:'Test Types'},
+  {t:'Usability Testing',d:'Testing to evaluate how easy and intuitive a system is for end users.',tag:'Test Types'},
+  {t:'Compatibility Testing',d:'Testing that verifies the software works correctly across different browsers, OS, devices.',tag:'Test Types'},
+  {t:'UAT',d:'User Acceptance Testing. Business stakeholders validate the system meets their needs before go-live.',tag:'Test Types'},
+  {t:'Alpha Testing',d:'Testing done by internal teams in a controlled environment before release to external users.',tag:'Test Types'},
+  {t:'Beta Testing',d:'Testing done by real users in a real environment before full public release.',tag:'Test Types'},
+  {t:'Static Testing',d:'Testing work products without executing them — reviews, walkthroughs, inspections, static analysis.',tag:'Test Types'},
+  {t:'Dynamic Testing',d:'Testing by executing the software. Requires working code to run.',tag:'Test Types'},
+  {t:'Confirmation Testing',d:'Re-testing a specific defect after it has been fixed to verify the fix works.',tag:'Test Types'},
+  {t:'End-to-End Testing',d:'Testing the complete flow of an application from start to finish, simulating real user scenarios.',tag:'Test Types'},
+  {t:'API Testing',d:'Testing application programming interfaces directly — checking responses, data, security, and performance.',tag:'Test Types'},
+
+  // TEST DESIGN
+  {t:'Boundary Value Analysis',d:'Testing at the boundaries of equivalence partitions — min, max, and just outside each boundary.',tag:'Test Design'},
+  {t:'Equivalence Partitioning',d:'Dividing inputs into partitions where the system behaves the same, then testing one representative per partition.',tag:'Test Design'},
+  {t:'Decision Table Testing',d:'Testing combinations of conditions when system behavior depends on multiple inputs simultaneously.',tag:'Test Design'},
+  {t:'State Transition Testing',d:'Tests designed to cover valid transitions between states of a system or object.',tag:'Test Design'},
+  {t:'Use Case Testing',d:'Tests based on the sequence of interactions between actors and the system to achieve a goal.',tag:'Test Design'},
+  {t:'Error Guessing',d:'Experience-based technique where testers use intuition to identify likely failure areas.',tag:'Test Design'},
+  {t:'Checklist-Based Testing',d:'Testing guided by a list of conditions or attributes to be checked, often based on experience.',tag:'Test Design'},
+  {t:'Statement Coverage',d:'Percentage of executable statements in code that have been exercised by a test suite.',tag:'Test Design'},
+  {t:'Branch Coverage',d:'Percentage of decision outcomes (true/false branches) that have been exercised.',tag:'Test Design'},
+
+  // DOCUMENTATION
+  {t:'Test Case',d:'A set of preconditions, inputs, actions, expected results and postconditions to verify a specific requirement.',tag:'Documentation'},
+  {t:'Test Plan',d:'Document describing scope, approach, resources, schedule and objectives for a test effort.',tag:'Documentation'},
+  {t:'Bug Report',d:'Document describing a defect found during testing — includes steps to reproduce, severity, priority, and evidence.',tag:'Documentation'},
+  {t:'Test Suite',d:'A collection of test cases grouped for a specific purpose — e.g., regression suite, smoke suite.',tag:'Documentation'},
+  {t:'Test Script',d:'A sequence of instructions for executing a test case — can be manual or automated.',tag:'Documentation'},
+  {t:'Traceability Matrix',d:'A document that maps requirements to test cases, ensuring all requirements are covered.',tag:'Documentation'},
+  {t:'Test Log',d:'A chronological record of test execution results — what ran, when, and what happened.',tag:'Documentation'},
+  {t:'Test Summary Report',d:'A document summarizing test activities and results — includes pass/fail counts, coverage, and recommendations.',tag:'Documentation'},
+  {t:'Severity',d:'The degree of impact a defect has on the system operation. Defined by QA. Critical/High/Medium/Low.',tag:'Documentation'},
+  {t:'Priority',d:'The business urgency to fix a defect. Defined by product/business. High/Medium/Low.',tag:'Documentation'},
+
+  // ISTQB PRINCIPLES
+  {t:'Pesticide Paradox',d:'ISTQB Principle 5: Running the same tests repeatedly stops finding new defects. Update tests regularly.',tag:'ISTQB Principles'},
+  {t:'Absence of Errors Fallacy',d:'ISTQB Principle 7: A bug-free system can still fail user needs. Bug-free does not equal useful.',tag:'ISTQB Principles'},
+  {t:'Exhaustive Testing Impossible',d:'ISTQB Principle 2: Testing every combination of inputs is impossible. Prioritize by risk.',tag:'ISTQB Principles'},
+  {t:'Early Testing',d:'ISTQB Principle 3: Finding defects early in development saves time and money. Shift left.',tag:'ISTQB Principles'},
+  {t:'Defect Clustering',d:'ISTQB Principle 4: Most defects are found in a small number of modules. Focus testing there.',tag:'ISTQB Principles'},
+  {t:'Context-Dependent Testing',d:'ISTQB Principle 6: Testing approach depends on context. Banking app testing differs from gaming.',tag:'ISTQB Principles'},
+
+  // TEST STRATEGY
+  {t:'Risk-Based Testing',d:'Prioritizing test activities based on likelihood of failure multiplied by its business impact.',tag:'Test Strategy'},
+  {t:'Entry Criteria',d:'Conditions that must be met before a test activity begins. Defines readiness to start.',tag:'Test Strategy'},
+  {t:'Exit Criteria',d:'Conditions that must be met to declare a test activity complete. Enables the stop-testing decision.',tag:'Test Strategy'},
+  {t:'Test Pyramid',d:'A model recommending more unit tests, fewer integration tests, and even fewer UI tests for efficiency.',tag:'Test Strategy'},
+  {t:'Shift Left Testing',d:'Moving testing earlier in the development lifecycle to find defects sooner and cheaper.',tag:'Test Strategy'},
+  {t:'Shift Right Testing',d:'Testing in production or near-production environments to catch real-world issues.',tag:'Test Strategy'},
+
+  // METRICS
+  {t:'Defect Density',d:'Number of confirmed defects per unit size of a work product, e.g., per 1000 lines of code.',tag:'Metrics'},
+  {t:'DRE',d:'Defect Removal Efficiency. Percentage of defects found before release vs. total defects found.',tag:'Metrics'},
+  {t:'Test Coverage',d:'The degree to which specified coverage items have been exercised by a test suite.',tag:'Metrics'},
+  {t:'MTTD',d:'Mean Time To Detect. Average time between when a defect is introduced and when it is detected.',tag:'Metrics'},
+  {t:'Defect Escape Rate',d:'Percentage of defects that passed through testing and were found in production.',tag:'Metrics'},
+  {t:'Pass Rate',d:'Percentage of test cases that pass in a given test cycle.',tag:'Metrics'},
+
+  // AGILE & DEVOPS
+  {t:'CI/CD',d:'Continuous Integration and Delivery. Code changes are automatically built, tested, and deployed.',tag:'Agile/DevOps'},
+  {t:'Definition of Done',d:'A shared understanding of what it means for a user story or task to be complete — including testing.',tag:'Agile/DevOps'},
+  {t:'Definition of Ready',d:'Criteria that a user story must meet before it can be taken into a sprint.',tag:'Agile/DevOps'},
+  {t:'Sprint',d:'A fixed-length iteration in Scrum (typically 2 weeks) where a potentially shippable increment is built.',tag:'Agile/DevOps'},
+  {t:'User Story',d:'An informal natural language description of a feature from the perspective of an end user.',tag:'Agile/DevOps'},
+  {t:'Acceptance Criteria',d:'Conditions a user story must satisfy to be accepted by the product owner.',tag:'Agile/DevOps'},
+  {t:'Technical Debt',d:'The implied cost of future rework caused by choosing a quick solution now instead of a better approach.',tag:'Agile/DevOps'},
+  {t:'Test Automation',d:'Using software tools to execute tests automatically, compare results, and report outcomes.',tag:'Agile/DevOps'}
+];
+
+// ═══ INIT ═══
+loadQ();loadIQ();loadFC();
+
+
+// ═══ QA CHALLENGE ═══
+const CH_QUESTIONS = [
+  // ── QA FOUNDATIONS ──
+  {
+    label: 'QA FOUNDATIONS · QUESTION 1',
+    q: 'What is a bug?',
+    keywords: ['error','defect','unexpected','unintended','incorrect','failure','fault','wrong'],
+    good: `<strong style="color:var(--green)">QAlemental, Dear Watson.</strong> A bug is a defect or error in software that causes it to behave unexpectedly or incorrectly. Precisely identified.`,
+    bad: `<em style="color:var(--red)">Not so fast, Dr. Jekyll.</em> Try mentioning "error" or "unexpected behavior." A bug is a defect that causes software to behave incorrectly or differently than expected.`
+  },
+  {
+    label: 'QA FOUNDATIONS · QUESTION 2',
+    q: 'What is a test case?',
+    keywords: ['steps','expected','result','input','precondition','verify','validate','condition','requirement'],
+    good: `<strong style="color:var(--green)">QAlemental.</strong> A test case is a structured document with preconditions, inputs, steps, and expected results to verify a specific requirement. Precisely executed.`,
+    bad: `<em style="color:var(--red)">Hmm. Even a constable knows this one.</em> A test case needs preconditions, steps, and expected results. It is not just "a test" — it is a structured document, Watson.`
+  },
+  {
+    label: 'QA FOUNDATIONS · QUESTION 3',
+    q: 'What is the difference between severity and priority?',
+    keywords: ['severity','priority','impact','business','urgent','technical'],
+    good: `<strong style="color:var(--green)">Splendid deduction.</strong> Severity = technical impact on the system (set by QA). Priority = business urgency to fix it (set by product). A typo on the homepage: low severity, high priority.`,
+    bad: `<em style="color:var(--red)">Close, Watson — but missing the key distinction.</em> Severity is the technical impact (QA decides). Priority is business urgency (product/business decides). They are different dimensions of the same defect.`
+  },
+  {
+    label: 'QA FOUNDATIONS · QUESTION 4',
+    q: 'What is regression testing?',
+    keywords: ['change','modification','fix','existing','previous','ensure','broken','unchanged','retest'],
+    good: `<strong style="color:var(--green)">Precisely.</strong> Regression testing re-runs tests after changes to ensure existing functionality was not broken. The detective checks that solving one crime did not create three more.`,
+    bad: `<em style="color:var(--red)">Not quite, Watson.</em> Regression testing happens after a change or fix. Its purpose is to verify existing features still work correctly. Mention "changes" or "existing functionality."`
+  },
+  {
+    label: 'QA FOUNDATIONS · QUESTION 5',
+    q: 'What is bug severity?',
+    keywords: ['impact','system','critical','high','medium','low','affect','degree','operation','functional'],
+    good: `<strong style="color:var(--green)">QAlemental.</strong> Severity measures the degree of impact a bug has on the system. A crash is Critical. A misaligned button is Low. Always assess the damage before reporting.`,
+    bad: `<em style="color:var(--red)">Not quite, Dr. Jekyll.</em> Severity is about technical impact on the system — not how urgent it is to fix. Think: how badly does this bug affect functionality?`
+  },
+  // ── TYPES OF TESTING ──
+  {
+    label: 'TYPES OF TESTING · QUESTION 6',
+    q: 'What is smoke testing and when do you use it?',
+    keywords: ['build','stable','critical','basic','sanity','deployment','release','verify','shallow'],
+    good: `<strong style="color:var(--green)">Excellent, Watson.</strong> Smoke testing is a broad, shallow test of the most critical functions to verify a build is stable enough for further testing. Run it after every deployment.`,
+    bad: `<em style="color:var(--red)">Incomplete, Watson.</em> Smoke testing checks if the build is stable enough to test further. It is broad and shallow — not deep. Mention "build stability" or "deployment."`
+  },
+  {
+    label: 'TYPES OF TESTING · QUESTION 7',
+    q: 'What is exploratory testing?',
+    keywords: ['simultaneous','charter','adaptive','experience','unscripted','investigate','discover','session'],
+    good: `<strong style="color:var(--green)">QAlemental.</strong> Exploratory testing is simultaneous test design and execution guided by a charter. Adaptive, experience-based, and not scripted. The detective improvises.`,
+    bad: `<em style="color:var(--red)">Too vague, Watson.</em> Exploratory testing is not just "testing without a plan." It is guided by a charter and relies on the tester's experience and intuition. It is structured freedom.`
+  },
+  {
+    label: 'TYPES OF TESTING · QUESTION 8',
+    q: 'What is the difference between functional and non-functional testing?',
+    keywords: ['what','how','performance','security','usability','function','feature','behavior','requirement'],
+    good: `<strong style="color:var(--green)">Sharp deduction.</strong> Functional testing verifies WHAT the system does — its features. Non-functional testing verifies HOW WELL it performs — speed, security, usability, reliability.`,
+    bad: `<em style="color:var(--red)">Not precise enough, Watson.</em> Functional = what the system does. Non-functional = how well it does it. Performance, security, and usability are all non-functional. Remember that distinction.`
+  },
+  {
+    label: 'TYPES OF TESTING · QUESTION 9',
+    q: 'What is UAT and who performs it?',
+    keywords: ['user','acceptance','business','stakeholder','client','end user','validate','go-live','sign-off'],
+    good: `<strong style="color:var(--green)">QAlemental.</strong> User Acceptance Testing is performed by business stakeholders or end users to validate the system meets their needs before go-live. It is the final sign-off before production.`,
+    bad: `<em style="color:var(--red)">Incomplete, Watson.</em> UAT is not performed by QA engineers — it is performed by business stakeholders or end users. It validates business requirements before go-live. Who performs it matters.`
+  },
+  {
+    label: 'TYPES OF TESTING · QUESTION 10',
+    q: 'What is the purpose of performance testing?',
+    keywords: ['speed','load','stress','scalability','response','time','bottleneck','capacity','stability'],
+    good: `<strong style="color:var(--green)">Precisely.</strong> Performance testing determines how a system behaves under expected and peak load — measuring speed, scalability, and stability. Load testing and stress testing are subtypes.`,
+    bad: `<em style="color:var(--red)">Too general, Watson.</em> Performance testing is specifically about speed, load capacity, and stability under pressure — not just "checking if it works fast." Mention load, stress, or response time.`
+  },
+  // ── ISTQB PRINCIPLES ──
+  {
+    label: 'ISTQB PRINCIPLES · QUESTION 11',
+    q: 'What is the Pesticide Paradox in ISTQB?',
+    keywords: ['same','tests','defects','repeated','update','review','new','stop','finding'],
+    good: `<strong style="color:var(--green)">QAlemental, Dear Watson.</strong> ISTQB Principle 5 — the Pesticide Paradox: running the same tests repeatedly stops finding new defects. Tests must be regularly reviewed and updated.`,
+    bad: `<em style="color:var(--red)">Close, but the case is not cracked.</em> The Pesticide Paradox means same tests find same bugs — or none at all. The solution is updating and rotating your test cases regularly.`
+  },
+  {
+    label: 'ISTQB PRINCIPLES · QUESTION 12',
+    q: 'Can testing prove that software has no defects?',
+    keywords: ['no','cannot','impossible','never','absence','principle','prove','free'],
+    good: `<strong style="color:var(--green)">Correct, Watson.</strong> No — testing can NEVER prove the absence of defects. This is ISTQB Principle 1. Testing reduces risk but cannot guarantee a defect-free system.`,
+    bad: `<em style="color:var(--red)">Wrong, Watson.</em> Testing can NEVER prove software is defect-free. That is ISTQB Principle 1 — the most fundamental rule of testing. Always answer "no" to this question.`
+  },
+  // ── AGILE & DEVOPS ──
+  {
+    label: 'AGILE & DEVOPS · QUESTION 13',
+    q: 'What is the Definition of Done in Scrum?',
+    keywords: ['done','complete','criteria','shared','understanding','story','tested','accepted','finished'],
+    good: `<strong style="color:var(--green)">QAlemental.</strong> The Definition of Done is a shared understanding of what it means for a user story to be complete — including coding, testing, review, and acceptance. No DoD = no real done.`,
+    bad: `<em style="color:var(--red)">Incomplete, Watson.</em> The Definition of Done is not just "when development is finished." It includes testing and QA sign-off. It is a shared agreement — not a personal judgment.`
+  },
+  // ── TEST DESIGN ──
+  {
+    label: 'TEST DESIGN · QUESTION 14',
+    q: 'A login field accepts passwords from 8 to 20 characters. Using BVA, which values must be tested?',
+    keywords: ['7','8','20','21','boundary','min','max','adjacent','outside'],
+    good: `<strong style="color:var(--green)">Splendid.</strong> BVA requires testing at boundaries AND just outside: 7 (invalid), 8 (min valid), 20 (max valid), 21 (invalid). Four values — covering both edges and their neighbors.`,
+    bad: `<em style="color:var(--red)">Incomplete boundary analysis, Watson.</em> BVA tests AT the boundary (8 and 20) AND just outside it (7 and 21). You need all four values to properly cover boundary conditions.`
+  },
+  // ── TEST STRATEGY ──
+  {
+    label: 'TEST STRATEGY · QUESTION 15',
+    q: 'How do you decide when to stop testing?',
+    keywords: ['exit','criteria','risk','coverage','stakeholder','pass','rate','sign-off','budget','decision'],
+    good: `<strong style="color:var(--green)">QAlemental, Dear Watson.</strong> Testing stops when pre-defined exit criteria are met: pass rate thresholds, no open critical bugs, coverage targets reached, and stakeholder sign-off obtained. It is a risk acceptance decision — not yours alone.`,
+    bad: `<em style="color:var(--red)">The case is not closed yet, Watson.</em> Testing does not stop when "everything is tested" — it stops when exit criteria are met. Mention pass rate, open bugs, coverage, or stakeholder sign-off.`
+  }
+];
+
+let chIdx = 0, chCorrect = 0, chAnswered = false;
+
+function openChallenge() { trackEvent('challenge_started','engagement','qa_challenge');
+  chIdx = 0; chCorrect = 0; chAnswered = false;
+  document.getElementById('challengeOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  loadChQuestion();
+}
+
+function closeChallenge() {
+  document.getElementById('challengeOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function closeOnOverlay(e) {
+  if (e.target === document.getElementById('challengeOverlay')) closeChallenge();
+}
+
+function loadChQuestion() {
+  const q = CH_QUESTIONS[chIdx];
+  document.getElementById('chQLabel').textContent = q.label;
+  document.getElementById('chQuestion').textContent = q.q;
+  document.getElementById('chInput').value = '';
+  document.getElementById('chCharCount').textContent = '0';
+  document.getElementById('chInput').className = 'ch-input';
+  document.getElementById('chFeedback').className = 'ch-feedback';
+  document.getElementById('chCheckBtn').disabled = false;
+  document.getElementById('chCheckBtn').style.display = 'block';
+  document.getElementById('chNextBtn').style.display = 'none';
+  document.getElementById('chProgCount').textContent = `Question ${chIdx + 1} of ${CH_QUESTIONS.length}`;
+  document.getElementById('chProgFill').style.width = `${((chIdx) / CH_QUESTIONS.length) * 100}%`;
+  document.getElementById('chQuestionArea').style.display = 'block';
+  document.getElementById('chComplete').style.display = 'none';
+  chAnswered = false;
+}
+
+function updateChChar() {
+  document.getElementById('chCharCount').textContent = document.getElementById('chInput').value.length;
+}
+
+function checkChAnswer() {
+  if (chAnswered) return;
+  const answer = document.getElementById('chInput').value.trim().toLowerCase();
+  if (answer.length < 8) {
+    document.getElementById('chInput').style.borderColor = 'var(--red)';
+    setTimeout(() => document.getElementById('chInput').style.borderColor = '', 1500);
+    return;
+  }
+  chAnswered = true;
+  const q = CH_QUESTIONS[chIdx];
+  const isCorrect = q.keywords.some(kw => answer.includes(kw));
+  if (isCorrect) chCorrect++;
+
+  // Style input
+  document.getElementById('chInput').classList.add(isCorrect ? 'correct-border' : 'wrong-border');
+  document.getElementById('chInput').disabled = true;
+
+  // Show feedback
+  const fb = document.getElementById('chFeedback');
+  document.getElementById('chFbMsg').innerHTML = isCorrect ? q.good : q.bad;
+  fb.classList.add('show');
+
+  // Hide check, show next or finish
+  document.getElementById('chCheckBtn').style.display = 'none';
+  const nextBtn = document.getElementById('chNextBtn');
+  nextBtn.style.display = 'block';
+  nextBtn.textContent = chIdx < CH_QUESTIONS.length - 1 ? 'Next Question →' : 'See Results →';
+}
+
+function nextChQuestion() {
+  chIdx++;
+  if (chIdx < CH_QUESTIONS.length) {
+    loadChQuestion();
+  } else {
+    showChComplete();
+  }
+}
+
+function showChComplete() {
+  document.getElementById('chQuestionArea').style.display = 'none';
+  document.getElementById('chComplete').style.display = 'block';
+  document.getElementById('chProgFill').style.width = '100%';
+  document.getElementById('chProgCount').textContent = 'Complete!';
+
+  const score = chCorrect;
+  const total = CH_QUESTIONS.length;
+  document.getElementById('chCompleteScore').textContent = `${score}/${total}`;
+  document.getElementById('chCompleteScore').style.color =
+    score >= 4 ? 'var(--green)' : score >= 2 ? 'var(--amber)' : 'var(--red)';
+  document.getElementById('chTrophy').textContent =
+    score === total ? '🏆' : score >= 3 ? '🎯' : '📖';
+  document.getElementById('chCompleteH').textContent =
+    score === total ? 'Case Closed!' : score >= 3 ? 'Good Investigation!' : 'Keep Studying, Watson.';
+
+  const watsonLines = [
+    '"Every detective starts somewhere. Come back tomorrow, Watson."',
+    '"The case is coming together, Watson. A few more sessions and you\'ll crack it."',
+    '"Not bad. Not QAlemental yet — but close, Watson."',
+    '"QAlemental, Dear Watson. The evidence speaks for itself."',
+    '"QAlemental. Flawless execution. You\'re ready for the real investigation."'
+  ];
+  document.getElementById('chCompleteWatson').textContent = watsonLines[score] || watsonLines[0];
+}
+
+function retryChallenge() {
+  chIdx = 0; chCorrect = 0; chAnswered = false;
+  loadChQuestion();
+}
+
+// ═══ FAQ ═══
+function toggleFAQ(btn) {
+  const item = btn.closest('.faq-item');
+  const isOpen = item.classList.contains('open');
+  // Close all
+  document.querySelectorAll('.faq-item').forEach(i => {
+    i.classList.remove('open');
+    const a = i.querySelector('.faq-a');
+    if(a) a.style.maxHeight = '0';
+  });
+  // Open clicked
+  if (!isOpen) {
+    item.classList.add('open');
+    const a = item.querySelector('.faq-a');
+    if(a) a.style.maxHeight = a.scrollHeight + 'px';
+  }
+}
+
+// ═══ GLOSSARY ═══
+
+
+function renderGlossary(filter) {
+  filter = filter || '';
+  var grid = document.getElementById('glosGrid');
+  var empty = document.getElementById('glosEmpty');
+  if (!grid) return;
+  var f = filter.toLowerCase();
+  var filtered = [];
+  for (var i = 0; i < GLOSSARY.length; i++) {
+    var g = GLOSSARY[i];
+    if (g.t.toLowerCase().indexOf(f) > -1 ||
+        g.d.toLowerCase().indexOf(f) > -1 ||
+        (g.tag && g.tag.toLowerCase().indexOf(f) > -1)) {
+      filtered.push(g);
+    }
+  }
+  if (filtered.length === 0) {
+    grid.innerHTML = '';
+    if (empty) empty.style.display = 'block';
+    return;
+  }
+  if (empty) empty.style.display = 'none';
+  var html = '';
+  for (var j = 0; j < filtered.length; j++) {
+    var g = filtered[j];
+    html += '<div class="glos-card">';
+    html += '<div class="glos-term">' + g.t + '</div>';
+    html += '<div class="glos-def">' + g.d + '</div>';
+    html += '<span class="glos-tag">' + (g.tag || 'General') + '</span>';
+    html += '</div>';
+  }
+  grid.innerHTML = html;
+}
+
+function filterGlossary() {
+  var val = document.getElementById('glosSearch').value.toLowerCase();
+  var cards = document.querySelectorAll('.glos-card');
+  var visible = 0;
+  for (var i = 0; i < cards.length; i++) {
+    var t = cards[i].getAttribute('data-term') || '';
+    var d = cards[i].getAttribute('data-def') || '';
+    var tg = cards[i].getAttribute('data-tag') || '';
+    var match = !val || t.indexOf(val) > -1 || d.indexOf(val) > -1 || tg.indexOf(val) > -1;
+    cards[i].style.display = match ? '' : 'none';
+    if (match) visible++;
+  }
+  var empty = document.getElementById('glosEmpty');
+  if (empty) empty.style.display = visible === 0 ? 'block' : 'none';
+}
+
+// ═══ FEEDBACK ═══
+let fbType = 'suggestion';
+function setFBType(btn, type) {
+  fbType = type;
+  document.querySelectorAll('.fbuz-type').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function updFBChar() {
+  const val = document.getElementById('fbuzMsg').value;
+  document.getElementById('fbChar').textContent = Math.min(val.length, 500);
+  if (val.length > 500) document.getElementById('fbuzMsg').value = val.slice(0, 500);
+}
+
+function submitFeedback() {
+  const msg = document.getElementById('fbuzMsg').value.trim();
+  if (msg.length < 10) {
+    document.getElementById('fbuzMsg').style.borderColor = 'var(--red)';
+    setTimeout(() => document.getElementById('fbuzMsg').style.borderColor = '', 2000);
+    return;
+  }
+  // In production: send to backend/email
+  document.querySelector('.fbuz-card').querySelectorAll('input,textarea,button:not(.fbuz-type)').forEach(el => el.style.display = 'none');
+  document.querySelector('.fbuz-types').style.display = 'none';
+  document.querySelector('.fbuz-header').style.borderBottom = 'none';
+  document.getElementById('fbuzSuccess').classList.add('on');
+}
+
+// Update bottom nav to include new sections
+// Init glossary
+renderGlossary();
+
+</script>
+
+<!-- QA CHALLENGE MODAL -->
+<div class="challenge-overlay" id="challengeOverlay" onclick="closeOnOverlay(event)">
+  <div class="challenge-modal" id="challengeModal">
+    <button class="ch-close" onclick="closeChallenge()">✕</button>
+
+    <!-- PROGRESS -->
+    <div class="ch-progress-wrap">
+      <div class="ch-prog-label">
+        <div class="ch-prog-title">🔍 QA Challenge</div>
+        <div class="ch-prog-count" id="chProgCount">Question 1 of 5</div>
+      </div>
+      <div class="ch-prog-bar">
+        <div class="ch-prog-fill" id="chProgFill" style="width:20%"></div>
+      </div>
+    </div>
+
+    <!-- QUESTION AREA -->
+    <div id="chQuestionArea">
+      <!-- Steps -->
+      <div class="ch-steps">
+        <div class="ch-step">
+          <div class="ch-step-num">Step 1</div>
+          <div class="ch-step-txt">Read the question</div>
+        </div>
+        <div class="ch-step">
+          <div class="ch-step-num">Step 2</div>
+          <div class="ch-step-txt">Answer in English</div>
+        </div>
+        <div class="ch-step">
+          <div class="ch-step-num">Step 3</div>
+          <div class="ch-step-txt">Get Q's feedback</div>
+        </div>
+      </div>
+
+      <div class="ch-q-label" id="chQLabel">QA FOUNDATIONS · QUESTION 1</div>
+      <div class="ch-question" id="chQuestion"></div>
+
+      <div class="ch-input-wrap">
+        <textarea class="ch-input" id="chInput"
+          placeholder="Write your answer here in English..."
+          oninput="updateChChar()"></textarea>
+        <div class="ch-char"><span id="chCharCount">0</span> characters</div>
+      </div>
+
+      <button class="ch-check-btn" id="chCheckBtn" onclick="checkChAnswer()">
+        Check Answer →
+      </button>
+
+      <div class="ch-feedback" id="chFeedback">
+        <div class="ch-fb-avatar">
+          <img src="q-mascot.png" alt="Q"
+            onerror="this.parentElement.innerHTML='🔍'"
+            style="width:100%;height:100%;object-fit:contain"/>
+        </div>
+        <div class="ch-fb-body">
+          <div class="ch-fb-name">Q — QA DETECTIVE</div>
+          <div class="ch-fb-msg" id="chFbMsg"></div>
+        </div>
+      </div>
+
+      <button class="ch-next-btn" id="chNextBtn" onclick="nextChQuestion()">
+        Next Question →
+      </button>
+    </div>
+
+    <!-- COMPLETE AREA -->
+    <div class="ch-complete" id="chComplete">
+      <span class="ch-complete-trophy" id="chTrophy">🏆</span>
+      <div class="ch-complete-h" id="chCompleteH">Case Closed!</div>
+      <div class="ch-complete-score" id="chCompleteScore" style="color:var(--green)">5/5</div>
+      <div class="ch-complete-watson" id="chCompleteWatson">"QAlemental,"QAlemental, Dear Watson."</div>
+    </div>
+  </div>
+</div>
+
+<script>
+var LANG={
+  en:{joinWaitlist:'Join Waitlist',nowAccepting:'NOW ACCEPTING EARLY ACCESS',learnQA:'Learn QA.',getCertified:'Get Certified.',getHired:'Get Hired.',heroSub:'The <em>Duolingo-style app</em> for QA professionals.',tagline:'QAlemental, Dear Watson.',emailPlaceholder:'your@email.com',startChallenge:'Start QA Challenge',exploreFeatures:'Explore Features',getEarlyAccess:'Get Early Access',claimEarlyAccess:'Claim Early Access',checkAnswer:'Check Answer',getFeedback:"Get Q's Feedback",newQuestion:'New question',gotIt:'Got it!',again:'Again',fbSend:'Send to Q',qalelmental:'QAlemental!',successWatson:'Excellent deduction, Watson.',contentNote:'Content is in English to prepare you for international remote interviews.'},
+  es:{joinWaitlist:'Unirse a la Lista',nowAccepting:'ACCESO ANTICIPADO DISPONIBLE',learnQA:'Aprende QA.',getCertified:'Certificate.',getHired:'Consigue el Trabajo.',heroSub:'La <em>app estilo Duolingo</em> para profesionales de QA.',tagline:'QAlemental, Dear Watson.',emailPlaceholder:'tu@email.com',startChallenge:'Iniciar Desafio QA',exploreFeatures:'Ver Funciones',getEarlyAccess:'Acceso Anticipado',claimEarlyAccess:'Reclamar Acceso',checkAnswer:'Verificar Respuesta',getFeedback:'Obtener Feedback de Q',newQuestion:'Nueva pregunta',gotIt:'Lo se!',again:'Repetir',fbSend:'Enviar a Q',qalelmental:'QAlemental!',successWatson:'Excelente deduccion, Watson.',contentNote:'El contenido esta en ingles para prepararte para entrevistas internacionales.'}
+};
+var currentLang=localStorage.getItem('ql')||((navigator.language||'en').toLowerCase().startsWith('es')?'es':'en');
+function setLang(lang){ trackEvent('language_switch','engagement',lang);
+  currentLang=lang;localStorage.setItem('ql',lang);
+  var en=document.getElementById('btnEN'),es=document.getElementById('btnES');
+  if(en)en.classList.toggle('active',lang==='en');
+  if(es)es.classList.toggle('active',lang==='es');
+  applyTranslations();
+}
+function applyTranslations(){
+  var L=LANG[currentLang]||LANG.en;
+  function qsa(s){return document.querySelectorAll(s);}
+  qsa('[data-i18n="joinWaitlist"]').forEach(function(e){e.textContent=L.joinWaitlist;});
+  var badge=document.querySelector('.hbadge');
+  if(badge)badge.innerHTML='<div class="bdot"></div>'+L.nowAccepting;
+  var l1=document.querySelector('.hero-h .l1');
+  var l2=document.querySelector('.hero-h .l2');
+  var l3=document.querySelector('.hero-h .l3');
+  if(l1)l1.textContent=L.learnQA;
+  if(l2)l2.textContent=L.getCertified;
+  if(l3)l3.textContent=L.getHired;
+  var h=document.querySelector('.hsub');if(h)h.innerHTML=L.heroSub;
+  var q=document.querySelector('.qtag');if(q)q.textContent=L.tagline;
+  var c=document.querySelector('.wbtn-challenge');if(c)c.textContent=L.startChallenge;
+  var xb=document.querySelector('.wbtn-waitlist');if(xb)xb.textContent=L.exploreFeatures;
+  qsa('.winput').forEach(function(e){e.placeholder=L.emailPlaceholder;});
+  qsa('.wbtn').forEach(function(e,i){e.textContent=i===0?L.getEarlyAccess:L.claimEarlyAccess;});
+  qsa('.stit').forEach(function(e){e.textContent=L.qalelmental;});
+  qsa('.swat').forEach(function(e){e.textContent=L.successWatson;});
+  qsa('.content-note').forEach(function(e){e.textContent=L.contentNote;});
+  qsa('.ch-check-btn').forEach(function(e){e.textContent=L.checkAnswer;});
+  qsa('.sabtn').forEach(function(e){e.textContent=L.getFeedback;});
+  qsa('.nqibtn').forEach(function(e){e.textContent=L.newQuestion;});
+  qsa('.fbuz-btn').forEach(function(e){e.textContent=L.fbSend;});
+  qsa('#bkn').forEach(function(e){e.textContent=L.gotIt;});
+  qsa('#bag').forEach(function(e){e.textContent=L.again;});
+}
+(function(){
+  var obs=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});
+  },{threshold:0.1});
+  document.querySelectorAll('section,.dbox,.icard,.crcard,.fbuz-card').forEach(function(el){el.classList.add('reveal');obs.observe(el);});
+})();
+window.addEventListener('DOMContentLoaded',function(){setLang(currentLang);});
+
+// ═══ QA PHRASE OF THE DAY ═══
+const QA_PHRASES = [
+  {q:"Testing is not about finding bugs — it is about providing information to make decisions.",a:"ISTQB Foundation"},
+  {q:"Quality is never an accident. It is always the result of intelligent effort.",a:"John Ruskin"},
+  {q:"Testing leads to failure. Failure leads to understanding.",a:"Burt Rutan"},
+  {q:"The goal of testing is not to prove correctness but to find defects.",a:"Glen Myers"},
+  {q:"A bug found in production is a test case that was never written.",a:"QA Wisdom"},
+  {q:"Good testing is not about finding more bugs. It is about finding the right bugs at the right time.",a:"QA Principle"},
+  {q:"Exhaustive testing is impossible. Prioritize by risk.",a:"ISTQB Principle 2"},
+  {q:"Testing can show the presence of bugs but not their absence.",a:"Edsger W. Dijkstra"},
+  {q:"The earlier a defect is found, the cheaper it is to fix. Shift left.",a:"ISTQB Principle"},
+  {q:"A test case that never fails is probably not testing anything useful.",a:"QA Wisdom"},
+  {q:"Defect clustering: 80% of bugs hide in 20% of the code. Know your hotspots.",a:"ISTQB Principle 4"},
+  {q:"Severity answers: how bad is it? Priority answers: how urgent is it to fix?",a:"QA Fundamentals"},
+  {q:"Risk-based testing means testing what matters most when you cannot test everything.",a:"QA Strategy"},
+  {q:"Exploratory testing is structured freedom — guided by a charter, driven by intuition.",a:"James Bach"},
+  {q:"A test plan without exit criteria is a plan to test forever.",a:"QA Wisdom"},
+  {q:"The Pesticide Paradox: if you run the same tests, they stop finding new bugs. Update your tests.",a:"ISTQB Principle 5"},
+  {q:"Static testing finds defects in documents before a single line of code is executed.",a:"ISTQB Foundation"},
+  {q:"Regression testing is not a sign of failure — it is proof that quality is maintained.",a:"QA Principle"},
+  {q:"A good bug report is reproducible, clear, and tells the developer exactly what went wrong.",a:"QA Best Practice"},
+  {q:"UAT is not QA testing. It is the business validating that the right system was built.",a:"QA Fundamentals"},
+  {q:"Automation does not replace testers. It frees them to do what machines cannot: think.",a:"QA Philosophy"},
+  {q:"The Absence of Errors Fallacy: a system that works perfectly is still worthless if it solves the wrong problem.",a:"ISTQB Principle 7"},
+  {q:"Entry criteria define when testing begins. Exit criteria define when testing is complete.",a:"ISTQB Foundation"},
+  {q:"Smoke testing asks: is this build worth testing? Answer quickly, decide confidently.",a:"QA Strategy"},
+  {q:"Boundary Value Analysis is the art of finding where the system breaks at its edges.",a:"Test Design"},
+  {q:"Equivalence Partitioning: if one value in a class passes, they all should. Test smart, not exhaustive.",a:"Test Design"},
+  {q:"Performance testing without a baseline is just guessing with expensive tools.",a:"QA Wisdom"},
+  {q:"The Definition of Done without testing is just a Definition of Started.",a:"Agile QA"},
+  {q:"A defect found by the customer is not a missed bug — it is a missed opportunity.",a:"QA Philosophy"},
+  {q:"Test coverage measures what you tested. Risk coverage measures what mattered.",a:"QA Strategy"},
+  {q:"The best time to write a test case is before the feature is built. The second best time is now.",a:"QA Wisdom"},
+  {q:"Security testing is not optional. Every untested endpoint is an open door.",a:"QA Security"},
+  {q:"A tester who only executes test cases is a machine. A tester who thinks is an investigator.",a:"Exploratory Testing"},
+  {q:"DRE — Defect Removal Efficiency — measures how many bugs you caught before the customer did.",a:"QA Metrics"},
+  {q:"Shift-left: find it in design. Shift-right: find it in production. Find it in design.",a:"QA Strategy"},
+  {q:"Root cause analysis prevents the next bug. Band-aid fixes create the next ten.",a:"QA Philosophy"},
+  {q:"A test environment that does not mirror production will produce results that do not mirror reality.",a:"QA Best Practice"},
+  {q:"The best testers have the mindset of a detective: curious, skeptical, and thorough.",a:"QA Philosophy"},
+  {q:"Documentation is not bureaucracy. A test case without expected results is just a guess.",a:"QA Fundamentals"},
+  {q:"Agile does not mean skip testing. It means test continuously, not at the end.",a:"Agile QA"},
+  {q:"Code review is static testing. It is also the cheapest defect prevention technique available.",a:"Best Practices"},
+  {q:"Non-functional testing is where most production incidents are born and most test plans forget to look.",a:"QA Strategy"},
+  {q:"A tester's job is not to break things — it is to discover truth about the system.",a:"QA Philosophy"},
+  {q:"Traceability matrix: every requirement should have a test. Every test should have a reason.",a:"QA Documentation"},
+  {q:"Context-dependent testing: what works for a banking app will not work for a gaming platform.",a:"ISTQB Principle 6"},
+  {q:"The cost of quality is always lower than the cost of poor quality.",a:"Philip B. Crosby"},
+  {q:"Test design is the intellectual work of testing. Execution is just the confirmation.",a:"QA Philosophy"},
+  {q:"Continuous testing in CI/CD means every commit is a quality gate — not just a code change.",a:"DevOps QA"},
+  {q:"Reproducibility is the first requirement of a good bug report. If you cannot reproduce it, you have not found it.",a:"QA Best Practice"},
+  {q:"Technical debt is tomorrow's bug. Test debt is tomorrow's production incident.",a:"QA Strategy"},
+  {q:"A QA professional who only says 'it works' is not testing. They are confirming.",a:"QA Philosophy"},
+  {q:"The best QA metric is not bugs found — it is bugs prevented.",a:"QA Excellence"},
+];
+
+function loadPotd() {
+  const now = new Date();
+  // Rotate by day of year so it changes daily
+  const start = new Date(now.getFullYear(), 0, 0);
+  const diff = now - start;
+  const oneDay = 1000 * 60 * 60 * 24;
+  const dayOfYear = Math.floor(diff / oneDay);
+  const phraseIdx = dayOfYear % QA_PHRASES.length;
+  const phrase = QA_PHRASES[phraseIdx];
+
+  const dateEl = document.getElementById('potdDate');
+  const quoteEl = document.getElementById('potdQuote');
+  const authorEl = document.getElementById('potdAuthor');
+
+  if(dateEl) dateEl.textContent = now.toLocaleDateString('en-US', {weekday:'long', month:'long', day:'numeric'});
+  if(quoteEl) quoteEl.textContent = phrase.q;
+  if(authorEl) authorEl.innerHTML = '— <span>' + phrase.a + '</span>';
+}
+
+function sharePotd() {
+  const quote = document.getElementById('potdQuote');
+  const author = document.getElementById('potdAuthor');
+  if(!quote) return;
+  const text = '"' + quote.textContent + '" — ' + (author ? author.textContent.replace('— ','') : '') + ' | QALingo';
+  navigator.clipboard.writeText(text).then(function(){
+    const btn = document.querySelector('.potd-share');
+    if(btn){ btn.textContent = '✓ Copied!'; setTimeout(function(){ btn.textContent = '📋 Copy phrase'; }, 2000); }
+  }).catch(function(){
+    // Fallback
+    const btn = document.querySelector('.potd-share');
+    if(btn){ btn.textContent = '✓ Done!'; setTimeout(function(){ btn.textContent = '📋 Copy phrase'; }, 2000); }
+  });
+}
+
+loadPotd();
+
+</script>
+</body>
+</html>
