@@ -45,7 +45,7 @@ a,button,input,textarea,select,[onclick],[role='button']{cursor:url("data:image/
 
 
 
-nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:14px 40px;display:flex;align-items:center;justify-content:space-between;background:var(--nav-bg);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+nav{position:fixed;top:38px;left:0;right:0;z-index:100;padding:14px 40px;display:flex;align-items:center;justify-content:space-between;background:var(--nav-bg);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
 .nlogo{font-family:'Syne',sans-serif;font-weight:800;font-size:19px;display:flex;align-items:center;gap:10px}
 .nlogo .qa{color:var(--teal)}.nlogo .li{color:var(--green)}
 .nlogo img{width:30px;height:30px;object-fit:contain;border-radius:7px}
@@ -56,7 +56,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:14px 40px;display:fl
 .ncta:hover{background:var(--teal-d);transform:translateY(-1px)}
 
 /* HERO */
-.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:100px 24px 80px;position:relative;overflow:hidden}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:120px 24px 80px;position:relative;overflow:hidden}
 .hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(26,171,152,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(26,171,152,.04) 1px,transparent 1px);background-size:56px 56px;mask-image:radial-gradient(ellipse 80% 60% at 50% 50%,black 20%,transparent 80%)}
 .orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none}
 .orb1{width:500px;height:500px;background:radial-gradient(circle,rgba(26,171,152,.1),transparent 70%);top:-100px;left:50%;transform:translateX(-50%);animation:op 6s ease-in-out infinite}
@@ -657,6 +657,40 @@ footer{border-top:1px solid var(--border);padding:22px 40px;display:flex;align-i
 @keyframes pulse-ring{0%{transform:scale(.95);box-shadow:0 0 0 0 rgba(26,171,152,.4)}70%{transform:scale(1);box-shadow:0 0 0 8px rgba(26,171,152,0)}100%{transform:scale(.95);box-shadow:0 0 0 0 rgba(26,171,152,0)}}
 
 
+
+/* ── PHRASE BANNER ── */
+.phrase-banner{position:fixed;top:0;left:0;right:0;z-index:101;will-change:auto;
+  background:linear-gradient(90deg,rgba(26,171,152,.12),rgba(126,201,74,.08),rgba(26,171,152,.12));
+  border-bottom:1px solid rgba(26,171,152,.2);
+  padding:9px 24px;
+  display:flex;align-items:center;justify-content:center;gap:12px;
+  font-family:'DM Mono',monospace;font-size:12px;
+  position:relative;overflow:hidden;
+}
+@keyframes bannerIn{from{opacity:0}to{opacity:1}}
+.pb-label{
+  color:var(--teal);font-size:10px;letter-spacing:2px;text-transform:uppercase;
+  white-space:nowrap;font-weight:500;flex-shrink:0;
+  display:flex;align-items:center;gap:6px;
+}
+.pb-dot{width:5px;height:5px;background:var(--teal);border-radius:50%;animation:bl 2s ease-in-out infinite}
+.pb-text{
+  color:var(--text);font-size:12px;font-style:italic;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  max-width:600px;
+}
+.pb-author{color:var(--muted);font-size:10px;white-space:nowrap;flex-shrink:0}
+.pb-copy{
+  background:transparent;border:none;color:var(--muted);
+  cursor:pointer;font-size:12px;padding:2px 6px;border-radius:4px;
+  transition:color .15s;flex-shrink:0;
+}
+.pb-copy:hover{color:var(--teal)}
+@media(max-width:768px){
+  .pb-author{display:none}
+  .pb-text{max-width:200px}
+}
+
 /* ── QA PHRASE OF THE DAY ── */
 .potd-wrap{max-width:1060px;margin:0 auto;padding:0 24px 0}
 .potd-card{background:linear-gradient(135deg,rgba(26,171,152,.08),rgba(126,201,74,.05));border:1px solid rgba(26,171,152,.25);border-radius:18px;padding:28px 32px;position:relative;overflow:hidden;transition:border-color .2s}
@@ -772,6 +806,14 @@ footer{border-top:1px solid var(--border);padding:22px 40px;display:flex;align-i
 </head>
 <body>
 
+<!-- PHRASE BANNER -->
+<div class="phrase-banner" id="phraseBanner">
+  <div class="pb-label"><div class="pb-dot"></div>PHRASE OF THE DAY</div>
+  <div class="pb-text" id="pbText"></div>
+  <div class="pb-author" id="pbAuthor"></div>
+  <button class="pb-copy" onclick="copyBannerPhrase()" title="Copy phrase">📋</button>
+</div>
+
 <nav>
   <div class="nlogo">
     <img src="q-mascot.png" alt="Q" onerror="this.style.display='none'"/>
@@ -842,12 +884,12 @@ footer{border-top:1px solid var(--border);padding:22px 40px;display:flex;align-i
 <section id="demo">
   <div class="slbl">Free Demo</div>
   <h2 class="sh">Try it right now.</h2>
-  <p class="ssub">3 questions. Real feedback from Q. No sign-up needed. Q is watching.</p>
+  <p class="ssub">11 questions. Real feedback from Q. No sign-up needed. Q is watching.</p>
   <div class="dbox">
     <div class="dhdr">
       <div class="dbadge">FREE DEMO</div>
       <div class="dtit">QA Foundations Mini Quiz</div>
-      <div style="margin-left:auto;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted)">3 questions · ~2 min</div>
+      <div style="margin-left:auto;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted)">11 questions · ~8 min</div>
     </div>
     <div class="dbody">
       <div class="qdots" id="quizDots"></div>
@@ -1413,7 +1455,8 @@ function loadQ(){
   ).join('');
 }
 function selQ(btn,idx){
-  if(qans)return;qans=true;
+  if(qans===true)return;
+  qans=true;
   const q=QUIZ[qi];
   document.querySelectorAll('.qopt').forEach(o=>o.classList.add('lk'));
   const isOk=idx===q.ans;
@@ -1434,7 +1477,9 @@ function selQ(btn,idx){
   else setTimeout(showQComp,1400);
 }
 function nextQ(){
-  qi++;
+  qi = qi + 1;
+  document.getElementById('nqbtn').style.display = 'none';
+  document.getElementById('qfb').className = 'qfb';
   if(qi < QUIZ.length){
     loadQ();
   } else {
@@ -2071,7 +2116,7 @@ function applyTranslations(){
   var obs=new IntersectionObserver(function(entries){
     entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});
   },{threshold:0.1});
-  document.querySelectorAll('section,.dbox,.icard,.crcard,.fbuz-card').forEach(function(el){el.classList.add('reveal');obs.observe(el);});
+  document.querySelectorAll('section,.icard,.crcard,.fbuz-card').forEach(function(el){el.classList.add('reveal');obs.observe(el);});
 })();
 window.addEventListener('DOMContentLoaded',function(){setLang(currentLang);});
 
@@ -2133,7 +2178,6 @@ const QA_PHRASES = [
 
 function loadPotd() {
   const now = new Date();
-  // Rotate by day of year so it changes daily
   const start = new Date(now.getFullYear(), 0, 0);
   const diff = now - start;
   const oneDay = 1000 * 60 * 60 * 24;
@@ -2141,13 +2185,30 @@ function loadPotd() {
   const phraseIdx = dayOfYear % QA_PHRASES.length;
   const phrase = QA_PHRASES[phraseIdx];
 
+  // Banner
+  const pbText = document.getElementById('pbText');
+  const pbAuthor = document.getElementById('pbAuthor');
+  if(pbText) pbText.textContent = phrase.q;
+  if(pbAuthor) pbAuthor.textContent = '— ' + phrase.a;
+
+  // Full card section
   const dateEl = document.getElementById('potdDate');
   const quoteEl = document.getElementById('potdQuote');
   const authorEl = document.getElementById('potdAuthor');
-
   if(dateEl) dateEl.textContent = now.toLocaleDateString('en-US', {weekday:'long', month:'long', day:'numeric'});
   if(quoteEl) quoteEl.textContent = phrase.q;
   if(authorEl) authorEl.innerHTML = '— <span>' + phrase.a + '</span>';
+}
+
+function copyBannerPhrase() {
+  const text = document.getElementById('pbText');
+  const author = document.getElementById('pbAuthor');
+  if(!text) return;
+  const str = '"' + text.textContent + '" ' + (author ? author.textContent : '') + ' | QALingo';
+  navigator.clipboard.writeText(str).then(function(){
+    const btn = document.querySelector('.pb-copy');
+    if(btn){ btn.textContent = '✓'; setTimeout(function(){ btn.textContent = '📋'; }, 1500); }
+  });
 }
 
 function sharePotd() {
