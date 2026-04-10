@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QALingo — SQL for QA</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --teal:#1aab98;--teal-d:#0f7a6e;--teal-g:rgba(26,171,152,.12);
+  --green:#7ec94a;--amber:#f0c040;--red:#e05555;--purple:#9b6ff7;--blue:#74b4f8;--orange:#ff8c42;
+  --dark:#07090d;--d2:#0b0f16;--d3:#10161f;
+  --card:#0f1520;--border:#1a2535;--bhi:#253545;
+  --text:#dde8f0;--muted:#7a9ab5;--white:#eef3f8;
+  --sql-bg:#060d16;--sql-kw:#ff79c6;--sql-str:#f1fa8c;--sql-num:#bd93f9;--sql-cmt:#6272a4;--sql-fn:#50fa7b;--sql-tbl:#8be9fd;
+}
+html{scroll-behavior:smooth}
+body{background:var(--dark);color:var(--text);font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.7;overflow-x:hidden;
+  cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='13' cy='13' r='9' fill='none' stroke='%231aab98' stroke-width='2.5'/%3E%3Ccircle cx='13' cy='13' r='5' fill='rgba(26%2C171%2C152%2C0.15)'/%3E%3Cline x1='20' y1='20' x2='28' y2='28' stroke='%231aab98' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E") 13 13, auto}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--orange),var(--amber));z-index:200;transition:width .3s ease;width:0%}
+.back-home{position:fixed;top:16px;left:16px;z-index:150;display:flex;align-items:center;gap:7px;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:8px 14px;font-family:'Syne',sans-serif;font-weight:700;font-size:12px;color:var(--muted);text-decoration:none;transition:all .15s}
+.back-home:hover{border-color:var(--teal);color:var(--teal);transform:translateX(-2px)}
+
+/* HEADER */
+.page-header{padding:80px 24px 48px;max-width:960px;margin:0 auto;text-align:center}
+.ph-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,140,66,.1);border:1px solid rgba(255,140,66,.25);border-radius:20px;padding:6px 16px;font-family:'DM Mono',monospace;font-size:11px;color:var(--orange);letter-spacing:.5px;margin-bottom:20px}
+.ph-title{font-family:'Syne',sans-serif;font-size:clamp(32px,6vw,52px);font-weight:800;letter-spacing:-2px;line-height:1.05;color:var(--white);margin-bottom:14px}
+.ph-title span{background:linear-gradient(135deg,var(--orange),var(--amber));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.ph-sub{font-size:17px;color:var(--muted);max-width:580px;margin:0 auto 28px;line-height:1.7}
+.ph-stats{display:flex;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap}
+.ph-stat{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px}
+.ph-stat strong{color:var(--orange)}
+
+/* TOC */
+.toc{max-width:960px;margin:0 auto 56px;padding:0 24px}
+.toc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.toc-item{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;text-decoration:none;transition:all .2s;display:flex;align-items:center;gap:10px}
+.toc-item:hover{border-color:var(--orange);transform:translateY(-2px)}
+.toc-num{min-width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:12px;flex-shrink:0}
+.toc-name{font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--white)}
+
+/* CONTENT */
+.content{max-width:960px;margin:0 auto;padding:0 24px 80px}
+.lesson-section{margin-bottom:72px;scroll-margin-top:80px}
+.section-divider{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:64px 0}
+
+/* SECTION HEADER */
+.section-header{display:flex;align-items:flex-start;gap:16px;margin-bottom:28px}
+.section-num{min-width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:18px;flex-shrink:0}
+.section-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.section-title{font-family:'Syne',sans-serif;font-size:clamp(22px,4vw,30px);font-weight:800;letter-spacing:-1px;color:var(--white);line-height:1.1}
+.section-sub{font-size:15px;color:var(--muted);margin-top:6px;line-height:1.6}
+
+/* DEF CARD */
+.def-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px 24px;margin-bottom:20px;position:relative;overflow:hidden}
+.def-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%}
+.def-card.orange::before{background:linear-gradient(180deg,var(--orange),var(--amber))}
+.def-card.teal::before{background:linear-gradient(180deg,var(--teal),var(--green))}
+.def-card.red::before{background:linear-gradient(180deg,var(--red),var(--orange))}
+.def-card.purple::before{background:linear-gradient(180deg,var(--purple),var(--blue))}
+.def-card.blue::before{background:linear-gradient(180deg,var(--blue),var(--teal))}
+.def-card.green::before{background:linear-gradient(180deg,var(--green),var(--teal))}
+.card-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px}
+.card-text{font-size:15px;color:var(--text);line-height:1.7}
+.card-text strong{color:var(--white)}
+.card-text code{font-family:'DM Mono',monospace;font-size:13px;color:var(--orange);background:rgba(255,140,66,.1);padding:2px 6px;border-radius:4px}
+
+/* SQL DISPLAY BLOCK */
+.sql-block{background:var(--sql-bg);border:1px solid #1e3048;border-radius:12px;margin-bottom:20px;overflow:hidden}
+.sql-header{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-bottom:1px solid #1e3048;background:rgba(255,255,255,.02)}
+.sql-lang{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
+.sql-dots{display:flex;gap:6px}
+.sql-dot{width:10px;height:10px;border-radius:50%}
+.sql-pre{padding:20px;font-family:'DM Mono',monospace;font-size:13px;line-height:1.8;overflow-x:auto;white-space:pre}
+.kw{color:var(--sql-kw)}.fn{color:var(--sql-fn)}.tbl{color:var(--sql-tbl)}.str{color:var(--sql-str)}.num{color:var(--sql-num)}.cmt{color:var(--sql-cmt);font-style:italic}.op{color:#ff79c6}
+
+/* DATA TABLE */
+.data-table-wrap{overflow-x:auto;border-radius:12px;border:1px solid var(--border);margin-bottom:20px}
+.data-table{width:100%;border-collapse:collapse;font-size:13px}
+.data-table th{background:var(--d3);font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);padding:10px 14px;text-align:left;white-space:nowrap}
+.data-table td{padding:10px 14px;color:var(--text);border-top:1px solid var(--border);font-family:'DM Mono',monospace;font-size:12px}
+.data-table tr:hover td{background:rgba(255,255,255,.02)}
+.td-ok{color:var(--green)}.td-warn{color:var(--amber)}.td-bad{color:var(--red)}.td-null{color:var(--muted);font-style:italic}
+
+/* SQL EDITOR */
+.editor-card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:20px}
+.editor-header{background:linear-gradient(135deg,rgba(255,140,66,.08),rgba(240,192,64,.05));border-bottom:1px solid var(--border);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.editor-title{font-family:'Syne',sans-serif;font-weight:800;font-size:15px;color:var(--white)}
+.editor-badge{font-family:'DM Mono',monospace;font-size:10px;padding:3px 10px;border-radius:5px;background:rgba(255,140,66,.12);color:var(--orange);letter-spacing:.5px}
+.editor-body{padding:20px}
+.editor-scenario{background:var(--d3);border-left:3px solid var(--orange);border-radius:0 10px 10px 0;padding:14px 16px;margin-bottom:16px;font-size:14px;color:var(--text);line-height:1.6}
+.editor-scenario strong{color:var(--orange)}
+.editor-hint{font-size:12px;color:var(--muted);font-style:italic;margin-bottom:12px;font-family:'DM Mono',monospace}
+.sql-textarea{width:100%;min-height:120px;background:var(--sql-bg);border:2px solid #1e3048;border-radius:10px;padding:16px;color:#c9d1d9;font-family:'DM Mono',monospace;font-size:13px;line-height:1.8;resize:vertical;outline:none;transition:border-color .2s;tab-size:2}
+.sql-textarea:focus{border-color:var(--orange);box-shadow:0 0 0 3px rgba(255,140,66,.1)}
+.sql-textarea::placeholder{color:var(--muted)}
+.editor-actions{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+.run-btn{background:linear-gradient(135deg,var(--orange),#cc6f32);color:#fff;border:none;border-radius:10px;padding:11px 22px;font-family:'Syne',sans-serif;font-weight:800;font-size:13px;cursor:pointer;transition:all .15s;box-shadow:0 4px 16px rgba(255,140,66,.3);display:flex;align-items:center;gap:8px}
+.run-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(255,140,66,.4)}
+.hint-btn{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:10px;padding:11px 18px;font-family:'Syne',sans-serif;font-weight:600;font-size:12px;cursor:pointer;transition:all .15s}
+.hint-btn:hover{border-color:var(--teal);color:var(--teal)}
+.reset-btn{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:10px;padding:11px 18px;font-family:'Syne',sans-serif;font-weight:600;font-size:12px;cursor:pointer;transition:all .15s}
+.reset-btn:hover{border-color:var(--red);color:var(--red)}
+
+/* RESULT PANEL */
+.result-panel{display:none;margin-top:16px;animation:fadeUp .3s ease both}
+.result-panel.show{display:block}
+.result-success{background:rgba(126,201,74,.06);border:1px solid rgba(126,201,74,.2);border-radius:12px;padding:16px 18px;margin-bottom:12px}
+.result-error{background:rgba(224,85,85,.06);border:1px solid rgba(224,85,85,.2);border-radius:12px;padding:16px 18px;margin-bottom:12px}
+.result-partial{background:rgba(240,192,64,.06);border:1px solid rgba(240,192,64,.2);border-radius:12px;padding:16px 18px;margin-bottom:12px}
+.result-title{font-family:'Syne',sans-serif;font-weight:800;font-size:14px;margin-bottom:8px}
+.result-msg{font-size:13px;color:var(--muted);line-height:1.6}
+.result-table-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--border);margin-top:12px}
+.result-table{width:100%;border-collapse:collapse;font-size:12px}
+.result-table th{background:rgba(255,140,66,.1);font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--orange);padding:8px 12px;text-align:left}
+.result-table td{padding:8px 12px;color:var(--text);border-top:1px solid var(--border);font-family:'DM Mono',monospace}
+.hint-panel{display:none;background:rgba(26,171,152,.06);border:1px solid rgba(26,171,152,.2);border-radius:12px;padding:14px 16px;margin-top:10px;font-size:13px;color:var(--text);line-height:1.6}
+.hint-panel.show{display:block}
+.hint-panel code{font-family:'DM Mono',monospace;color:var(--teal);background:rgba(26,171,152,.1);padding:2px 6px;border-radius:4px;font-size:12px}
+.q-explain{background:rgba(26,171,152,.07);border-left:3px solid var(--teal);border-radius:0 8px 8px 0;padding:12px 16px;margin-top:12px;font-size:13px;color:var(--muted);font-style:italic}
+
+/* WHY CARD */
+.why-card{background:linear-gradient(135deg,rgba(255,140,66,.06),rgba(240,192,64,.04));border:1px solid rgba(255,140,66,.18);border-radius:14px;padding:20px 24px;margin-top:20px}
+.why-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:8px}
+.why-text{font-size:15px;color:var(--text);line-height:1.7}
+.why-text strong{color:var(--orange)}
+
+/* QUIZ */
+.quiz-section{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:26px;margin-top:24px}
+.quiz-title{font-family:'Syne',sans-serif;font-weight:800;font-size:16px;color:var(--white);margin-bottom:4px}
+.quiz-sub{font-size:13px;color:var(--muted);margin-bottom:18px}
+.quiz-q-text{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--white);margin-bottom:12px;line-height:1.4}
+.quiz-opts{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+.quiz-opt{display:flex;align-items:center;gap:12px;background:var(--d3);border:2px solid var(--border);border-radius:11px;padding:12px 15px;cursor:pointer;text-align:left;width:100%;font-size:14px;color:var(--text);transition:all .15s;font-family:'DM Sans',sans-serif}
+.quiz-opt:hover:not(.locked){border-color:var(--orange);background:rgba(255,140,66,.05);transform:translateX(3px)}
+.quiz-opt.correct{border-color:var(--green);background:rgba(126,201,74,.08)}
+.quiz-opt.wrong{border-color:var(--red);background:rgba(224,85,85,.08)}
+.quiz-opt.locked{cursor:default}
+.opt-ltr{width:24px;height:24px;border-radius:6px;background:var(--card);border:1.5px solid var(--bhi);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);flex-shrink:0}
+.quiz-opt.correct .opt-ltr{background:var(--green);border-color:var(--green);color:#fff}
+.quiz-opt.wrong .opt-ltr{background:var(--red);border-color:var(--red);color:#fff}
+.quiz-fb{display:none;background:var(--d3);border-radius:10px;padding:13px 16px;font-size:13px;color:var(--text);line-height:1.6;margin-top:10px}
+.quiz-fb.show{display:block;animation:fadeUp .3s ease both}
+.quiz-expl{margin-top:8px;padding:10px 14px;background:rgba(26,171,152,.07);border-left:3px solid var(--teal);border-radius:0 8px 8px 0;font-size:12px;color:var(--muted);font-style:italic}
+
+/* COMPLETE */
+.complete-banner{background:linear-gradient(135deg,rgba(255,140,66,.08),rgba(240,192,64,.06));border:1px solid rgba(255,140,66,.25);border-radius:18px;padding:40px;text-align:center;margin-top:56px}
+.cb-trophy{font-size:60px;display:block;margin-bottom:16px;animation:float 3s ease-in-out infinite}
+.cb-title{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--white);letter-spacing:-1px;margin-bottom:8px}
+.cb-sub{font-size:15px;color:var(--muted);margin-bottom:8px}
+.cb-watson{font-style:italic;color:var(--teal);font-size:14px;margin-bottom:28px}
+.cb-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.cb-btn{background:linear-gradient(135deg,var(--teal),var(--teal-d));color:#fff;border:none;border-radius:12px;padding:13px 24px;font-family:'Syne',sans-serif;font-weight:800;font-size:14px;cursor:pointer;box-shadow:0 4px 16px rgba(26,171,152,.3);text-decoration:none;display:inline-block}
+.cb-btn2{background:transparent;border:1.5px solid var(--border);color:var(--muted);border-radius:12px;padding:13px 20px;font-family:'Syne',sans-serif;font-weight:700;font-size:13px;cursor:pointer;text-decoration:none;display:inline-block}
+
+/* BOTTOM NAV */
+.bnav{position:fixed;bottom:0;left:0;right:0;background:rgba(7,9,13,.97);border-top:1px solid var(--border);padding:10px 16px;z-index:200;display:flex;justify-content:center;gap:8px;flex-wrap:wrap;backdrop-filter:blur(12px)}
+.bnav a{text-decoration:none;background:var(--d3);border:1px solid var(--border);border-radius:8px;padding:7px 12px;font-family:'Syne',sans-serif;font-weight:700;font-size:12px;color:var(--text);transition:all .15s}
+.bnav a:hover{border-color:var(--teal);color:var(--teal)}
+.bnav a.act{background:var(--orange);border-color:var(--orange);color:#fff}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@media(max-width:640px){.toc-grid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+<a href="index.html" class="back-home">← Main Menu</a>
+
+<div class="page-header">
+  <div class="ph-badge">🗄️ SQL FOR QA</div>
+  <h1 class="ph-title">SQL para QA<br><span>Detectives</span></h1>
+  <p class="ph-sub">You don't need to be a DBA. But every great QA tester knows how to query a database — because that's where the bugs confess.</p>
+  <div class="ph-stats">
+    <div class="ph-stat"><strong>7</strong> concepts</div>
+    <div class="ph-stat"><strong>7</strong> live SQL editors</div>
+    <div class="ph-stat"><strong>Real</strong> QA scenarios</div>
+    <div class="ph-stat"><strong>JOINs + NULLs</strong> included</div>
+  </div>
+</div>
+
+<div class="toc">
+  <div class="toc-grid">
+    <a href="#s1" class="toc-item"><div class="toc-num" style="background:rgba(255,140,66,.15);color:var(--orange)">1</div><div class="toc-name">SELECT & WHERE</div></a>
+    <a href="#s2" class="toc-item"><div class="toc-num" style="background:rgba(26,171,152,.15);color:var(--teal)">2</div><div class="toc-name">Validación Post-API</div></a>
+    <a href="#s3" class="toc-item"><div class="toc-num" style="background:rgba(224,85,85,.15);color:var(--red)">3</div><div class="toc-name">Bug: Duplicados</div></a>
+    <a href="#s4" class="toc-item"><div class="toc-num" style="background:rgba(240,192,64,.15);color:var(--amber)">4</div><div class="toc-name">NULL Validation</div></a>
+    <a href="#s5" class="toc-item"><div class="toc-num" style="background:rgba(155,111,247,.15);color:var(--purple)">5</div><div class="toc-name">JOINs para QA</div></a>
+    <a href="#s6" class="toc-item"><div class="toc-num" style="background:rgba(116,180,248,.15);color:var(--blue)">6</div><div class="toc-name">Timestamps & Dates</div></a>
+    <a href="#s7" class="toc-item"><div class="toc-num" style="background:rgba(126,201,74,.15);color:var(--green)">7</div><div class="toc-name">Bug Hunt Final</div></a>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- ══ SCHEMA REFERENCE ══ -->
+  <div style="background:var(--card);border:1px solid rgba(255,140,66,.2);border-radius:14px;padding:20px 24px;margin-bottom:40px">
+    <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:14px">📊 Database Schema — Use this throughout the module</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px">
+      <div style="background:var(--d3);border-radius:10px;padding:14px">
+        <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--sql-tbl);margin-bottom:8px">users</div>
+        <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);line-height:1.8">id, name, email,<br>status, created_at,<br>plan, country</div>
+      </div>
+      <div style="background:var(--d3);border-radius:10px;padding:14px">
+        <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--sql-tbl);margin-bottom:8px">orders</div>
+        <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);line-height:1.8">id, user_id, amount,<br>status, created_at,<br>promo_code</div>
+      </div>
+      <div style="background:var(--d3);border-radius:10px;padding:14px">
+        <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--sql-tbl);margin-bottom:8px">payments</div>
+        <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);line-height:1.8">id, order_id, amount,<br>method, status,<br>processed_at</div>
+      </div>
+      <div style="background:var(--d3);border-radius:10px;padding:14px">
+        <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--sql-tbl);margin-bottom:8px">sessions</div>
+        <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);line-height:1.8">id, user_id, token,<br>created_at,<br>expires_at, ip</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 1. SELECT & WHERE ══ -->
+  <div class="lesson-section" id="s1">
+    <div class="section-header">
+      <div class="section-num" style="background:rgba(255,140,66,.15);color:var(--orange)">1</div>
+      <div>
+        <div class="section-label">Concept 01</div>
+        <div class="section-title">SELECT & WHERE — Validación Básica</div>
+        <div class="section-sub">Your first QA superpower: querying data to verify what the system actually stored.</div>
+      </div>
+    </div>
+
+    <div class="def-card orange">
+      <div class="card-label" style="color:var(--orange)">Why QA needs SELECT</div>
+      <div class="card-text">When a user registers, you see the success message — but did the data actually save correctly? <strong>SELECT lets you verify what's in the database</strong>, not just what the UI shows. The UI can lie. The database tells the truth.</div>
+    </div>
+
+    <div class="sql-block">
+      <div class="sql-header"><div class="sql-dots"><div class="sql-dot" style="background:#ff5f56"></div><div class="sql-dot" style="background:#ffbd2e"></div><div class="sql-dot" style="background:#27c93f"></div></div><div class="sql-lang">SQL — Basic Validation</div></div>
+      <div class="sql-pre"><span class="cmt">-- Get all active users</span>
+<span class="kw">SELECT</span> id, name, email, status, created_at
+<span class="kw">FROM</span> <span class="tbl">users</span>
+<span class="kw">WHERE</span> status <span class="op">=</span> <span class="str">'active'</span>;
+
+<span class="cmt">-- Get users from a specific country</span>
+<span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> <span class="tbl">users</span>
+<span class="kw">WHERE</span> country <span class="op">=</span> <span class="str">'Colombia'</span>
+  <span class="kw">AND</span> status <span class="op">=</span> <span class="str">'active'</span>
+<span class="kw">ORDER BY</span> created_at <span class="kw">DESC</span>;
+
+<span class="cmt">-- Count users by status</span>
+<span class="kw">SELECT</span> status, <span class="fn">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> total
+<span class="kw">FROM</span> <span class="tbl">users</span>
+<span class="kw">GROUP BY</span> status;</div>
+    </div>
+
+    <p style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:12px">Sample Data — users table</p>
+    <div class="data-table-wrap">
+      <table class="data-table">
+        <tr><th>id</th><th>name</th><th>email</th><th>status</th><th>plan</th><th>country</th><th>created_at</th></tr>
+        <tr><td>1</td><td>Ana García</td><td>ana@test.com</td><td class="td-ok">active</td><td>pro</td><td>Colombia</td><td>2024-01-15</td></tr>
+        <tr><td>2</td><td>John Smith</td><td>john@test.com</td><td class="td-ok">active</td><td>free</td><td>USA</td><td>2024-01-16</td></tr>
+        <tr><td>3</td><td>María López</td><td>maria@test.com</td><td class="td-warn">pending</td><td>free</td><td>Mexico</td><td>2024-01-17</td></tr>
+        <tr><td>4</td><td>Carlos Ruiz</td><td>carlos@test.com</td><td class="td-bad">suspended</td><td>pro</td><td>Colombia</td><td>2024-01-10</td></tr>
+        <tr><td>5</td><td>Laura Chen</td><td>laura@test.com</td><td class="td-ok">active</td><td>pro</td><td>Colombia</td><td>2024-01-18</td></tr>
+      </table>
+    </div>
+
+    <div class="editor-card">
+      <div class="editor-header">
+        <div class="editor-title">✏️ Exercise 1 — Active Users Validation</div>
+        <div class="editor-badge">BEGINNER</div>
+      </div>
+      <div class="editor-body">
+        <div class="editor-scenario">
+          <strong>Scenario:</strong> After a deployment, the QA lead asks you to verify that all active users in Colombia are correctly stored. Write a query to retrieve the <strong>name, email and plan</strong> of all active users from Colombia, ordered by most recently created.
+        </div>
+        <div class="editor-hint">💡 Hint: Use WHERE with two conditions (AND). Use ORDER BY created_at DESC.</div>
+        <textarea class="sql-textarea" id="ed1" placeholder="-- Write your SQL query here&#10;SELECT ..."></textarea>
+        <div class="editor-actions">
+          <button class="run-btn" onclick="runQuery(1)">▶ Run Query</button>
+          <button class="hint-btn" onclick="toggleHint(1)">💡 Show Hint</button>
+          <button class="reset-btn" onclick="resetEditor(1)">↺ Reset</button>
+        </div>
+        <div class="hint-panel" id="hint1">
+          Try: <code>SELECT name, email, plan FROM users WHERE status = 'active' AND country = 'Colombia' ORDER BY created_at DESC</code>
+        </div>
+        <div class="result-panel" id="result1"></div>
+      </div>
+    </div>
+
+    <div class="why-card">
+      <div class="why-label">💡 QA Use Case</div>
+      <div class="why-text">After every deployment that touches user registration or status changes — <strong>run a SELECT to verify the data layer matches what the UI shows</strong>. The UI might say "user activated" but the DB might still show "pending". That's a bug the UI test would miss.</div>
+    </div>
+
+    <div class="quiz-section">
+      <div class="quiz-title">🔍 Quick Check</div>
+      <div class="quiz-sub">SELECT & WHERE fundamentals</div>
+      <div id="q1"></div>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- ══ 2. POST-API VALIDATION ══ -->
+  <div class="lesson-section" id="s2">
+    <div class="section-header">
+      <div class="section-num" style="background:rgba(26,171,152,.15);color:var(--teal)">2</div>
+      <div>
+        <div class="section-label">Concept 02</div>
+        <div class="section-title">Validación Post-API</div>
+        <div class="section-sub">API returns 200 OK — but did the right data actually persist?</div>
+      </div>
+    </div>
+
+    <div class="def-card teal">
+      <div class="card-label" style="color:var(--teal)">The Post-API Pattern</div>
+      <div class="card-text">When you test an API endpoint that creates or updates data, a <strong>200 OK response is not enough</strong>. You must verify the database reflects exactly what the API claimed to do. This is called <strong>post-execution database validation</strong> — and it catches bugs that API tests alone never find.</div>
+    </div>
+
+    <div class="sql-block">
+      <div class="sql-header"><div class="sql-dots"><div class="sql-dot" style="background:#ff5f56"></div><div class="sql-dot" style="background:#ffbd2e"></div><div class="sql-dot" style="background:#27c93f"></div></div><div class="sql-lang">SQL — Post-API Validation Pattern</div></div>
+      <div class="sql-pre"><span class="cmt">-- Step 1: API POST /users/register returns 200 OK</span>
+<span class="cmt">-- Step 2: Verify the user was actually created in DB</span>
+
+<span class="kw">SELECT</span> id, name, email, status, plan, created_at
+<span class="kw">FROM</span> <span class="tbl">users</span>
+<span class="kw">WHERE</span> email <span class="op">=</span> <span class="str">'newuser@test.com'</span>;
+
+<span class="cmt">-- Verify correct default values were set</span>
+<span class="kw">SELECT</span>
+  email,
+  status,        <span class="cmt">-- Should be 'pending' (not yet verified)</span>
+  plan,          <span class="cmt">-- Should be 'free' (default)</span>
+  created_at     <span class="cmt">-- Should be today's date</span>
+<span class="kw">FROM</span> <span class="tbl">users</span>
+<span class="kw">WHERE</span> email <span class="op">=</span> <span class="str">'newuser@test.com'</span>;</div>
+    </div>
+
+    <div class="editor-card">
+      <div class="editor-header">
+        <div class="editor-title">✏️ Exercise 2 — Post-API User Lookup</div>
+        <div class="editor-badge">BEGINNER</div>
+      </div>
+      <div class="editor-body">
+        <div class="editor-scenario">
+          <strong>Scenario:</strong> Your team's API <code>POST /api/users/register</code> returned 200 OK for email <strong>maria@test.com</strong>. Write a query to verify: 1) the user exists, 2) their status, 3) their plan, and 4) when they were created.
+        </div>
+        <div class="editor-hint">💡 Hint: SELECT the fields you need to verify. Filter by email using WHERE.</div>
+        <textarea class="sql-textarea" id="ed2" placeholder="-- Verify the API created the user correctly&#10;SELECT ..."></textarea>
+        <div class="editor-actions">
+          <button class="run-btn" onclick="runQuery(2)">▶ Run Query</button>
+          <button class="hint-btn" onclick="toggleHint(2)">💡 Show Hint</button>
+          <button class="reset-btn" onclick="resetEditor(2)">↺ Reset</button>
+        </div>
+        <div class="hint-panel" id="hint2">
+          Try: <code>SELECT email, status, plan, created_at FROM users WHERE email = 'maria@test.com'</code>
+        </div>
+        <div class="result-panel" id="result2"></div>
+      </div>
+    </div>
+
+    <div class="why-card">
+      <div class="why-label">💡 Real bug this catches</div>
+      <div class="why-text">API returns 200 OK. User record created. But the <strong>status was set to 'active' instead of 'pending'</strong> — the email verification step is bypassed. The UI test passes. The API test passes. Only the database validation catches it. <strong>That's the test that matters.</strong></div>
+    </div>
+
+    <div class="quiz-section">
+      <div class="quiz-title">🔍 Quick Check</div>
+      <div class="quiz-sub">Post-API database validation</div>
+      <div id="q2"></div>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- ══ 3. DUPLICATES ══ -->
+  <div class="lesson-section" id="s3">
+    <div class="section-header">
+      <div class="section-num" style="background:rgba(224,85,85,.15);color:var(--red)">3</div>
+      <div>
+        <div class="section-label">Concept 03 — Real Bug</div>
+        <div class="section-title">Bug: Duplicados con GROUP BY + HAVING</div>
+        <div class="section-sub">Finding the bug that the UI never shows — duplicate records hiding in the database.</div>
+      </div>
+    </div>
+
+    <div class="def-card red">
+      <div class="card-label" style="color:var(--red)">The Duplicate Bug</div>
+      <div class="card-text">A user registers twice with the same email. The UI shows one account. But the database has <strong>two records</strong>. This causes billing issues, duplicate emails, inconsistent data, and security vulnerabilities. <code>GROUP BY + HAVING COUNT > 1</code> finds them instantly.</div>
+    </div>
+
+    <div class="sql-block">
+      <div class="sql-header"><div class="sql-dots"><div class="sql-dot" style="background:#ff5f56"></div><div class="sql-dot" style="background:#ffbd2e"></div><div class="sql-dot" style="background:#27c93f"></div></div><div class="sql-lang">SQL — Finding Duplicates</div></div>
+      <div class="sql-pre"><span class="cmt">-- Find duplicate emails in users table</span>
+<span class="kw">SELECT</span>
+  email,
+  <span class="fn">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> occurrences
+<span class="kw">FROM</span> <span class="tbl">users</span>
+<span class="kw">GROUP BY</span> email
+<span class="kw">HAVING</span> <span class="fn">COUNT</span>(<span class="op">*</span>) <span class="op">></span> <span class="num">1</span>
+<span class="kw">ORDER BY</span> occurrences <span class="kw">DESC</span>;
+
+<span class="cmt">-- See ALL records for a specific duplicate</span>
+<span class="kw">SELECT</span> id, name, email, status, created_at
+<span class="kw">FROM</span> <span class="tbl">users</span>
+<span class="kw">WHERE</span> email <span class="op">=</span> <span class="str">'duplicate@test.com'</span>
+<span class="kw">ORDER BY</span> created_at;
+
+<span class="cmt">-- Count total duplicated records</span>
+<span class="kw">SELECT</span> <span class="fn">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> total_duplicates
+<span class="kw">FROM</span> (
+  <span class="kw">SELECT</span> email
+  <span class="kw">FROM</span> <span class="tbl">users</span>
+  <span class="kw">GROUP BY</span> email
+  <span class="kw">HAVING</span> <span class="fn">COUNT</span>(<span class="op">*</span>) <span class="op">></span> <span class="num">1</span>
+) <span class="kw">AS</span> dupes;</div>
+    </div>
+
+    <p style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:12px">⚠️ Bug Data — Duplicates hiding in the database</p>
+    <div class="data-table-wrap">
+      <table class="data-table">
+        <tr><th>id</th><th>name</th><th>email</th><th>status</th><th>created_at</th></tr>
+        <tr><td>1</td><td>Ana García</td><td class="td-ok">ana@test.com</td><td>active</td><td>2024-01-15</td></tr>
+        <tr><td>2</td><td>John Smith</td><td class="td-bad">john@test.com</td><td>active</td><td>2024-01-16</td></tr>
+        <tr><td>3</td><td>John Smith</td><td class="td-bad">john@test.com</td><td>pending</td><td>2024-01-16</td></tr>
+        <tr><td>4</td><td>María López</td><td class="td-bad">maria@test.com</td><td>pending</td><td>2024-01-17</td></tr>
+        <tr><td>5</td><td>María L.</td><td class="td-bad">maria@test.com</td><td>active</td><td>2024-01-18</td></tr>
+        <tr><td>6</td><td>Laura Chen</td><td class="td-ok">laura@test.com</td><td>active</td><td>2024-01-18</td></tr>
+      </table>
+    </div>
+
+    <div class="editor-card">
+      <div class="editor-header">
+        <div class="editor-title">✏️ Exercise 3 — Find the Duplicate Users</div>
+        <div class="editor-badge">INTERMEDIATE</div>
+      </div>
+      <div class="editor-body">
+        <div class="editor-scenario">
+          <strong>Bug Report received:</strong> "Some users are receiving duplicate welcome emails." You suspect duplicate records in the database. Write a query to find <strong>all emails that appear more than once</strong> in the users table, showing the email and how many times it appears.
+        </div>
+        <div class="editor-hint">💡 Hint: Use GROUP BY email with HAVING COUNT(*) > 1</div>
+        <textarea class="sql-textarea" id="ed3" placeholder="-- Find duplicate emails&#10;SELECT email, COUNT(*) AS ...&#10;FROM users&#10;GROUP BY ...&#10;HAVING ..."></textarea>
+        <div class="editor-actions">
+          <button class="run-btn" onclick="runQuery(3)">▶ Run Query</button>
+          <button class="hint-btn" onclick="toggleHint(3)">💡 Show Hint</button>
+          <button class="reset-btn" onclick="resetEditor(3)">↺ Reset</button>
+        </div>
+        <div class="hint-panel" id="hint3">
+          Try: <code>SELECT email, COUNT(*) AS occurrences FROM users GROUP BY email HAVING COUNT(*) > 1 ORDER BY occurrences DESC</code>
+        </div>
+        <div class="result-panel" id="result3"></div>
+      </div>
+    </div>
+
+    <div class="why-card">
+      <div class="why-label">💡 Why HAVING and not WHERE</div>
+      <div class="why-text"><strong>WHERE filters rows before grouping. HAVING filters groups after grouping.</strong> You can't use <code>WHERE COUNT(*) > 1</code> because COUNT is calculated after the GROUP BY. HAVING is specifically designed for filtering aggregated results. This distinction appears in ISTQB and in senior QA interviews.</div>
+    </div>
+
+    <div class="quiz-section">
+      <div class="quiz-title">🔍 Quick Check</div>
+      <div class="quiz-sub">GROUP BY + HAVING</div>
+      <div id="q3"></div>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- ══ 4. NULL VALIDATION ══ -->
+  <div class="lesson-section" id="s4">
+    <div class="section-header">
+      <div class="section-num" style="background:rgba(240,192,64,.15);color:var(--amber)">4</div>
+      <div>
+        <div class="section-label">Concept 04</div>
+        <div class="section-title">NULL Validation</div>
+        <div class="section-sub">NULL is not zero. NULL is not empty string. NULL is the unknown — and it breaks things.</div>
+      </div>
+    </div>
+
+    <div class="def-card orange" style="border-left-color:var(--amber)">
+      <div class="card-label" style="color:var(--amber)">NULL in databases</div>
+      <div class="card-text">NULL means <strong>no value — completely absent</strong>. It is not zero, not empty string, not false. NULL can break calculations, cause unexpected query results, and create display bugs. QA must validate that required fields are never NULL after operations that should populate them.</div>
+    </div>
+
+    <div class="sql-block">
+      <div class="sql-header"><div class="sql-dots"><div class="sql-dot" style="background:#ff5f56"></div><div class="sql-dot" style="background:#ffbd2e"></div><div class="sql-dot" style="background:#27c93f"></div></div><div class="sql-lang">SQL — NULL Validation Queries</div></div>
+      <div class="sql-pre"><span class="cmt">-- Find users with NULL email (should NEVER happen)</span>
+<span class="kw">SELECT</span> id, name, email, created_at
+<span class="kw">FROM</span> <span class="tbl">users</span>
+<span class="kw">WHERE</span> email <span class="kw">IS NULL</span>;
+
+<span class="cmt">-- Find orders with no promo code (NULL is OK here)</span>
+<span class="kw">SELECT</span> id, amount, promo_code
+<span class="kw">FROM</span> <span class="tbl">orders</span>
+<span class="kw">WHERE</span> promo_code <span class="kw">IS NOT NULL</span>;
+
+<span class="cmt">-- Count NULLs in critical fields</span>
+<span class="kw">SELECT</span>
+  <span class="fn">SUM</span>(<span class="kw">CASE WHEN</span> email <span class="kw">IS NULL THEN</span> <span class="num">1</span> <span class="kw">ELSE</span> <span class="num">0</span> <span class="kw">END</span>) <span class="kw">AS</span> null_emails,
+  <span class="fn">SUM</span>(<span class="kw">CASE WHEN</span> name <span class="kw">IS NULL THEN</span> <span class="num">1</span> <span class="kw">ELSE</span> <span class="num">0</span> <span class="kw">END</span>) <span class="kw">AS</span> null_names,
+  <span class="fn">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> total_users
+<span class="kw">FROM</span> <span class="tbl">users</span>;
+
+<span class="cmt">-- ⚠️ WRONG: This won't find NULLs!</span>
+<span class="kw">WHERE</span> email <span class="op">=</span> <span class="kw">NULL</span>   <span class="cmt">-- Always FALSE — use IS NULL</span></div>
+    </div>
+
+    <div class="editor-card">
+      <div class="editor-header">
+        <div class="editor-title">✏️ Exercise 4 — NULL Detection</div>
+        <div class="editor-badge">INTERMEDIATE</div>
+      </div>
+      <div class="editor-body">
+        <div class="editor-scenario">
+          <strong>Scenario:</strong> After a data migration, some user records might have missing required fields. Write a query to find all users where <strong>either their name OR their email is NULL</strong>. Show their id, name, email, and created_at.
+        </div>
+        <div class="editor-hint">💡 Hint: Use IS NULL with OR to check multiple fields.</div>
+        <textarea class="sql-textarea" id="ed4" placeholder="-- Find users with missing required data&#10;SELECT id, name, email, created_at&#10;FROM users&#10;WHERE ..."></textarea>
+        <div class="editor-actions">
+          <button class="run-btn" onclick="runQuery(4)">▶ Run Query</button>
+          <button class="hint-btn" onclick="toggleHint(4)">💡 Show Hint</button>
+          <button class="reset-btn" onclick="resetEditor(4)">↺ Reset</button>
+        </div>
+        <div class="hint-panel" id="hint4">
+          Try: <code>SELECT id, name, email, created_at FROM users WHERE name IS NULL OR email IS NULL</code>
+        </div>
+        <div class="result-panel" id="result4"></div>
+      </div>
+    </div>
+
+    <div class="why-card">
+      <div class="why-label">💡 The classic NULL trap</div>
+      <div class="why-text"><code style="color:var(--orange);font-family:'DM Mono',monospace">WHERE email = NULL</code> <strong>always returns 0 rows</strong> — even if NULLs exist. This is one of the most common SQL mistakes. NULL is never equal to anything, including itself. Always use <code style="color:var(--teal);font-family:'DM Mono',monospace">IS NULL</code> or <code style="color:var(--teal);font-family:'DM Mono',monospace">IS NOT NULL</code>.</div>
+    </div>
+
+    <div class="quiz-section">
+      <div class="quiz-title">🔍 Quick Check</div>
+      <div class="quiz-sub">NULL in SQL</div>
+      <div id="q4"></div>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- ══ 5. JOINS ══ -->
+  <div class="lesson-section" id="s5">
+    <div class="section-header">
+      <div class="section-num" style="background:rgba(155,111,247,.15);color:var(--purple)">5</div>
+      <div>
+        <div class="section-label">Concept 05</div>
+        <div class="section-title">JOINs para Cross-Table Validation</div>
+        <div class="section-sub">Data integrity across tables — the advanced QA weapon.</div>
+      </div>
+    </div>
+
+    <div class="def-card purple">
+      <div class="card-label" style="color:var(--purple)">Why JOINs matter for QA</div>
+      <div class="card-text">Real bugs often involve <strong>relationships between tables</strong>. A payment exists without an order. An order references a deleted user. A session has no owner. JOINs let you validate these relationships — and find the orphaned records that cause production incidents.</div>
+    </div>
+
+    <div class="sql-block">
+      <div class="sql-header"><div class="sql-dots"><div class="sql-dot" style="background:#ff5f56"></div><div class="sql-dot" style="background:#ffbd2e"></div><div class="sql-dot" style="background:#27c93f"></div></div><div class="sql-lang">SQL — JOIN Types for QA</div></div>
+      <div class="sql-pre"><span class="cmt">-- INNER JOIN: Only users who have orders</span>
+<span class="kw">SELECT</span> u.name, u.email, o.id <span class="kw">AS</span> order_id, o.amount, o.status
+<span class="kw">FROM</span> <span class="tbl">users</span> u
+<span class="kw">INNER JOIN</span> <span class="tbl">orders</span> o <span class="kw">ON</span> u.id <span class="op">=</span> o.user_id
+<span class="kw">WHERE</span> o.status <span class="op">=</span> <span class="str">'completed'</span>;
+
+<span class="cmt">-- LEFT JOIN: ALL users, with orders if they exist</span>
+<span class="kw">SELECT</span> u.name, u.email, o.id <span class="kw">AS</span> order_id
+<span class="kw">FROM</span> <span class="tbl">users</span> u
+<span class="kw">LEFT JOIN</span> <span class="tbl">orders</span> o <span class="kw">ON</span> u.id <span class="op">=</span> o.user_id;
+
+<span class="cmt">-- Find orphan orders (no matching user — data integrity bug!)</span>
+<span class="kw">SELECT</span> o.id, o.user_id, o.amount, o.created_at
+<span class="kw">FROM</span> <span class="tbl">orders</span> o
+<span class="kw">LEFT JOIN</span> <span class="tbl">users</span> u <span class="kw">ON</span> o.user_id <span class="op">=</span> u.id
+<span class="kw">WHERE</span> u.id <span class="kw">IS NULL</span>;  <span class="cmt">-- Orders with no owner!</span></div>
+    </div>
+
+    <div class="editor-card">
+      <div class="editor-header">
+        <div class="editor-title">✏️ Exercise 5 — Cross-Table Validation</div>
+        <div class="editor-badge">INTERMEDIATE</div>
+      </div>
+      <div class="editor-body">
+        <div class="editor-scenario">
+          <strong>Scenario:</strong> The payments team reports that some payments don't match any order in the system — possible data integrity bug. Write a query to find all payments that have <strong>no matching order</strong> (orphan payments). Show payment id, order_id, amount, and status.
+        </div>
+        <div class="editor-hint">💡 Hint: LEFT JOIN payments to orders. WHERE orders.id IS NULL finds the orphans.</div>
+        <textarea class="sql-textarea" id="ed5" placeholder="-- Find payments with no matching order&#10;SELECT p.id, p.order_id, p.amount, p.status&#10;FROM payments p&#10;LEFT JOIN orders o ON ...&#10;WHERE ..."></textarea>
+        <div class="editor-actions">
+          <button class="run-btn" onclick="runQuery(5)">▶ Run Query</button>
+          <button class="hint-btn" onclick="toggleHint(5)">💡 Show Hint</button>
+          <button class="reset-btn" onclick="resetEditor(5)">↺ Reset</button>
+        </div>
+        <div class="hint-panel" id="hint5">
+          Try: <code>SELECT p.id, p.order_id, p.amount, p.status FROM payments p LEFT JOIN orders o ON p.order_id = o.id WHERE o.id IS NULL</code>
+        </div>
+        <div class="result-panel" id="result5"></div>
+      </div>
+    </div>
+
+    <div class="why-card">
+      <div class="why-label">💡 INNER vs LEFT JOIN — know the difference</div>
+      <div class="why-text"><strong>INNER JOIN</strong> returns only rows that match in BOTH tables. <strong>LEFT JOIN</strong> returns ALL rows from the left table, with NULLs where there's no match on the right. For finding orphaned records, always use <strong>LEFT JOIN + WHERE right.id IS NULL</strong>. This is the most powerful data integrity pattern in QA SQL.</div>
+    </div>
+
+    <div class="quiz-section">
+      <div class="quiz-title">🔍 Quick Check</div>
+      <div class="quiz-sub">SQL JOINs for QA</div>
+      <div id="q5"></div>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- ══ 6. TIMESTAMPS ══ -->
+  <div class="lesson-section" id="s6">
+    <div class="section-header">
+      <div class="section-num" style="background:rgba(116,180,248,.15);color:var(--blue)">6</div>
+      <div>
+        <div class="section-label">Concept 06</div>
+        <div class="section-title">Timestamps & Date Validation</div>
+        <div class="section-sub">Time is data. Verify it like everything else.</div>
+      </div>
+    </div>
+
+    <div class="def-card blue">
+      <div class="card-label" style="color:var(--blue)">Why timestamps matter</div>
+      <div class="card-text">Timestamps tell you <strong>when</strong> something happened. Wrong timestamps break audit logs, expire sessions incorrectly, cause billing errors, and fail regulatory compliance. QA must validate that timestamps are correct, consistent, and in the right timezone.</div>
+    </div>
+
+    <div class="sql-block">
+      <div class="sql-header"><div class="sql-dots"><div class="sql-dot" style="background:#ff5f56"></div><div class="sql-dot" style="background:#ffbd2e"></div><div class="sql-dot" style="background:#27c93f"></div></div><div class="sql-lang">SQL — Timestamp Validation</div></div>
+      <div class="sql-pre"><span class="cmt">-- Find records created today</span>
+<span class="kw">SELECT</span> id, name, email, created_at
+<span class="kw">FROM</span> <span class="tbl">users</span>
+<span class="kw">WHERE</span> <span class="fn">DATE</span>(created_at) <span class="op">=</span> <span class="fn">CURRENT_DATE</span>;
+
+<span class="cmt">-- Find sessions that should be expired but aren't</span>
+<span class="kw">SELECT</span> id, user_id, token, expires_at
+<span class="kw">FROM</span> <span class="tbl">sessions</span>
+<span class="kw">WHERE</span> expires_at <span class="op">&lt;</span> <span class="fn">NOW</span>()
+  <span class="kw">AND</span> status <span class="op">=</span> <span class="str">'active'</span>;  <span class="cmt">-- Bug: expired but still active!</span>
+
+<span class="cmt">-- Orders in last 7 days</span>
+<span class="kw">SELECT</span> id, user_id, amount, created_at
+<span class="kw">FROM</span> <span class="tbl">orders</span>
+<span class="kw">WHERE</span> created_at <span class="op">>=</span> <span class="fn">NOW</span>() <span class="op">-</span> <span class="kw">INTERVAL</span> <span class="str">'7 days'</span>
+<span class="kw">ORDER BY</span> created_at <span class="kw">DESC</span>;
+
+<span class="cmt">-- Find orders where payment happened BEFORE the order</span>
+<span class="cmt">-- (Chronological integrity bug!)</span>
+<span class="kw">SELECT</span> o.id, o.created_at <span class="kw">AS</span> order_date,
+       p.processed_at <span class="kw">AS</span> payment_date
+<span class="kw">FROM</span> <span class="tbl">orders</span> o
+<span class="kw">JOIN</span> <span class="tbl">payments</span> p <span class="kw">ON</span> o.id <span class="op">=</span> p.order_id
+<span class="kw">WHERE</span> p.processed_at <span class="op">&lt;</span> o.created_at;  <span class="cmt">-- Paid before ordering?!</span></div>
+    </div>
+
+    <div class="editor-card">
+      <div class="editor-header">
+        <div class="editor-title">✏️ Exercise 6 — Session Expiry Bug</div>
+        <div class="editor-badge">INTERMEDIATE</div>
+      </div>
+      <div class="editor-body">
+        <div class="editor-scenario">
+          <strong>Bug reported:</strong> "Some users remain logged in after their session should have expired." Write a query to find all sessions where <strong>expires_at is in the past</strong> (before NOW), showing the session id, user_id, and expires_at. These are the phantom sessions that shouldn't exist.
+        </div>
+        <div class="editor-hint">💡 Hint: Compare expires_at with NOW() using &lt; operator.</div>
+        <textarea class="sql-textarea" id="ed6" placeholder="-- Find expired sessions still in the system&#10;SELECT id, user_id, expires_at&#10;FROM sessions&#10;WHERE ..."></textarea>
+        <div class="editor-actions">
+          <button class="run-btn" onclick="runQuery(6)">▶ Run Query</button>
+          <button class="hint-btn" onclick="toggleHint(6)">💡 Show Hint</button>
+          <button class="reset-btn" onclick="resetEditor(6)">↺ Reset</button>
+        </div>
+        <div class="hint-panel" id="hint6">
+          Try: <code>SELECT id, user_id, expires_at FROM sessions WHERE expires_at &lt; NOW() ORDER BY expires_at DESC</code>
+        </div>
+        <div class="result-panel" id="result6"></div>
+      </div>
+    </div>
+
+    <div class="why-card">
+      <div class="why-label">💡 Timestamp bugs in production</div>
+      <div class="why-text">The most dangerous timestamp bug: <strong>timezone mismatch</strong>. The app stores UTC, the query filters by local time — and suddenly users see orders from "tomorrow." Always verify which timezone your database uses and whether the application converts correctly. Ask developers: "What timezone is the DB set to?"</div>
+    </div>
+
+    <div class="quiz-section">
+      <div class="quiz-title">🔍 Quick Check</div>
+      <div class="quiz-sub">Timestamp validation</div>
+      <div id="q6"></div>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- ══ 7. FINAL BUG HUNT ══ -->
+  <div class="lesson-section" id="s7">
+    <div class="section-header">
+      <div class="section-num" style="background:rgba(126,201,74,.15);color:var(--green)">7</div>
+      <div>
+        <div class="section-label">Final Challenge</div>
+        <div class="section-title">🔍 Bug Hunt — Caso Completo</div>
+        <div class="section-sub">A production incident just landed in your inbox. Use everything you've learned.</div>
+      </div>
+    </div>
+
+    <div class="def-card green">
+      <div class="card-label" style="color:var(--green)">The Incident</div>
+      <div class="card-text">Production alert: <strong>"Some Pro plan users are being charged twice for the same month."</strong> You need to investigate using SQL. Find the affected users, the duplicate payments, and the timeline. This is a real QA investigation.</div>
+    </div>
+
+    <div class="editor-card">
+      <div class="editor-header">
+        <div class="editor-title">✏️ Final Exercise — Production Bug Investigation</div>
+        <div class="editor-badge">ADVANCED</div>
+      </div>
+      <div class="editor-body">
+        <div class="editor-scenario">
+          <strong>Mission:</strong> Find all users on the 'pro' plan who have <strong>more than one completed payment in the same month</strong>. Show: user name, email, month, and payment count. This will identify who was double-charged.<br><br>
+          <strong>Tables needed:</strong> users (name, email, plan) → orders (user_id) → payments (order_id, status, processed_at)
+        </div>
+        <div class="editor-hint">💡 Hint: JOIN users → orders → payments. Use GROUP BY with DATE_TRUNC or YEAR/MONTH. HAVING COUNT > 1.</div>
+        <textarea class="sql-textarea" id="ed7" style="min-height:160px" placeholder="-- Production bug investigation&#10;-- Find pro users charged more than once per month&#10;SELECT u.name, u.email, ...&#10;FROM users u&#10;JOIN orders o ON ...&#10;JOIN payments p ON ...&#10;WHERE u.plan = 'pro'&#10;  AND p.status = 'completed'&#10;GROUP BY ...&#10;HAVING ..."></textarea>
+        <div class="editor-actions">
+          <button class="run-btn" onclick="runQuery(7)">▶ Run Query</button>
+          <button class="hint-btn" onclick="toggleHint(7)">💡 Show Solution</button>
+          <button class="reset-btn" onclick="resetEditor(7)">↺ Reset</button>
+        </div>
+        <div class="hint-panel" id="hint7">
+          <strong>Full solution:</strong><br>
+          <code>SELECT u.name, u.email,<br>
+          DATE_FORMAT(p.processed_at, '%Y-%m') AS month,<br>
+          COUNT(*) AS payment_count<br>
+          FROM users u<br>
+          JOIN orders o ON u.id = o.user_id<br>
+          JOIN payments p ON o.id = p.order_id<br>
+          WHERE u.plan = 'pro'<br>
+          AND p.status = 'completed'<br>
+          GROUP BY u.id, u.name, u.email, month<br>
+          HAVING COUNT(*) > 1<br>
+          ORDER BY payment_count DESC</code>
+        </div>
+        <div class="result-panel" id="result7"></div>
+      </div>
+    </div>
+
+    <div class="why-card">
+      <div class="why-label">💡 This is real QA work</div>
+      <div class="why-text">This exact type of investigation happens in production every week at every tech company. <strong>The QA engineer who can open a DB client, write this query, and present the affected users to the dev team in 5 minutes</strong> — that's the QA engineer who gets promoted and hired for remote roles. SQL is not optional for senior QA.</div>
+    </div>
+
+    <div class="quiz-section">
+      <div class="quiz-title">🔍 Final Quiz</div>
+      <div class="quiz-sub">Put it all together</div>
+      <div id="q7"></div>
+    </div>
+  </div>
+
+  <!-- COMPLETE -->
+  <div class="complete-banner">
+    <span class="cb-trophy">🏆</span>
+    <div class="cb-title">SQL para QA — Complete!</div>
+    <div class="cb-sub">You can now query databases, find bugs, validate APIs, detect duplicates, hunt orphans, and investigate production incidents.</div>
+    <div class="cb-watson">"QAlemental, Dear Watson. The database has no secrets from you now."</div>
+    <div class="cb-btns">
+      <a href="index.html" class="cb-btn">← Main Menu</a>
+      <a href="qalingo-testing-manual.html" class="cb-btn2">Testing Manual →</a>
+    </div>
+  </div>
+
+</div>
+
+<div class="bnav">
+  <a href="index.html">🏠 Home</a>
+  <a href="qalingo-istqb-simulator.html">🎯 Exam</a>
+  <a href="qalingo-programming-qa.html">💻 Programming</a>
+  <a href="qalingo-testing-manual.html">📋 Manual</a>
+  <a href="qalingo-sql-qa.html" class="act">🗄️ SQL</a>
+  <a href="qalingo-glossary.html">📖 Glossary</a>
+</div>
+
+<script>
+// Theme
+(function(){
+  var L={'--dark':'#eef4fb','--d2':'#e0ecf7','--d3':'#cfe0f0','--card':'#f8fbff','--border':'#b8d4e8','--bhi':'#90b8d5','--text':'#0f1f35','--muted':'#3d607a','--white':'#0a1828'};
+  if(localStorage.getItem('qt')==='l'){var r=document.documentElement;Object.keys(L).forEach(function(k){r.style.setProperty(k,L[k]);});}
+})();
+
+// ══ SIMULATED DATABASE ══
+var DB = {
+  users: [
+    {id:1,name:'Ana García',email:'ana@test.com',status:'active',plan:'pro',country:'Colombia',created_at:'2024-01-15'},
+    {id:2,name:'John Smith',email:'john@test.com',status:'active',plan:'free',country:'USA',created_at:'2024-01-16'},
+    {id:3,name:'John Smith',email:'john@test.com',status:'pending',plan:'free',country:'USA',created_at:'2024-01-16'},
+    {id:4,name:'María López',email:'maria@test.com',status:'pending',plan:'free',country:'Mexico',created_at:'2024-01-17'},
+    {id:5,name:'María L.',email:'maria@test.com',status:'active',plan:'pro',country:'Colombia',created_at:'2024-01-18'},
+    {id:6,name:'Laura Chen',email:'laura@test.com',status:'active',plan:'pro',country:'Colombia',created_at:'2024-01-18'},
+    {id:7,name:'Carlos Ruiz',email:null,status:'active',plan:'pro',country:'Colombia',created_at:'2024-01-10'},
+    {id:8,name:null,email:'ghost@test.com',status:'pending',plan:'free',country:'USA',created_at:'2024-01-19'},
+  ],
+  orders: [
+    {id:101,user_id:1,amount:120,status:'completed',created_at:'2024-01-20',promo_code:'SAVE10'},
+    {id:102,user_id:1,amount:120,status:'completed',created_at:'2024-02-20',promo_code:null},
+    {id:103,user_id:5,amount:120,status:'completed',created_at:'2024-01-22',promo_code:null},
+    {id:104,user_id:5,amount:120,status:'completed',created_at:'2024-01-25',promo_code:null},
+    {id:105,user_id:6,amount:120,status:'completed',created_at:'2024-01-28',promo_code:null},
+    {id:106,user_id:99,amount:50,status:'completed',created_at:'2024-01-29',promo_code:null},
+  ],
+  payments: [
+    {id:201,order_id:101,amount:120,method:'card',status:'completed',processed_at:'2024-01-20'},
+    {id:202,order_id:102,amount:120,method:'card',status:'completed',processed_at:'2024-02-20'},
+    {id:203,order_id:103,amount:120,method:'card',status:'completed',processed_at:'2024-01-22'},
+    {id:204,order_id:104,amount:120,method:'card',status:'completed',processed_at:'2024-01-25'},
+    {id:205,order_id:105,amount:120,method:'card',status:'completed',processed_at:'2024-01-28'},
+    {id:206,order_id:999,amount:80,method:'paypal',status:'completed',processed_at:'2024-01-30'},
+  ],
+  sessions: [
+    {id:301,user_id:1,token:'abc123',created_at:'2024-01-10',expires_at:'2024-01-11',ip:'192.168.1.1'},
+    {id:302,user_id:2,token:'def456',created_at:'2024-01-15',expires_at:'2024-01-16',ip:'10.0.0.1'},
+    {id:303,user_id:5,token:'ghi789',created_at:'2024-01-18',expires_at:'2099-12-31',ip:'192.168.1.2'},
+  ]
+};
+
+// ══ QUERY EVALUATOR ══
+var EXERCISES = {
+  1: {
+    check: function(q) {
+      q = q.toLowerCase().replace(/\s+/g,' ').trim();
+      var hasSel = q.includes('select');
+      var hasFrom = q.includes('from') && q.includes('users');
+      var hasWhere = q.includes('where');
+      var hasStatus = q.includes("'active'") || q.includes('"active"');
+      var hasCountry = q.includes("'colombia'") || q.includes('"colombia"');
+      var hasOrder = q.includes('order by');
+      var score = [hasSel,hasFrom,hasWhere,hasStatus,hasCountry].filter(Boolean).length;
+      if(score >= 4) {
+        var rows = DB.users.filter(function(u){ return u.status==='active' && u.country==='Colombia'; });
+        return {ok:true, msg:'QAlemental! Query correctly filters active users from Colombia.', rows:rows, fields:['id','name','email','plan','created_at']};
+      }
+      var missing = [];
+      if(!hasStatus) missing.push("filter by status = 'active'");
+      if(!hasCountry) missing.push("filter by country = 'Colombia'");
+      return {ok:false, msg:"Almost there. Missing: " + missing.join(', ') + "."};
+    }
+  },
+  2: {
+    check: function(q) {
+      q = q.toLowerCase().replace(/\s+/g,' ').trim();
+      var hasEmail = q.includes('maria@test.com');
+      var hasWhere = q.includes('where');
+      var hasFrom = q.includes('from') && q.includes('users');
+      if(hasEmail && hasWhere && hasFrom) {
+        var rows = DB.users.filter(function(u){ return u.email==='maria@test.com'; });
+        return {ok:true, msg:"QAlemental! You found maría@test.com — notice she has status 'pending' (not 'active'). That's the bug the API missed.", rows:rows, fields:['email','status','plan','created_at']};
+      }
+      return {ok:false, msg:"Filter by email = 'maria@test.com' using a WHERE clause."};
+    }
+  },
+  3: {
+    check: function(q) {
+      q = q.toLowerCase().replace(/\s+/g,' ').trim();
+      var hasGroup = q.includes('group by');
+      var hasHaving = q.includes('having');
+      var hasCount = q.includes('count');
+      var hasEmail = q.includes('email');
+      if(hasGroup && hasHaving && hasCount && hasEmail) {
+        var dupes = [{email:'john@test.com',occurrences:2},{email:'maria@test.com',occurrences:2}];
+        return {ok:true, msg:"QAlemental! Found 2 emails with duplicates. john@test.com and maria@test.com each appear twice — two users registered with the same email.", rows:dupes, fields:['email','occurrences']};
+      }
+      var missing = [];
+      if(!hasGroup) missing.push('GROUP BY email');
+      if(!hasHaving) missing.push('HAVING COUNT(*) > 1');
+      return {ok:false, msg:"Missing: " + missing.join(' and ') + "."};
+    }
+  },
+  4: {
+    check: function(q) {
+      q = q.toLowerCase().replace(/\s+/g,' ').trim();
+      var hasIsNull = q.includes('is null');
+      var hasOr = q.includes(' or ');
+      var hasWhere = q.includes('where');
+      if(hasIsNull && hasWhere) {
+        var rows = DB.users.filter(function(u){ return u.name===null || u.email===null; });
+        return {ok:true, msg:"QAlemental! Found " + rows.length + " records with NULL in required fields. These would cause display errors and failed operations.", rows:rows, fields:['id','name','email','created_at']};
+      }
+      return {ok:false, msg:"Use IS NULL (not = NULL) to find missing values. Combine with OR to check multiple fields."};
+    }
+  },
+  5: {
+    check: function(q) {
+      q = q.toLowerCase().replace(/\s+/g,' ').trim();
+      var hasJoin = q.includes('join');
+      var hasOrders = q.includes('orders');
+      var hasPayments = q.includes('payments');
+      var hasIsNull = q.includes('is null');
+      if(hasJoin && hasOrders && hasPayments && hasIsNull) {
+        var rows = [{id:206,order_id:999,amount:80,status:'completed'}];
+        return {ok:true, msg:"QAlemental! Found 1 orphan payment (id:206) referencing order_id:999 which doesn't exist. That's the data integrity bug — a payment with no parent order.", rows:rows, fields:['id','order_id','amount','status']};
+      }
+      var missing = [];
+      if(!hasJoin) missing.push('JOIN orders');
+      if(!hasIsNull) missing.push('WHERE orders.id IS NULL');
+      return {ok:false, msg:"Use LEFT JOIN payments to orders. Then WHERE orders.id IS NULL to find orphans. Missing: " + missing.join(', ')};
+    }
+  },
+  6: {
+    check: function(q) {
+      q = q.toLowerCase().replace(/\s+/g,' ').trim();
+      var hasSessions = q.includes('sessions');
+      var hasExpires = q.includes('expires_at');
+      var hasNow = q.includes('now()') || q.includes('current_timestamp') || q.includes('getdate');
+      var hasLt = q.includes('<') || q.includes('before');
+      if(hasSessions && hasExpires && (hasNow || hasLt)) {
+        var rows = DB.sessions.filter(function(s){ return s.expires_at < '2025-01-01'; });
+        return {ok:true, msg:"QAlemental! Found " + rows.length + " expired sessions still in the system. Sessions 301 and 302 expired in Jan 2024 but were never cleaned up — security risk!", rows:rows, fields:['id','user_id','expires_at']};
+      }
+      return {ok:false, msg:"Query the sessions table. Compare expires_at < NOW() to find sessions that should have expired."};
+    }
+  },
+  7: {
+    check: function(q) {
+      q = q.toLowerCase().replace(/\s+/g,' ').trim();
+      var hasJoins = (q.match(/join/g)||[]).length >= 2;
+      var hasGroup = q.includes('group by');
+      var hasHaving = q.includes('having');
+      var hasPro = q.includes("'pro'");
+      var hasPayments = q.includes('payments');
+      var score = [hasJoins,hasGroup,hasHaving,hasPro,hasPayments].filter(Boolean).length;
+      if(score >= 4) {
+        var rows = [
+          {name:'Ana García',email:'ana@test.com',month:'2024-01',payment_count:1},
+          {name:'María L.',email:'maria@test.com',month:'2024-01',payment_count:2},
+        ].filter(function(r){ return r.payment_count > 1; });
+        return {ok:true, msg:"QAlemental! Found the double-charged user: María L. (maria@test.com) was charged twice in January 2024 — orders 103 and 104 both completed with payments in the same month. Bug confirmed!", rows:rows, fields:['name','email','month','payment_count']};
+      }
+      var tips = [];
+      if(!hasJoins) tips.push('JOIN users → orders → payments (2 JOINs needed)');
+      if(!hasGroup) tips.push('GROUP BY user + month');
+      if(!hasHaving) tips.push('HAVING COUNT(*) > 1');
+      return {ok:false, msg:"Complex query — keep going! Tips: " + tips.join(' · ')};
+    }
+  }
+};
+
+// ══ QUIZZES ══
+var QUIZZES = [
+  {q:"After running INSERT INTO users via an API, how do you verify the record was saved correctly?",
+   opts:["Trust the 200 OK response from the API","Check the UI for a success message","Run SELECT * FROM users WHERE email = 'newuser@email.com'","Ask the developer if it worked"],
+   ans:2,
+   expl:"The correct approach is to query the database directly. The API and UI can both show success while the data is wrong, missing, or has incorrect default values. Direct database validation is the only reliable verification."},
+  {q:"Which SQL clause is used to filter AFTER grouping rows?",
+   opts:["WHERE","FILTER","HAVING","AFTER"],
+   ans:2,
+   expl:"HAVING filters groups created by GROUP BY. WHERE filters individual rows BEFORE grouping. You cannot use WHERE with aggregate functions like COUNT() — you must use HAVING. This is one of the most tested SQL concepts in QA interviews."},
+  {q:"You need to find users that appear more than once in the database. Which query is correct?",
+   opts:["SELECT email FROM users WHERE COUNT(*) > 1","SELECT email, COUNT(*) FROM users GROUP BY email HAVING COUNT(*) > 1","SELECT DISTINCT email FROM users","SELECT email FROM users ORDER BY email"],
+   ans:1,
+   expl:"GROUP BY email groups all rows with the same email together. COUNT(*) counts how many are in each group. HAVING COUNT(*) > 1 then keeps only the groups with more than one record — revealing duplicates."},
+  {q:"What is the correct way to find records where a field has no value in SQL?",
+   opts:["WHERE email = NULL","WHERE email = ''","WHERE email IS NULL","WHERE email = 0"],
+   ans:2,
+   expl:"NULL cannot be compared with = because NULL is not equal to anything, not even itself. IS NULL is the only correct operator. WHERE email = NULL always returns 0 rows, even when NULLs exist. This is one of the most common SQL mistakes."},
+  {q:"You need ALL users AND their orders (if any exist). Which JOIN type should you use?",
+   opts:["INNER JOIN — only users with orders","LEFT JOIN — all users, orders if they exist","RIGHT JOIN — all orders, users if they exist","FULL JOIN — everything from both tables"],
+   ans:1,
+   expl:"LEFT JOIN returns ALL rows from the left table (users) and matching rows from the right table (orders). When a user has no orders, the order columns will be NULL. This is the most common JOIN for QA validation — it shows you everything, including the gaps."},
+  {q:"A session has expires_at = '2024-01-15' and today is 2024-06-01. What query correctly identifies this as an expired session?",
+   opts:["WHERE expires_at = NULL","WHERE expires_at > NOW()","WHERE expires_at < NOW()","WHERE expires_at IS EXPIRED"],
+   ans:2,
+   expl:"expires_at < NOW() means 'expires_at is in the past' — which correctly identifies expired sessions. expires_at > NOW() would find sessions that are STILL valid. SQL has no IS EXPIRED operator — you build the logic yourself with date comparisons."},
+  {q:"To find users double-charged in the same month, you need to JOIN users → orders → payments. How many JOIN clauses does your query need?",
+   opts:["1 JOIN","2 JOINs","3 JOINs","No JOINs — use subqueries only"],
+   ans:1,
+   expl:"You need 2 JOINs: JOIN orders ON users.id = orders.user_id, then JOIN payments ON orders.id = payments.order_id. Each JOIN connects one table to the next. The number of JOINs = number of tables - 1 (when chaining linearly)."}
+];
+
+var qStates = QUIZZES.map(function(){ return {answered:false}; });
+var completedExercises = 0;
+
+function runQuery(n) {
+  var ta = document.getElementById('ed' + n);
+  var panel = document.getElementById('result' + n);
+  var q = ta.value.trim();
+  if(!q || q.length < 10) {
+    panel.innerHTML = '<div class="result-error"><div class="result-title" style="color:var(--red)">❌ Empty Query</div><div class="result-msg">Write a SQL query first, then click Run.</div></div>';
+    panel.classList.add('show'); return;
+  }
+  var ex = EXERCISES[n];
+  var res = ex.check(q);
+  if(res.ok) {
+    var tableHtml = '';
+    if(res.rows && res.rows.length > 0) {
+      tableHtml = '<div class="result-table-wrap"><table class="result-table"><tr>' +
+        res.fields.map(function(f){ return '<th>'+f+'</th>'; }).join('') + '</tr>' +
+        res.rows.map(function(row){
+          return '<tr>' + res.fields.map(function(f){
+            var v = row[f];
+            return '<td>' + (v === null ? '<span style="color:var(--muted);font-style:italic">NULL</span>' : v) + '</td>';
+          }).join('') + '</tr>';
+        }).join('') + '</table></div>';
+      tableHtml += '<div style="font-family:\'DM Mono\',monospace;font-size:11px;color:var(--muted);margin-top:8px">'+res.rows.length+' row(s) returned</div>';
+    } else {
+      tableHtml = '<div style="font-size:13px;color:var(--green);margin-top:8px">✅ 0 rows — no issues found (or expected result for this query)</div>';
+    }
+    panel.innerHTML = '<div class="result-success"><div class="result-title" style="color:var(--green)">✅ Query Accepted</div><div class="result-msg">'+res.msg+'</div></div>' + tableHtml +
+      '<div class="q-explain">Q says: "'+res.msg+'"</div>';
+    completedExercises++;
+    updateProgress();
+  } else {
+    panel.innerHTML = '<div class="result-partial"><div class="result-title" style="color:var(--amber)">⚠️ Not quite right</div><div class="result-msg">'+res.msg+'</div></div>';
+  }
+  panel.classList.add('show');
+}
+
+function toggleHint(n) {
+  var h = document.getElementById('hint' + n);
+  h.classList.toggle('show');
+}
+
+function resetEditor(n) {
+  document.getElementById('ed'+n).value = '';
+  var panel = document.getElementById('result'+n);
+  panel.classList.remove('show');
+  var hint = document.getElementById('hint'+n);
+  hint.classList.remove('show');
+}
+
+function renderQuiz(idx) {
+  var q = QUIZZES[idx];
+  var el = document.getElementById('q'+(idx+1));
+  if(!el) return;
+  var ltrs=['A','B','C','D'];
+  el.innerHTML = '<div class="quiz-q-text">'+q.q+'</div>'+
+    '<div class="quiz-opts">'+
+    q.opts.map(function(opt,i){
+      return '<button class="quiz-opt" onclick="selectOpt('+idx+','+i+',this)">'+
+        '<div class="opt-ltr">'+ltrs[i]+'</div><span>'+opt+'</span></button>';
+    }).join('')+
+    '</div><div class="quiz-fb" id="qfb'+idx+'"></div>';
+}
+
+function selectOpt(qIdx, optIdx, btn) {
+  if(qStates[qIdx].answered) return;
+  qStates[qIdx].answered = true;
+  var q = QUIZZES[qIdx];
+  var el = document.getElementById('q'+(qIdx+1));
+  el.querySelectorAll('.quiz-opt').forEach(function(b){ b.classList.add('locked'); b.disabled=true; });
+  var isOk = optIdx === q.ans;
+  if(isOk) btn.classList.add('correct');
+  else { btn.classList.add('wrong'); el.querySelectorAll('.quiz-opt')[q.ans].classList.add('correct'); }
+  var fb = document.getElementById('qfb'+qIdx);
+  fb.innerHTML = (isOk ? '<strong style="color:var(--green)">QAlemental, Watson.</strong> ' : '<strong style="color:var(--red)">Not quite, Watson.</strong> ') +
+    '<div class="quiz-expl">'+q.expl+'</div>';
+  fb.classList.add('show');
+  updateProgress();
+}
+
+function updateProgress() {
+  var quizDone = qStates.filter(function(s){ return s.answered; }).length;
+  var total = QUIZZES.length + 7;
+  var done = quizDone + Math.min(completedExercises, 7);
+  document.getElementById('progressBar').style.width = (done/total*100)+'%';
+}
+
+window.addEventListener('scroll', function(){
+  var pct = Math.min((window.scrollY/(document.body.scrollHeight-window.innerHeight))*100,100);
+  var quizPct = (qStates.filter(function(s){return s.answered;}).length/QUIZZES.length)*100;
+  document.getElementById('progressBar').style.width = Math.max(pct,quizPct)+'%';
+});
+
+QUIZZES.forEach(function(_,i){ renderQuiz(i); });
+</script>
+</body>
+</html>
