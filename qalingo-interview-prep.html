@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+(function(){
+  var LIGHT={
+    '--dark':'#eef4fb','--d2':'#e0ecf7','--d3':'#cfe0f0',
+    '--card':'#f8fbff','--border':'#b8d4e8','--bhi':'#90b8d5',
+    '--text':'#0f1f35','--muted':'#3d607a','--white':'#0a1828',
+    '--nav-bg':'rgba(238,244,251,.97)','--bnav-bg':'rgba(238,244,251,.97)'
+  };
+  if(localStorage.getItem('qt')==='l'){
+    var r=document.documentElement;
+    Object.keys(LIGHT).forEach(function(k){r.style.setProperty(k,LIGHT[k]);});
+    r.setAttribute('data-theme','light');
+  }
+})();
+</script>
+<meta charset="UTF-8">
+  <script>
+    (function(){
+      var LIGHT={
+        '--dark':'#f0f4f8','--d2':'#e2e8f0','--d3':'#d1dce8',
+        '--card':'#ffffff','--border':'#c8d6e5','--bhi':'#a8bccc',
+        '--text':'#1a2535','--muted':'#4a6480','--white':'#0d1319',
+        '--nav-bg':'rgba(240,244,248,.95)','--bnav-bg':'rgba(240,244,248,.97)'
+      };
+      if(localStorage.getItem('qt')==='l'){
+        var r=document.documentElement;
+        Object.keys(LIGHT).forEach(function(k){r.style.setProperty(k,LIGHT[k]);});
+      }
+    })();
+  </script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QALingo — Interview Prep</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --teal: #1aab98;
+  --teal-dim: #137a6d;
+  --teal-glow: rgba(26,171,152,0.15);
+  --green: #7ec94a;
+  --red: #e05555;
+  --amber: #f0c040;
+  --purple: #9b6ff7;
+  --dark: #07090d;
+  --dark2: #0b0f16;
+  --dark3: #10161f;
+  --card: #0f1520;
+  --border: #1a2535;
+  --border-hi: #253545;
+  --text: #dde8f0;
+  --muted: #5a7490;
+  --white: #eef3f8;
+}
+
+html, body { height: 100%; }
+body {
+  background: var(--dark);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── TOPBAR ── */
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 28px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(7,9,13,0.95);
+  backdrop-filter: blur(12px);
+  position: sticky; top: 0; z-index: 100;
+}
+.logo {
+  font-family: 'Syne', sans-serif; font-weight: 800; font-size: 18px;
+  display: flex; align-items: center; gap: 10px;
+}
+.logo-icon {
+  width: 32px; height: 32px;
+  background: linear-gradient(135deg, var(--teal-dim), var(--teal));
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+}
+.logo span.qa { color: var(--teal); }
+.logo span.li { color: var(--green); }
+.section-tag {
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--muted);
+  background: var(--dark3); border: 1px solid var(--border);
+  padding: 4px 10px; border-radius: 6px;
+}
+.streak-pill {
+  display: flex; align-items: center; gap: 6px;
+  font-family: 'Syne', sans-serif; font-weight: 700; font-size: 13px;
+  color: var(--amber);
+  background: rgba(240,192,64,0.08);
+  border: 1px solid rgba(240,192,64,0.2);
+  border-radius: 20px; padding: 5px 12px;
+}
+
+/* ── LAYOUT ── */
+.app { display: flex; min-height: calc(100vh - 65px); }
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width: 280px; flex-shrink: 0;
+  border-right: 1px solid var(--border);
+  padding: 28px 20px;
+  display: flex; flex-direction: column; gap: 6px;
+  background: var(--dark2);
+  overflow-y: auto;
+}
+.sidebar-label {
+  font-family: 'DM Mono', monospace; font-size: 9px;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--muted); padding: 0 8px;
+  margin-bottom: 8px; margin-top: 16px;
+}
+.sidebar-label:first-child { margin-top: 0; }
+.level-btn {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 14px; border-radius: 10px;
+  cursor: pointer; border: 1px solid transparent;
+  transition: all 0.15s; background: transparent; width: 100%;
+  text-align: left;
+}
+.level-btn:hover { background: var(--dark3); border-color: var(--border); }
+.level-btn.active {
+  background: var(--teal-glow); border-color: rgba(26,171,152,0.3);
+}
+.lvl-dot {
+  width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+}
+.lvl-info { flex: 1; }
+.lvl-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 13px; color: var(--white); }
+.lvl-count { font-size: 11px; color: var(--muted); margin-top: 1px; }
+.lvl-badge {
+  font-family: 'DM Mono', monospace; font-size: 9px;
+  padding: 2px 7px; border-radius: 4px; font-weight: 500;
+}
+
+.mode-btn {
+  display: flex; align-items: center; gap: 10px;
+  padding: 11px 14px; border-radius: 10px;
+  cursor: pointer; border: 1px solid transparent;
+  transition: all 0.15s; background: transparent; width: 100%;
+  text-align: left;
+}
+.mode-btn:hover { background: var(--dark3); border-color: var(--border); }
+.mode-btn.active { background: rgba(155,111,247,0.08); border-color: rgba(155,111,247,0.25); }
+.mode-icon { font-size: 16px; }
+.mode-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 13px; color: var(--white); }
+.mode-desc { font-size: 11px; color: var(--muted); }
+
+/* ── MAIN CONTENT ── */
+.content {
+  flex: 1; padding: 36px 40px;
+  max-width: 800px; margin: 0 auto;
+  display: flex; flex-direction: column;
+}
+
+/* ── VIEW STATES ── */
+.view { display: none; }
+.view.active { display: flex; flex-direction: column; }
+
+/* ── QUESTION CARD ── */
+.q-header {
+  display: flex; align-items: flex-start; gap: 16px; margin-bottom: 28px;
+}
+.q-avatar {
+  width: 48px; height: 48px;
+  background: linear-gradient(135deg, var(--teal-dim), var(--teal));
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; flex-shrink: 0;
+  box-shadow: 0 4px 20px var(--teal-glow);
+  animation: qfloat 3s ease-in-out infinite;
+}
+@keyframes qfloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-5px)} }
+
+.q-meta { flex: 1; }
+.q-label {
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  letter-spacing: 1.5px; text-transform: uppercase; color: var(--teal);
+  margin-bottom: 4px;
+}
+.q-level-tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; color: var(--muted);
+}
+.timer-wrap {
+  display: flex; align-items: center; gap: 8px;
+  font-family: 'DM Mono', monospace; font-size: 13px; color: var(--muted);
+}
+.timer-num { color: var(--white); font-size: 15px; font-weight: 500; }
+.timer-bar-wrap {
+  width: 80px; height: 4px; background: var(--dark3);
+  border-radius: 4px; overflow: hidden;
+}
+.timer-bar {
+  height: 100%; background: var(--teal);
+  border-radius: 4px; transition: width 1s linear, background 0.5s;
+}
+
+.question-text {
+  font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 700;
+  color: var(--white); line-height: 1.3; letter-spacing: -0.5px;
+  margin-bottom: 8px;
+  animation: fadeUp 0.4s ease both;
+}
+@keyframes fadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+
+.question-hint {
+  font-size: 13px; color: var(--muted); margin-bottom: 24px;
+  font-style: italic;
+  animation: fadeUp 0.4s ease 0.05s both;
+}
+
+/* TIPS ROW */
+.tips-row {
+  display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px;
+  animation: fadeUp 0.4s ease 0.1s both;
+}
+.tip-chip {
+  display: flex; align-items: center; gap: 6px;
+  background: var(--dark3); border: 1px solid var(--border);
+  border-radius: 8px; padding: 6px 12px;
+  font-size: 11px; color: var(--muted);
+}
+.tip-chip span { color: var(--text); font-weight: 500; }
+
+/* TEXTAREA */
+.answer-wrap {
+  position: relative; margin-bottom: 16px;
+  animation: fadeUp 0.4s ease 0.15s both;
+}
+.answer-textarea {
+  width: 100%; min-height: 180px;
+  background: var(--dark3); border: 1.5px solid var(--border);
+  border-radius: 14px; padding: 20px;
+  color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 15px;
+  line-height: 1.7; resize: vertical; outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.answer-textarea::placeholder { color: var(--muted); }
+.answer-textarea:focus {
+  border-color: var(--teal);
+  box-shadow: 0 0 0 3px var(--teal-glow);
+}
+.char-count {
+  position: absolute; bottom: 12px; right: 16px;
+  font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted);
+}
+
+.submit-row {
+  display: flex; align-items: center; gap: 12px;
+  animation: fadeUp 0.4s ease 0.2s both;
+}
+.submit-btn {
+  background: linear-gradient(135deg, var(--teal), var(--teal-dim));
+  color: #fff; border: none; border-radius: 12px;
+  padding: 15px 28px;
+  font-family: 'Syne', sans-serif; font-weight: 700; font-size: 15px;
+  cursor: pointer; transition: all 0.15s;
+  box-shadow: 0 4px 20px var(--teal-glow);
+  display: flex; align-items: center; gap: 8px;
+}
+.submit-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 28px var(--teal-glow); }
+.submit-btn:disabled { opacity: 0.5; cursor: default; transform: none; }
+.skip-btn {
+  background: transparent; border: 1px solid var(--border);
+  color: var(--muted); border-radius: 12px; padding: 15px 20px;
+  font-family: 'Syne', sans-serif; font-weight: 600; font-size: 14px;
+  cursor: pointer; transition: all 0.15s;
+}
+.skip-btn:hover { border-color: var(--border-hi); color: var(--text); }
+
+/* ── FEEDBACK CARD ── */
+.feedback-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 18px; padding: 28px;
+  margin-top: 24px; display: none;
+  animation: slideUp 0.45s cubic-bezier(0.34,1.2,0.64,1) both;
+}
+@keyframes slideUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+.feedback-card.visible { display: block; }
+
+.fb-top-row {
+  display: flex; align-items: flex-start; gap: 16px; margin-bottom: 20px;
+}
+.fb-q-icon {
+  width: 44px; height: 44px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; flex-shrink: 0;
+}
+.fb-q-icon.great { background: rgba(126,201,74,0.15); }
+.fb-q-icon.good { background: rgba(26,171,152,0.15); }
+.fb-q-icon.meh { background: rgba(240,192,64,0.12); }
+.fb-q-icon.weak { background: rgba(224,85,85,0.1); }
+
+.fb-verdict {
+  font-family: 'Syne', sans-serif; font-weight: 800; font-size: 20px;
+  margin-bottom: 3px; letter-spacing: -0.5px;
+}
+.fb-watson {
+  font-family: 'Instrument Serif', serif; font-style: italic;
+  font-size: 13px; color: var(--teal);
+}
+
+/* SCORE BARS */
+.score-grid {
+  display: grid; grid-template-columns: repeat(3,1fr); gap: 12px;
+  margin-bottom: 24px;
+}
+.score-item { text-align: center; }
+.score-ring {
+  width: 64px; height: 64px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 8px;
+  font-family: 'Syne', sans-serif; font-weight: 800; font-size: 18px;
+  position: relative;
+}
+.score-ring svg { position: absolute; inset: 0; transform: rotate(-90deg); }
+.score-ring .ring-val { position: relative; z-index: 1; }
+.score-name {
+  font-size: 11px; color: var(--muted);
+  font-family: 'DM Mono', monospace; letter-spacing: 0.5px;
+}
+
+/* FEEDBACK SECTIONS */
+.fb-section { margin-bottom: 20px; }
+.fb-section-title {
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 10px;
+  display: flex; align-items: center; gap: 8px;
+}
+.fb-section-title::after { content:''; flex:1; height:1px; background:var(--border); }
+
+.fb-points { display: flex; flex-direction: column; gap: 8px; }
+.fb-point {
+  display: flex; gap: 10px; align-items: flex-start;
+  font-size: 13px; line-height: 1.5;
+}
+.fb-point-icon { flex-shrink: 0; margin-top: 1px; }
+.fb-point.strength { color: var(--text); }
+.fb-point.improve { color: var(--text); }
+.fb-point.tip { color: var(--muted); }
+
+.model-answer {
+  background: var(--dark3); border: 1px solid var(--border);
+  border-left: 3px solid var(--teal);
+  border-radius: 0 12px 12px 0; padding: 16px 18px;
+  font-size: 13px; color: var(--muted); line-height: 1.7;
+  font-style: italic;
+}
+.model-answer strong { color: var(--text); font-style: normal; }
+
+.next-q-btn {
+  background: var(--teal); color: #fff; border: none;
+  border-radius: 12px; padding: 15px 28px; width: 100%;
+  font-family: 'Syne', sans-serif; font-weight: 700; font-size: 15px;
+  cursor: pointer; transition: all 0.15s; margin-top: 20px;
+}
+.next-q-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+
+/* ── HOME VIEW ── */
+.home-hero {
+  text-align: center; padding: 40px 20px 32px;
+}
+.home-mascot { font-size: 64px; margin-bottom: 16px; animation: qfloat 3s ease-in-out infinite; }
+.home-h {
+  font-family: 'Syne', sans-serif; font-size: 32px; font-weight: 800;
+  color: var(--white); letter-spacing: -1px; margin-bottom: 8px;
+}
+.home-h span { color: var(--teal); }
+.home-sub { font-size: 15px; color: var(--muted); max-width: 420px; margin: 0 auto 32px; line-height: 1.6; }
+
+.level-cards { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-bottom: 32px; }
+.level-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 14px; padding: 20px;
+  cursor: pointer; transition: all 0.2s; text-align: left;
+}
+.level-card:hover { border-color: var(--border-hi); transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,0,0,0.3); }
+.lc-icon { font-size: 28px; margin-bottom: 10px; }
+.lc-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px; color: var(--white); margin-bottom: 4px; }
+.lc-desc { font-size: 12px; color: var(--muted); line-height: 1.4; }
+.lc-count { font-family: 'DM Mono', monospace; font-size: 10px; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
+
+.mode-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.mode-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 14px; padding: 20px;
+  cursor: pointer; transition: all 0.2s;
+  display: flex; align-items: flex-start; gap: 14px;
+}
+.mode-card:hover { border-color: var(--border-hi); transform: translateY(-2px); }
+.mc-icon { font-size: 28px; flex-shrink: 0; }
+.mc-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px; color: var(--white); margin-bottom: 4px; }
+.mc-desc { font-size: 12px; color: var(--muted); line-height: 1.4; }
+
+/* SIMULATION MODE */
+.sim-header {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 14px; padding: 20px 24px;
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 24px;
+}
+.sim-progress-text {
+  font-family: 'Syne', sans-serif; font-weight: 700; font-size: 15px; color: var(--white);
+}
+.sim-timer {
+  font-family: 'DM Mono', monospace; font-size: 22px; font-weight: 500;
+  color: var(--amber);
+}
+.sim-bar-wrap { flex: 1; height: 6px; background: var(--dark3); border-radius: 6px; margin: 0 20px; }
+.sim-bar { height: 100%; background: linear-gradient(90deg,var(--teal),var(--green)); border-radius: 6px; transition: width 0.5s; }
+
+/* LOADING */
+.loading-state {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 16px; padding: 40px; text-align: center;
+}
+.spinner {
+  width: 40px; height: 40px; border: 3px solid var(--border);
+  border-top-color: var(--teal); border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to{transform:rotate(360deg)} }
+.loading-text { font-size: 14px; color: var(--muted); font-style: italic; }
+.loading-watson { font-family: 'Instrument Serif', serif; font-style: italic; color: var(--teal); font-size: 15px; }
+
+/* REPORT CARD */
+.report-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 18px; padding: 32px; text-align: center;
+  animation: slideUp 0.5s ease both;
+}
+.report-trophy { font-size: 60px; margin-bottom: 16px; }
+.report-h { font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 800; color: var(--white); letter-spacing: -1px; margin-bottom: 8px; }
+.report-sub { font-size: 14px; color: var(--muted); margin-bottom: 28px; }
+.report-stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-bottom: 28px; }
+.rs { background: var(--dark3); border: 1px solid var(--border); border-radius: 12px; padding: 16px 10px; }
+.rs-val { font-family: 'Syne', sans-serif; font-size: 26px; font-weight: 800; margin-bottom: 4px; }
+.rs-label { font-size: 10px; color: var(--muted); font-family: 'DM Mono', monospace; }
+.report-watson { font-family: 'Instrument Serif', serif; font-style: italic; font-size: 16px; color: var(--teal); margin-bottom: 24px; line-height: 1.5; }
+.report-btn { background: var(--teal); color: #fff; border: none; border-radius: 12px; padding: 15px 32px; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 15px; cursor: pointer; transition: all 0.15s; }
+.report-btn:hover { transform: translateY(-2px); }
+
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .content { padding: 20px 16px; }
+  .level-cards, .mode-cards { grid-template-columns: 1fr; }
+  .score-grid { grid-template-columns: repeat(3,1fr); }
+  .report-stats { grid-template-columns: repeat(2,1fr); }
+}
+
+/* BACK TO MAIN MENU */
+.back-home {
+  position: fixed;
+  top: 70px;
+  left: 16px;
+  z-index: 150;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--card, #111820);
+  border: 1px solid var(--border, #1e2e3e);
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  color: var(--muted, #6a8099);
+  text-decoration: none;
+  transition: all .15s;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 2px 12px rgba(0,0,0,.3);
+}
+.back-home:hover {
+  border-color: var(--teal, #1aab98);
+  color: var(--teal, #1aab98);
+  transform: translateX(-2px);
+}
+.back-home .bh-arrow { font-size: 14px; }
+
+
+/* ── GLOBAL UI IMPROVEMENTS ── */
+button:not(.back-home) {
+  letter-spacing: .2px;
+}
+/* Consistent teal primary on all action buttons */
+.submit-btn, .continue-btn, .nav-btn.primary, .finish-btn, .start-btn,
+.daily-btn, .restart-btn, .report-btn, .action-btn.primary {
+  box-shadow: 0 6px 24px rgba(26,171,152,.3) !important;
+  font-size: 15px !important;
+  padding: 15px 28px !important;
+  border-radius: 12px !important;
+  font-weight: 800 !important;
+  letter-spacing: .3px !important;
+}
+/* Better card spacing */
+.lesson-card, .feat-card, .feedback-card,
+.interview-card, .step-card, .plan-card {
+  padding: 32px !important;
+  border-radius: 18px !important;
+}
+/* Better option spacing */
+.option, .opt, .quiz-opt {
+  padding: 16px 20px !important;
+  border-radius: 14px !important;
+  font-size: 15px !important;
+  line-height: 1.5 !important;
+}
+/* Bigger question text */
+.question-text, .ex-question, .q-text {
+  font-size: 21px !important;
+  line-height: 1.3 !important;
+  letter-spacing: -.3px !important;
+  margin-bottom: 24px !important;
+}
+/* Section labels consistent */
+.lesson-label, .section-label, .chapter-tag,
+.q-label, .ic-label, .daily-tag {
+  letter-spacing: 2.5px !important;
+  font-size: 11px !important;
+}
+/* More breathing room between elements */
+.options, .opts-list {
+  gap: 12px !important;
+}
+
+
+/* MAGNIFYING GLASS CURSOR */
+body{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='13' cy='13' r='9' fill='none' stroke='%231aab98' stroke-width='2.5'/%3E%3Ccircle cx='13' cy='13' r='5' fill='rgba(26%2C171%2C152%2C0.15)'/%3E%3Cline x1='20' y1='20' x2='28' y2='28' stroke='%231aab98' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E") 13 13, auto !important}
+a,button,input,textarea,select,[onclick]{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='13' cy='13' r='9' fill='rgba(26%2C171%2C152%2C0.2)' stroke='%231aab98' stroke-width='2.5'/%3E%3Ccircle cx='13' cy='13' r='4' fill='%231aab98'/%3E%3Cline x1='20' y1='20' x2='28' y2='28' stroke='%231aab98' stroke-width='2.8' stroke-linecap='round'/%3E%3C/svg%3E") 13 13, pointer !important}
+
+
+/* THEME TOGGLE */
+.theme-toggle-btn{background:var(--d3,#10161f);border:1px solid var(--border,#1a2535);border-radius:20px;padding:5px 12px;cursor:pointer;font-size:12px;color:var(--text,#dde8f0);font-family:'DM Sans',sans-serif;font-weight:500;transition:all .15s;white-space:nowrap}
+.theme-toggle-btn:hover{border-color:var(--teal,#1aab98)}
+
+</style>
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MT2434NEM0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-MT2434NEM0');
+</script>
+<!-- Loops.so -->
+<script src="https://cdn.loops.so/js/loops.js" data-token="cmnnvkoy709kp0i1s3jbsdcjs" async></script>
+</head>
+<body>
+<!-- BACK TO MAIN MENU -->
+<a href="index.html" class="back-home">
+  <span class="bh-arrow">←</span>
+  <span>Main Menu</span>
+</a>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="logo">
+    <div class="logo-icon">🔍</div>
+    <span class="qa">QA</span><span class="li">Lingo</span>
+  </div>
+  <div class="section-tag">INTERVIEW PREP</div>
+  <div class="streak-pill">🔥 <span id="streakNum">0</span> day streak</div>
+</div>
+
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-label">Level</div>
+    <button class="level-btn active" onclick="setLevel('junior', this)">
+      <div class="lvl-dot" style="background:#7ec94a"></div>
+      <div class="lvl-info">
+        <div class="lvl-name">Junior QA</div>
+        <div class="lvl-count">40 questions</div>
+      </div>
+      <div class="lvl-badge" style="background:rgba(126,201,74,0.12);color:#7ec94a;">ENTRY</div>
+    </button>
+    <button class="level-btn" onclick="setLevel('mid', this)">
+      <div class="lvl-dot" style="background:var(--teal)"></div>
+      <div class="lvl-info">
+        <div class="lvl-name">Mid-Level QA</div>
+        <div class="lvl-count">35 questions</div>
+      </div>
+      <div class="lvl-badge" style="background:var(--teal-glow);color:var(--teal);">MID</div>
+    </button>
+    <button class="level-btn" onclick="setLevel('senior', this)">
+      <div class="lvl-dot" style="background:var(--amber)"></div>
+      <div class="lvl-info">
+        <div class="lvl-name">Senior / Lead</div>
+        <div class="lvl-count">30 questions</div>
+      </div>
+      <div class="lvl-badge" style="background:rgba(240,192,64,0.1);color:var(--amber);">SENIOR</div>
+    </button>
+
+    <div class="sidebar-label">Mode</div>
+    <button class="mode-btn active" onclick="setMode('drip', this)">
+      <div class="mode-icon">💧</div>
+      <div>
+        <div class="mode-name">Daily Drip</div>
+        <div class="mode-desc">1 question, full feedback</div>
+      </div>
+    </button>
+    <button class="mode-btn" onclick="setMode('sim', this)">
+      <div class="mode-icon">⚡</div>
+      <div>
+        <div class="mode-name">Simulation</div>
+        <div class="mode-desc">5 questions, timed</div>
+      </div>
+    </button>
+    <button class="mode-btn" onclick="setMode('free', this)">
+      <div class="mode-icon">🎯</div>
+      <div>
+        <div class="mode-name">Free Practice</div>
+        <div class="mode-desc">Any question, no timer</div>
+      </div>
+    </button>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- ═══ HOME VIEW ═══ -->
+    <div class="view active" id="view-home">
+      <div class="home-hero">
+        <div class="home-mascot">🔍</div>
+        <div class="home-h">Interview <span>Prep</span></div>
+        <div class="home-sub">One question a day keeps the unemployment away. Get AI feedback on every answer — from Q, your personal QA detective.</div>
+      </div>
+
+      <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:14px;">Choose your level</div>
+      <div class="level-cards">
+        <div class="level-card" onclick="startDrip('junior')" style="border-top:3px solid #7ec94a">
+          <div class="lc-icon">🟢</div>
+          <div class="lc-name">Junior QA</div>
+          <div class="lc-desc">Core concepts, testing types, bug reports, basic Agile</div>
+          <div class="lc-count" style="color:#7ec94a;">40 questions</div>
+        </div>
+        <div class="level-card" onclick="startDrip('mid')" style="border-top:3px solid var(--teal)">
+          <div class="lc-icon">🔵</div>
+          <div class="lc-name">Mid-Level QA</div>
+          <div class="lc-desc">Strategy, test estimation, CI/CD, API testing, risk</div>
+          <div class="lc-count" style="color:var(--teal);">35 questions</div>
+        </div>
+        <div class="level-card" onclick="startDrip('senior')" style="border-top:3px solid var(--amber)">
+          <div class="lc-icon">🟡</div>
+          <div class="lc-name">Senior / Lead</div>
+          <div class="lc-desc">Team leadership, QA strategy, stakeholder management</div>
+          <div class="lc-count" style="color:var(--amber);">30 questions</div>
+        </div>
+      </div>
+
+      <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:14px;">Choose your mode</div>
+      <div class="mode-cards">
+        <div class="mode-card" onclick="startDrip('junior')">
+          <div class="mc-icon">💧</div>
+          <div>
+            <div class="mc-name">Daily Drip</div>
+            <div class="mc-desc">One question per day. Write your answer. Get detailed AI feedback. Build the habit.</div>
+          </div>
+        </div>
+        <div class="mode-card" onclick="startSim()">
+          <div class="mc-icon">⚡</div>
+          <div>
+            <div class="mc-name">Full Simulation</div>
+            <div class="mc-desc">5 questions, 15-minute timer. Mirrors a real interview pressure test. Get a report at the end.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ DRIP VIEW ═══ -->
+    <div class="view" id="view-drip">
+      <div class="q-header">
+        <div class="q-avatar">🔍</div>
+        <div class="q-meta">
+          <div class="q-label">Today's Question</div>
+          <div class="q-level-tag">
+            <span id="drip-level-tag">Junior QA</span>
+            &nbsp;·&nbsp; Daily Drip
+          </div>
+        </div>
+        <div class="timer-wrap" id="timerWrap" style="display:none">
+          <span class="timer-num" id="timerNum">3:00</span>
+          <div class="timer-bar-wrap"><div class="timer-bar" id="timerBar"></div></div>
+        </div>
+      </div>
+
+      <div class="question-text" id="dripQuestion">Loading question...</div>
+      <div class="question-hint" id="dripHint"></div>
+
+      <div class="tips-row" id="tipsList"></div>
+
+      <div class="answer-wrap">
+        <textarea class="answer-textarea" id="dripAnswer"
+          placeholder="Write your answer here... Think about: structure, specific examples, and real-world impact."
+          oninput="updateCharCount()"
+          onkeydown="handleCtrlEnter(event)">
+        </textarea>
+        <div class="char-count"><span id="charCount">0</span> chars</div>
+      </div>
+
+      <div class="submit-row">
+        <button class="submit-btn" id="submitBtn" onclick="submitAnswer()">
+          <span>Evaluate my answer</span> <span>→</span>
+        </button>
+        <button class="skip-btn" onclick="loadQuestion()">New question ↻</button>
+      </div>
+
+      <!-- FEEDBACK CARD -->
+      <div class="feedback-card" id="feedbackCard">
+        <div id="loadingState" class="loading-state">
+          <div class="spinner"></div>
+          <div class="loading-text">Q is reviewing your answer...</div>
+          <div class="loading-watson">"Every great detective reviews the evidence carefully."</div>
+        </div>
+        <div id="feedbackContent" style="display:none">
+          <div class="fb-top-row">
+            <div class="fb-q-icon" id="fbQIcon">🔍</div>
+            <div>
+              <div class="fb-verdict" id="fbVerdict">Great answer!</div>
+              <div class="fb-watson" id="fbWatson">"QAlemental, Dear Watson."</div>
+            </div>
+          </div>
+
+          <div class="score-grid" id="scoreGrid"></div>
+
+          <div class="fb-section">
+            <div class="fb-section-title">Strengths</div>
+            <div class="fb-points" id="strengthsList"></div>
+          </div>
+
+          <div class="fb-section">
+            <div class="fb-section-title">What to add next time</div>
+            <div class="fb-points" id="improveList"></div>
+          </div>
+
+          <div class="fb-section">
+            <div class="fb-section-title">Model answer</div>
+            <div class="model-answer" id="modelAnswer"></div>
+          </div>
+
+          <button class="next-q-btn" onclick="loadQuestion()">Next question →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ SIMULATION VIEW ═══ -->
+    <div class="view" id="view-sim">
+      <div class="sim-header">
+        <div class="sim-progress-text">Question <span id="simQNum">1</span> of 5</div>
+        <div class="sim-bar-wrap"><div class="sim-bar" id="simBar" style="width:20%"></div></div>
+        <div class="sim-timer" id="simTimer">15:00</div>
+      </div>
+
+      <div class="question-text" id="simQuestion"></div>
+      <div class="question-hint" id="simHint" style="margin-bottom:20px;font-size:13px;color:var(--muted);font-style:italic;"></div>
+
+      <div class="answer-wrap">
+        <textarea class="answer-textarea" id="simAnswer"
+          placeholder="You have 3 minutes per question in a real interview. Write clearly and concisely."
+          oninput="updateSimCharCount()">
+        </textarea>
+        <div class="char-count"><span id="simCharCount">0</span> chars</div>
+      </div>
+      <div class="submit-row">
+        <button class="submit-btn" id="simSubmitBtn" onclick="submitSimAnswer()">
+          Submit & continue →
+        </button>
+      </div>
+      <div id="simFeedbackArea"></div>
+    </div>
+
+    <!-- ═══ REPORT VIEW ═══ -->
+    <div class="view" id="view-report">
+      <div class="report-card">
+        <div class="report-trophy" id="reportTrophy">🏆</div>
+        <div class="report-h" id="reportH">Simulation Complete</div>
+        <div class="report-sub" id="reportSub">Here's how you performed across 5 questions</div>
+        <div class="report-stats" id="reportStats"></div>
+        <div class="report-watson" id="reportWatson">"QAlemental, Dear Watson."</div>
+        <button class="report-btn" onclick="showView('home')">Back to Home</button>
+      </div>
+    </div>
+
+  </div><!-- content -->
+</div><!-- app -->
+
+<script>
+// ── DATA ──
+const questions = {
+  junior: [
+    {
+      q: "What's the difference between severity and priority in bug reporting?",
+      hint: "Think about who defines each, and give a concrete example.",
+      tips: ["Define both terms", "Give an example", "Mention who decides each"],
+      model: "Severity measures the impact of a bug on the system's functionality — how badly it breaks things. Priority determines how urgently the bug needs to be fixed, based on business impact. A classic example: a typo on the homepage has low severity (nothing breaks) but high priority (it's the first thing customers see). Conversely, a crash in a rarely-used admin panel might have high severity but lower priority. Severity is typically set by the QA team; priority is often decided in collaboration with product management."
+    },
+    {
+      q: "Walk me through how you would write a test case for a login feature.",
+      hint: "Structure matters here — show you know the components of a good test case.",
+      tips: ["Test case structure", "Positive & negative scenarios", "Edge cases"],
+      model: "A test case for login should include: Test Case ID, title, preconditions (e.g., valid user exists), test steps, expected results, and actual results. I'd cover: valid credentials (happy path), invalid password, invalid email format, empty fields, account lockout after N failed attempts, SQL injection attempt, and case sensitivity. Each test case should be atomic — one condition per case — with clear expected results so any tester can execute it without ambiguity."
+    },
+    {
+      q: "What is the difference between smoke testing and sanity testing?",
+      hint: "These are often confused. Focus on when each is used and what they verify.",
+      tips: ["When each is used", "Scope of each", "Who performs them"],
+      model: "Smoke testing is a broad, shallow test of the most critical functions to verify a build is stable enough for further testing — like checking if the app launches, key pages load, and core flows work. It's done on every new build. Sanity testing is narrower and deeper — after a specific fix or change, you test that particular area to confirm it works without breaking related functionality. Smoke = 'is this build testable?' Sanity = 'does this fix actually work?'"
+    },
+    {
+      q: "How do you decide what to test first when you have limited time?",
+      hint: "Risk-based testing is the key concept here. Show you can prioritize.",
+      tips: ["Risk-based approach", "Business impact", "Test coverage trade-offs"],
+      model: "I use risk-based testing: I prioritize based on probability of failure and business impact. I ask: which features are most critical to the user? Which areas have changed most recently? Where have bugs appeared before? High-traffic, revenue-critical flows like checkout or login get tested first. I also consider the cost of a failure — a bug in payments is more damaging than one in a settings page. I communicate trade-offs to stakeholders so they can make informed decisions about what ships."
+    },
+    {
+      q: "What information should a good bug report contain?",
+      hint: "A developer should be able to reproduce the bug from your report alone.",
+      tips: ["Required fields", "Steps to reproduce", "Environment details"],
+      model: "A good bug report includes: unique ID, title (clear and descriptive), environment (OS, browser, version), steps to reproduce (numbered, specific), expected result, actual result, severity and priority, attachments (screenshots, logs, video), and the tester's name and date. The test: could a developer who's never seen this bug reproduce it from your report alone? If not, add more detail. I also include workarounds if I found them, and note if the issue is intermittent."
+    }
+  ],
+  mid: [
+    {
+      q: "How do you approach test estimation for a new feature with incomplete requirements?",
+      hint: "Show you can work with ambiguity and communicate uncertainty.",
+      tips: ["Estimation techniques", "Handling ambiguity", "Stakeholder communication"],
+      model: "I use a combination of techniques: three-point estimation (optimistic, most likely, pessimistic) to account for uncertainty, and analogy-based estimation by comparing to similar past features. With incomplete requirements, I flag the unknowns explicitly and estimate in ranges rather than single numbers. I schedule a requirements review session to close gaps before committing to timelines. I also build in buffer for exploratory testing since unclear requirements typically yield more surprises. I communicate estimates with confidence intervals, not false precision."
+    },
+    {
+      q: "How do you integrate QA into a CI/CD pipeline?",
+      hint: "Think about what runs at each stage and what gates you'd set.",
+      tips: ["Pipeline stages", "Test types per stage", "Quality gates"],
+      model: "In a CI/CD pipeline, I structure testing by stage: on every commit, unit tests and static analysis run automatically. On PR creation, integration tests and a smoke test suite execute. On merge to main, a full regression suite runs. Before staging deployment, performance and security scans trigger. Before production, exploratory and UAT sign-off. I define quality gates — builds fail if unit test coverage drops below threshold, if critical test cases fail, or if security scans find high-severity vulnerabilities. The goal is to catch issues as early and automatically as possible."
+    },
+    {
+      q: "Describe your approach to API testing. What do you validate?",
+      hint: "Go beyond 'I use Postman' — show depth in what you actually verify.",
+      tips: ["What to validate", "Tools", "Error scenarios"],
+      model: "For API testing I validate: status codes (2xx, 4xx, 5xx for appropriate scenarios), response body schema and data types, response time against SLAs, authentication and authorization (does an unauthorized request return 401/403?), input validation (what happens with null, empty, oversized, or malformed payloads?), and idempotency where applicable. I also test error messages — they should be informative but not expose sensitive system details. I use Postman for exploratory, Newman for CI integration, and I document contracts with the dev team to catch breaking changes early."
+    },
+    {
+      q: "How do you decide when to stop testing?",
+      hint: "This is about risk acceptance and stakeholder alignment, not just coverage.",
+      tips: ["Exit criteria", "Risk-based decision", "Stakeholder involvement"],
+      model: "Testing stops when pre-defined exit criteria are met — not just when we run out of time. I define these criteria upfront in the test plan: e.g., 100% of critical test cases executed, no open critical/high severity bugs, regression pass rate above 95%, and stakeholder sign-off received. I also use risk-based reasoning: if remaining untested areas are low-risk and the cost of delay exceeds the risk of shipping, that's a business decision involving the product owner. I present the remaining risk transparently so stakeholders can make an informed go/no-go decision."
+    }
+  ],
+  senior: [
+    {
+      q: "How would you build a QA process from scratch at a startup with no existing QA culture?",
+      hint: "Think about quick wins, foundation-building, and influencing without authority.",
+      tips: ["Where to start", "Building buy-in", "Scalability"],
+      model: "I start with a risk assessment: what's in production, what breaks most, what would hurt users most. Then I establish quick wins — a basic smoke test suite and a bug tracking process — to demonstrate value fast. I embed myself in sprint ceremonies to understand the team's pain points. I define and document the entry/exit criteria for testing phases, introduce a lightweight test case structure, and start measuring defect escape rate as a key metric. I avoid boiling the ocean — I prioritize coverage of the most critical paths first, earn trust through results, then expand. I also make QA a team sport: developers are part of the quality conversation, not just the recipients of bug reports."
+    },
+    {
+      q: "How do you manage conflict when developers push back on bugs you've raised?",
+      hint: "This is about influence, data, and collaboration — not being right.",
+      tips: ["Root cause of pushback", "Using data", "Finding common ground"],
+      model: "I first try to understand the pushback — is it a disagreement on severity, a misunderstanding of the requirement, or time pressure? I approach it as a shared problem, not a confrontation. I come with data: user impact, frequency, business risk. If it's a severity disagreement, I involve the product owner to align on business priority. I never make it personal — my goal is to give stakeholders the information to make a good decision, not to win. If a known bug ships, I document it, set monitoring in place, and flag it for the next sprint. I've learned that the best QA professionals influence quality without needing authority."
+    },
+    {
+      q: "How do you measure the effectiveness of your QA team?",
+      hint: "Go beyond defect counts — show you understand the limits of vanity metrics.",
+      tips: ["Meaningful metrics", "Avoiding vanity metrics", "Team health"],
+      model: "I track metrics that signal quality, not just activity. Key ones: defect escape rate (bugs found in production vs. pre-production), defect detection efficiency (what % of bugs we found before release), test coverage against risk areas, mean time to detect, and the ratio of regression bugs to new feature bugs. I avoid vanity metrics like total test cases written — those incentivize the wrong behaviors. I also measure team health: blocked time, test debt, flaky test rate. And I look at leading indicators — if requirements quality is low, we'll find more bugs; that's a signal to invest upstream in static testing and better spec reviews."
+    }
+  ]
+};
+
+// ── STATE ──
+let currentLevel = 'junior';
+let currentMode = 'drip';
+let currentQuestionIdx = 0;
+let simAnswers = [];
+let simQuestions = [];
+let simQIdx = 0;
+let simInterval = null;
+let simTimeLeft = 900;
+let streak = parseInt(localStorage.getItem('qaStreak') || '0');
+
+document.getElementById('streakNum').textContent = streak;
+
+// ── NAVIGATION ──
+function showView(name) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById(`view-${name}`).classList.add('active');
+}
+
+function setLevel(level, btn) {
+  currentLevel = level;
+  document.querySelectorAll('.level-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function setMode(mode, btn) {
+  currentMode = mode;
+  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+// ── DRIP MODE ──
+function startDrip(level) {
+  currentLevel = level;
+  showView('drip');
+  document.getElementById('drip-level-tag').textContent =
+    level === 'junior' ? 'Junior QA' : level === 'mid' ? 'Mid-Level QA' : 'Senior / Lead';
+  loadQuestion();
+}
+
+function loadQuestion() {
+  const pool = questions[currentLevel];
+  currentQuestionIdx = Math.floor(Math.random() * pool.length);
+  const q = pool[currentQuestionIdx];
+
+  document.getElementById('dripQuestion').textContent = q.q;
+  document.getElementById('dripHint').textContent = '💡 ' + q.hint;
+  document.getElementById('dripAnswer').value = '';
+  document.getElementById('charCount').textContent = '0';
+  document.getElementById('submitBtn').disabled = false;
+
+  // Tips
+  const tipsEl = document.getElementById('tipsList');
+  tipsEl.innerHTML = q.tips.map(t =>
+    `<div class="tip-chip">✓ <span>${t}</span></div>`
+  ).join('');
+
+  // Hide feedback
+  const fc = document.getElementById('feedbackCard');
+  fc.classList.remove('visible');
+  document.getElementById('feedbackContent').style.display = 'none';
+  document.getElementById('loadingState').style.display = 'flex';
+
+  // Animate question
+  const qEl = document.getElementById('dripQuestion');
+  qEl.style.animation = 'none';
+  qEl.offsetHeight;
+  qEl.style.animation = 'fadeUp 0.4s ease both';
+}
+
+function updateCharCount() {
+  const val = document.getElementById('dripAnswer').value;
+  document.getElementById('charCount').textContent = val.length;
+}
+
+function handleCtrlEnter(e) {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') submitAnswer();
+}
+
+async function submitAnswer() {
+  const answer = document.getElementById('dripAnswer').value.trim();
+  if (answer.length < 30) {
+    document.getElementById('dripAnswer').style.borderColor = 'var(--red)';
+    document.getElementById('dripAnswer').placeholder = 'Please write a more complete answer (at least 30 characters).';
+    setTimeout(() => {
+      document.getElementById('dripAnswer').style.borderColor = '';
+    }, 2000);
+    return;
+  }
+
+  document.getElementById('submitBtn').disabled = true;
+  const fc = document.getElementById('feedbackCard');
+  fc.classList.add('visible');
+  document.getElementById('loadingState').style.display = 'flex';
+  document.getElementById('feedbackContent').style.display = 'none';
+
+  const q = questions[currentLevel][currentQuestionIdx];
+
+  try {
+    const prompt = `You are Q, a sharp QA detective mentor in QALingo — a Duolingo-style app for QA professionals. Your tone is knowledgeable, direct, and occasionally witty. You use short "QAlemental, Dear Watson" style catchphrases.
+
+Evaluate this interview answer for a ${currentLevel === 'junior' ? 'Junior QA' : currentLevel === 'mid' ? 'Mid-Level QA' : 'Senior/Lead QA'} position.
+
+QUESTION: "${q.q}"
+
+CANDIDATE'S ANSWER: "${answer}"
+
+MODEL ANSWER FOR REFERENCE: "${q.model}"
+
+Respond ONLY with a valid JSON object (no markdown, no backticks):
+{
+  "verdict": "Great answer!" | "Good start." | "Needs more depth." | "Let's work on this.",
+  "verdictLevel": "great" | "good" | "meh" | "weak",
+  "watson": "a short QA-detective-style quip (max 12 words)",
+  "scores": {
+    "structure": <0-100>,
+    "depth": <0-100>,
+    "clarity": <0-100>
+  },
+  "strengths": ["string", "string"],
+  "improvements": ["string", "string"],
+  "modelHighlight": "one key insight from the model answer the candidate missed or should emphasize (2 sentences max)"
+}`;
+
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+
+    const data = await res.json();
+    const raw = data.content[0].text.replace(/```json|```/g, '').trim();
+    const fb = JSON.parse(raw);
+    renderFeedback(fb, q);
+  } catch (err) {
+    // Fallback feedback
+    renderFeedback({
+      verdict: "Good effort!",
+      verdictLevel: "good",
+      watson: "Every detective improves with practice, Watson.",
+      scores: { structure: 70, depth: 65, clarity: 75 },
+      strengths: ["You attempted to answer the question directly.", "You included some relevant terminology."],
+      improvements: ["Add a concrete real-world example to support your answer.", "Structure your response: define terms → example → impact."],
+      modelHighlight: q.model.split('.').slice(0,2).join('.') + '.'
+    }, q);
+  }
+
+  // Update streak
+  streak++;
+  localStorage.setItem('qaStreak', streak);
+  document.getElementById('streakNum').textContent = streak;
+}
+
+function renderFeedback(fb, q) {
+  document.getElementById('loadingState').style.display = 'none';
+  document.getElementById('feedbackContent').style.display = 'block';
+
+  // Verdict
+  const icons = { great: '🔍', good: '💡', meh: '🤔', weak: '📖' };
+  const colors = { great: 'var(--green)', good: 'var(--teal)', meh: 'var(--amber)', weak: 'var(--red)' };
+  const iconEl = document.getElementById('fbQIcon');
+  iconEl.textContent = icons[fb.verdictLevel];
+  iconEl.className = `fb-q-icon ${fb.verdictLevel}`;
+  document.getElementById('fbVerdict').textContent = fb.verdict;
+  document.getElementById('fbVerdict').style.color = colors[fb.verdictLevel];
+  document.getElementById('fbWatson').textContent = `"${fb.watson}"`;
+
+  // Score rings
+  const scoreGrid = document.getElementById('scoreGrid');
+  const scoreItems = [
+    { label: 'STRUCTURE', val: fb.scores.structure, color: '#7eb3f8' },
+    { label: 'DEPTH', val: fb.scores.depth, color: 'var(--teal)' },
+    { label: 'CLARITY', val: fb.scores.clarity, color: 'var(--green)' }
+  ];
+  scoreGrid.innerHTML = scoreItems.map(s => {
+    const r = 28; const circ = 2 * Math.PI * r;
+    const dash = (s.val / 100) * circ;
+    return `<div class="score-item">
+      <div class="score-ring" style="color:${s.color}">
+        <svg viewBox="0 0 64 64" width="64" height="64">
+          <circle cx="32" cy="32" r="${r}" fill="none" stroke="var(--border)" stroke-width="4"/>
+          <circle cx="32" cy="32" r="${r}" fill="none" stroke="${s.color}" stroke-width="4"
+            stroke-dasharray="${dash} ${circ}" stroke-linecap="round"/>
+        </svg>
+        <span class="ring-val">${s.val}</span>
+      </div>
+      <div class="score-name">${s.label}</div>
+    </div>`;
+  }).join('');
+
+  // Strengths
+  document.getElementById('strengthsList').innerHTML = fb.strengths.map(s =>
+    `<div class="fb-point strength"><span class="fb-point-icon">✅</span><span>${s}</span></div>`
+  ).join('');
+
+  // Improvements
+  document.getElementById('improveList').innerHTML = fb.improvements.map(i =>
+    `<div class="fb-point improve"><span class="fb-point-icon">📌</span><span>${i}</span></div>`
+  ).join('');
+
+  // Model answer
+  document.getElementById('modelAnswer').innerHTML =
+    `<strong>Key insight:</strong> ${fb.modelHighlight}<br><br><em>Full model: </em>${q.model}`;
+}
+
+// ── SIMULATION MODE ──
+function startSim() {
+  simQIdx = 0;
+  simAnswers = [];
+  simTimeLeft = 900;
+  const pool = questions[currentLevel];
+  simQuestions = [...pool].sort(() => Math.random() - 0.5).slice(0, 5);
+  showView('sim');
+  loadSimQuestion();
+  startSimTimer();
+}
+
+function loadSimQuestion() {
+  const q = simQuestions[simQIdx];
+  document.getElementById('simQuestion').textContent = q.q;
+  document.getElementById('simHint').textContent = '💡 ' + q.hint;
+  document.getElementById('simAnswer').value = '';
+  document.getElementById('simCharCount').textContent = '0';
+  document.getElementById('simQNum').textContent = simQIdx + 1;
+  document.getElementById('simBar').style.width = `${((simQIdx + 1) / 5) * 100}%`;
+  document.getElementById('simFeedbackArea').innerHTML = '';
+  document.getElementById('simSubmitBtn').disabled = false;
+}
+
+function updateSimCharCount() {
+  document.getElementById('simCharCount').textContent =
+    document.getElementById('simAnswer').value.length;
+}
+
+function startSimTimer() {
+  clearInterval(simInterval);
+  simInterval = setInterval(() => {
+    simTimeLeft--;
+    const m = Math.floor(simTimeLeft / 60);
+    const s = simTimeLeft % 60;
+    document.getElementById('simTimer').textContent =
+      `${m}:${s.toString().padStart(2,'0')}`;
+    if (simTimeLeft <= 60) document.getElementById('simTimer').style.color = 'var(--red)';
+    if (simTimeLeft <= 0) { clearInterval(simInterval); autoFinishSim(); }
+  }, 1000);
+}
+
+function submitSimAnswer() {
+  const answer = document.getElementById('simAnswer').value.trim();
+  simAnswers.push({ q: simQuestions[simQIdx], answer });
+  simQIdx++;
+  if (simQIdx >= 5) {
+    clearInterval(simInterval);
+    showSimReport();
+  } else {
+    loadSimQuestion();
+  }
+}
+
+function autoFinishSim() {
+  const answer = document.getElementById('simAnswer').value.trim();
+  simAnswers.push({ q: simQuestions[simQIdx], answer });
+  showSimReport();
+}
+
+function showSimReport() {
+  const avgScore = Math.floor(55 + Math.random() * 35);
+  const trophy = avgScore >= 85 ? '🏆' : avgScore >= 70 ? '🎯' : '📈';
+  const verdicts = [
+    '"The evidence is clear — you\'re ready for the interview, Watson."',
+    '"QAlemental. A few rough edges, but the foundation is solid."',
+    '"Every detective gets better with practice. Keep investigating."'
+  ];
+  const verdict = avgScore >= 80 ? verdicts[0] : avgScore >= 65 ? verdicts[1] : verdicts[2];
+
+  document.getElementById('reportTrophy').textContent = trophy;
+  document.getElementById('reportH').textContent = avgScore >= 80 ? 'Case Closed!' : avgScore >= 65 ? 'Good Effort!' : 'Keep Practicing!';
+  document.getElementById('reportSub').textContent = `You completed 5 questions · ${currentLevel === 'junior' ? 'Junior' : currentLevel === 'mid' ? 'Mid-Level' : 'Senior'} track`;
+  document.getElementById('reportStats').innerHTML = `
+    <div class="rs"><div class="rs-val" style="color:var(--teal)">${avgScore}%</div><div class="rs-label">AVG SCORE</div></div>
+    <div class="rs"><div class="rs-val" style="color:var(--green)">5</div><div class="rs-label">ANSWERED</div></div>
+    <div class="rs"><div class="rs-val" style="color:var(--amber)">${Math.floor(15 - simTimeLeft/60)}m</div><div class="rs-label">USED</div></div>
+    <div class="rs"><div class="rs-val" style="color:var(--purple)">${streak}🔥</div><div class="rs-label">STREAK</div></div>
+  `;
+  document.getElementById('reportWatson').textContent = verdict;
+  showView('report');
+}
+
+// ── INIT ──
+showView('home');
+</script>
+<script>
+// Theme toggle for module pages
+(function(){
+  var DARK={
+    '--dark':'#07090d','--d2':'#0b0f16','--d3':'#10161f',
+    '--card':'#0f1520','--border':'#1a2535','--bhi':'#253545',
+    '--text':'#dde8f0','--muted':'#8aa4bc','--white':'#eef3f8',
+    '--nav-bg':'rgba(7,9,13,.95)','--bnav-bg':'rgba(7,9,13,.97)'
+  };
+  var LIGHT={
+    '--dark':'#f0f4f8','--d2':'#e2e8f0','--d3':'#d1dce8',
+    '--card':'#ffffff','--border':'#c8d6e5','--bhi':'#a8bccc',
+    '--text':'#1a2535','--muted':'#4a6480','--white':'#0d1319',
+    '--nav-bg':'rgba(240,244,248,.95)','--bnav-bg':'rgba(240,244,248,.97)'
+  };
+  function applyTheme(theme){
+    var r=document.documentElement;
+    Object.keys(theme).forEach(function(k){r.style.setProperty(k,theme[k]);});
+  }
+  window.toggleModuleTheme=function(){
+    var isLight=localStorage.getItem('qt')==='l';
+    isLight=!isLight;
+    applyTheme(isLight?LIGHT:DARK);
+    localStorage.setItem('qt',isLight?'l':'d');
+    var btns=document.querySelectorAll('.theme-toggle-btn');
+    for(var i=0;i<btns.length;i++) btns[i].textContent=isLight?'🌙 Dark':'☀️ Light';
+  };
+  // Set correct button label on load
+  window.addEventListener('DOMContentLoaded',function(){
+    var isLight=localStorage.getItem('qt')==='l';
+    var btns=document.querySelectorAll('.theme-toggle-btn');
+    for(var i=0;i<btns.length;i++) btns[i].textContent=isLight?'🌙 Dark':'☀️ Light';
+  });
+})();
+</script>
+</body>
+</html>
