@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QALingo — QA Challenge</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --teal:#1aab98;--teal-d:#0f7a6e;--teal-g:rgba(26,171,152,.14);
+  --green:#7ec94a;--green-g:rgba(126,201,74,.12);
+  --amber:#f0c040;--amber-g:rgba(240,192,64,.12);
+  --red:#e05555;--red-g:rgba(224,85,85,.1);
+  --dark:#07090d;--d2:#0b0f16;--d3:#10161f;
+  --card:#0f1520;--border:#1a2535;--bhi:#253545;
+  --text:#dde8f0;--muted:#8aa4bc;--white:#eef3f8;
+}
+html{scroll-behavior:smooth}
+body{background:var(--dark);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden}
+
+/* LIGHT MODE */
+body.light{--dark:#f0f4f8;--d2:#e2e8f0;--d3:#d1dce8;--card:#ffffff;--border:#c8d6e5;--bhi:#a8bccc;--text:#1a2535;--muted:#4a6480;--white:#0d1319}
+body.light nav{background:rgba(240,244,248,.97)!important}
+
+/* BG GRID */
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(26,171,152,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(26,171,152,.03) 1px,transparent 1px);background-size:52px 52px;mask-image:radial-gradient(ellipse 80% 70% at 50% 30%,black,transparent);pointer-events:none;z-index:0}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:14px 32px;display:flex;align-items:center;justify-content:space-between;background:rgba(7,9,13,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.nlogo{font-family:'Syne',sans-serif;font-weight:800;font-size:18px;display:flex;align-items:center;gap:10px;text-decoration:none}
+.nlogo img{width:30px;height:30px;object-fit:contain;border-radius:7px}
+.nlogo .qa{color:var(--teal)}.nlogo .li{color:var(--green)}
+.nav-meta{display:flex;align-items:center;gap:12px}
+.ttog{background:var(--d3);border:1px solid var(--border);border-radius:20px;padding:6px 12px;cursor:pointer;font-size:12px;color:var(--text);font-family:'DM Sans',sans-serif;font-weight:500;transition:all .15s}
+.ttog:hover{border-color:var(--teal)}
+
+/* BACK BUTTON */
+.back-home{position:fixed;top:72px;left:16px;z-index:150;display:flex;align-items:center;gap:7px;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:8px 14px;font-family:'Syne',sans-serif;font-weight:700;font-size:12px;color:var(--muted);text-decoration:none;transition:all .15s;box-shadow:0 2px 12px rgba(0,0,0,.3)}
+.back-home:hover{border-color:var(--teal);color:var(--teal);transform:translateX(-2px)}
+
+/* PROGRESS BAR */
+.prog-bar-wrap{position:fixed;top:65px;left:0;right:0;z-index:99;height:4px;background:var(--border)}
+.prog-bar-fill{height:100%;background:linear-gradient(90deg,var(--teal),var(--green));transition:width .5s cubic-bezier(.34,1.2,.64,1)}
+
+/* MAIN */
+.main{max-width:680px;margin:0 auto;padding:120px 24px 100px;position:relative;z-index:2}
+
+/* INTRO SCREEN */
+.intro-screen{text-align:center;animation:fadeUp .5s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes float{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-10px) rotate(2deg)}}
+
+.intro-mascot{width:140px;height:auto;margin:0 auto 24px;display:block;animation:float 4s ease-in-out infinite;filter:drop-shadow(0 0 28px var(--teal-g))}
+.intro-badge{display:inline-flex;align-items:center;gap:8px;background:var(--teal-g);border:1px solid rgba(26,171,152,.3);border-radius:20px;padding:7px 16px;font-family:'DM Mono',monospace;font-size:11px;color:var(--teal);letter-spacing:.5px;margin-bottom:20px}
+.intro-h{font-family:'Syne',sans-serif;font-size:clamp(32px,6vw,52px);font-weight:800;letter-spacing:-2px;line-height:1.05;color:var(--white);margin-bottom:12px}
+.intro-h span{background:linear-gradient(135deg,var(--teal),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.intro-sub{font-size:17px;color:var(--muted);line-height:1.7;margin-bottom:36px;max-width:480px;margin-left:auto;margin-right:auto}
+
+/* HOW IT WORKS STEPS */
+.how-steps{display:flex;flex-direction:column;gap:10px;margin-bottom:40px;text-align:left;background:var(--card);border:1px solid var(--border);border-radius:18px;padding:28px}
+.hw-title{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--teal);margin-bottom:16px}
+.hw-step{display:flex;align-items:flex-start;gap:14px}
+.hw-num{width:32px;height:32px;border-radius:8px;background:var(--teal-g);border:1px solid rgba(26,171,152,.25);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:12px;font-weight:500;color:var(--teal);flex-shrink:0}
+.hw-text{padding-top:6px}
+.hw-label{font-family:'Syne',sans-serif;font-weight:700;font-size:15px;color:var(--white);margin-bottom:2px}
+.hw-desc{font-size:14px;color:var(--muted);line-height:1.5}
+
+.start-cta-btn{width:100%;background:linear-gradient(135deg,var(--teal),var(--teal-d));color:#fff;border:none;border-radius:14px;padding:18px 32px;font-family:'Syne',sans-serif;font-weight:800;font-size:18px;cursor:pointer;transition:all .2s;box-shadow:0 6px 28px rgba(26,171,152,.35);letter-spacing:.3px;display:flex;align-items:center;justify-content:center;gap:10px}
+.start-cta-btn:hover{transform:translateY(-3px);box-shadow:0 12px 36px rgba(26,171,152,.4)}
+.start-cta-btn span{font-size:22px}
+
+/* CHALLENGE SCREEN */
+.challenge-screen{display:none;animation:fadeUp .4s ease both}
+
+/* Q SAYS */
+.q-says{display:flex;align-items:flex-start;gap:14px;margin-bottom:32px}
+.q-av{width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,var(--teal-d),var(--teal));display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;box-shadow:0 4px 20px var(--teal-g);animation:float 3s ease-in-out infinite}
+.q-av img{width:100%;height:100%;object-fit:contain}
+.q-bubble{background:var(--d3);border:1px solid var(--bhi);border-radius:16px 16px 16px 4px;padding:14px 18px;font-size:14px;color:var(--text);line-height:1.6;flex:1}
+.q-bubble strong{color:var(--teal)}
+.q-bubble em{color:var(--amber);font-style:normal}
+
+/* QUESTION CARD */
+.q-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:36px;margin-bottom:28px;position:relative;overflow:hidden}
+.q-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--teal),var(--green))}
+.q-number{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--teal);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.q-number::after{content:'';flex:1;height:1px;background:var(--border)}
+.q-text{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--white);line-height:1.25;letter-spacing:-.5px;margin-bottom:8px}
+.q-context{font-size:14px;color:var(--muted);line-height:1.6;font-style:italic;padding:12px 16px;background:var(--d3);border-radius:10px;margin-top:12px;border-left:3px solid var(--teal)}
+
+/* ANSWER AREA */
+.answer-area{margin-bottom:20px}
+.answer-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;display:block}
+.answer-input{width:100%;min-height:120px;background:var(--d3);border:2px solid var(--border);border-radius:14px;padding:18px 20px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.7;resize:vertical;outline:none;transition:all .2s}
+.answer-input:focus{border-color:var(--teal);box-shadow:0 0 0 4px rgba(26,171,152,.1);background:var(--card)}
+.answer-input::placeholder{color:var(--muted)}
+.answer-input:disabled{opacity:.6;cursor:default}
+.char-row{display:flex;justify-content:space-between;align-items:center;margin-top:8px}
+.char-count{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted)}
+.char-hint{font-size:12px;color:var(--muted);font-style:italic}
+
+/* CHECK BUTTON */
+.check-btn{width:100%;background:linear-gradient(135deg,var(--teal),var(--teal-d));color:#fff;border:none;border-radius:14px;padding:18px 32px;font-family:'Syne',sans-serif;font-weight:800;font-size:17px;cursor:pointer;transition:all .2s;box-shadow:0 6px 24px rgba(26,171,152,.3);letter-spacing:.3px;margin-bottom:12px}
+.check-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 10px 32px rgba(26,171,152,.4)}
+.check-btn:disabled{opacity:.5;cursor:default;transform:none}
+
+/* FEEDBACK PANEL */
+.feedback-panel{display:none;border-radius:16px;padding:24px;margin-top:8px;margin-bottom:20px;animation:fadeUp .4s cubic-bezier(.34,1.2,.64,1) both;border:1px solid}
+.feedback-panel.show{display:block}
+.feedback-panel.correct{background:rgba(8,20,14,.95);border-color:rgba(126,201,74,.3)}
+.feedback-panel.wrong{background:rgba(20,8,8,.95);border-color:rgba(224,85,85,.3)}
+.fb-top{display:flex;align-items:flex-start;gap:14px;margin-bottom:14px}
+.fb-icon{font-size:32px;flex-shrink:0}
+.fb-verdict{font-family:'Syne',sans-serif;font-weight:800;font-size:20px;margin-bottom:4px}
+.feedback-panel.correct .fb-verdict{color:var(--green)}
+.feedback-panel.wrong .fb-verdict{color:var(--red)}
+.fb-watson{font-style:italic;font-size:14px;color:var(--teal);margin-bottom:2px}
+.fb-explanation{font-size:14px;color:var(--muted);line-height:1.6;margin-top:8px}
+.fb-explanation strong{color:var(--text)}
+.fb-keywords{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.fb-kw{font-family:'DM Mono',monospace;font-size:11px;padding:4px 10px;border-radius:6px;background:rgba(26,171,152,.1);color:var(--teal);border:1px solid rgba(26,171,152,.2)}
+
+/* NEXT BUTTON */
+.next-btn{width:100%;background:var(--card);border:2px solid var(--teal);color:var(--teal);border-radius:14px;padding:16px 32px;font-family:'Syne',sans-serif;font-weight:800;font-size:16px;cursor:pointer;transition:all .2s;letter-spacing:.3px;display:none}
+.next-btn.show{display:block}
+.next-btn:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
+
+/* COMPLETE SCREEN */
+.complete-screen{display:none;text-align:center;animation:fadeUp .5s ease both;padding:20px 0}
+.complete-screen.show{display:block}
+.comp-trophy{font-size:72px;margin-bottom:20px;display:block;animation:float 3s ease-in-out infinite}
+.comp-h{font-family:'Syne',sans-serif;font-size:36px;font-weight:800;letter-spacing:-1.5px;color:var(--white);margin-bottom:8px}
+.comp-score{font-family:'Syne',sans-serif;font-size:64px;font-weight:800;margin-bottom:6px;line-height:1}
+.comp-label{font-size:15px;color:var(--muted);margin-bottom:24px}
+.comp-watson{background:var(--card);border:1px solid var(--border);border-left:3px solid var(--teal);border-radius:0 14px 14px 0;padding:16px 20px;font-style:italic;font-size:16px;color:var(--teal);line-height:1.5;max-width:480px;margin:0 auto 32px}
+.comp-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:400px;margin:0 auto 32px}
+.cstat{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px 12px;text-align:center}
+.cstat-val{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;margin-bottom:4px}
+.cstat-label{font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:.5px}
+.comp-actions{display:flex;flex-direction:column;gap:12px;max-width:400px;margin:0 auto}
+.comp-btn-primary{background:linear-gradient(135deg,var(--teal),var(--teal-d));color:#fff;border:none;border-radius:14px;padding:17px 32px;font-family:'Syne',sans-serif;font-weight:800;font-size:16px;cursor:pointer;transition:all .2s;box-shadow:0 6px 24px rgba(26,171,152,.35);letter-spacing:.3px}
+.comp-btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(26,171,152,.4)}
+.comp-btn-secondary{background:transparent;border:2px solid var(--border);color:var(--muted);border-radius:14px;padding:15px 32px;font-family:'Syne',sans-serif;font-weight:700;font-size:15px;cursor:pointer;transition:all .2s}
+.comp-btn-secondary:hover{border-color:var(--bhi);color:var(--text)}
+
+/* XP POP */
+.xp-pop{position:fixed;z-index:999;pointer-events:none;font-family:'Syne',sans-serif;font-weight:800;font-size:24px;color:var(--amber);text-shadow:0 2px 10px rgba(240,192,64,.4);animation:xpfly 1.4s ease both}
+@keyframes xpfly{0%{opacity:1;transform:translateY(0) scale(1)}60%{opacity:1;transform:translateY(-60px) scale(1.15)}100%{opacity:0;transform:translateY(-100px) scale(.8)}}
+
+/* STREAK INDICATOR */
+.streak-bar{display:flex;gap:6px;justify-content:center;margin-bottom:32px}
+.streak-dot{width:12px;height:12px;border-radius:50%;background:var(--border);transition:all .3s}
+.streak-dot.done{background:var(--green);box-shadow:0 0 8px rgba(126,201,74,.4)}
+.streak-dot.current{background:var(--teal);box-shadow:0 0 8px rgba(26,171,152,.5);animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 8px rgba(26,171,152,.5)}50%{box-shadow:0 0 16px rgba(26,171,152,.8)}}
+
+/* BNAV */
+.bnav{position:fixed;bottom:0;left:0;right:0;background:rgba(7,9,13,.97);border-top:1px solid var(--border);padding:9px 14px;z-index:200;display:flex;justify-content:center;gap:7px;flex-wrap:wrap;backdrop-filter:blur(12px)}
+.bnav a{text-decoration:none;background:var(--d3);border:1px solid var(--border);border-radius:8px;padding:7px 12px;font-family:'Syne',sans-serif;font-weight:700;font-size:12px;color:var(--text);transition:all .15s}
+.bnav a:hover{border-color:var(--teal);color:var(--teal)}
+.bnav a.act{background:var(--teal);border-color:var(--teal);color:#fff}
+
+@media(max-width:480px){
+  .main{padding:100px 16px 100px}
+  .q-card{padding:24px}
+  .how-steps{padding:20px}
+  .comp-stats{grid-template-columns:repeat(3,1fr)}
+}
+</style>
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MT2434NEM0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-MT2434NEM0');
+</script>
+<!-- Loops.so -->
+<script src="https://cdn.loops.so/js/loops.js" data-token="cmnnvkoy709kp0i1s3jbsdcjs" async></script>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nlogo">
+    <img src="q-mascot.png" alt="Q" onerror="this.style.display='none'"/>
+    <span><span class="qa">QA</span><span class="li">Lingo</span></span>
+  </a>
+  <div class="nav-meta">
+    <button class="ttog" onclick="toggleTheme()" id="themeBtn">☀️ Light</button>
+  </div>
+</nav>
+
+<div class="prog-bar-wrap"><div class="prog-bar-fill" id="progFill" style="width:0%"></div></div>
+
+<a href="index.html" class="back-home">← Main Menu</a>
+
+<div class="main">
+
+  <!-- ══ INTRO SCREEN ══ -->
+  <div id="introScreen" class="intro-screen">
+    <img src="q-mascot.png" alt="Q" class="intro-mascot" onerror="this.outerHTML='<span style=&quot;font-size:80px;display:block;margin:0 auto 24px;text-align:center;animation:float 4s ease-in-out infinite&quot;>🔍</span>'"/>
+    <div class="intro-badge">🔍 QA CHALLENGE · 5 QUESTIONS</div>
+    <h1 class="intro-h">The <span>QA Challenge</span><br>begins now.</h1>
+    <p class="intro-sub">Q has 5 questions. You have your brain. Answer in your own words and Q will tell you exactly how close you are — or how far, Watson.</p>
+
+    <div class="how-steps">
+      <div class="hw-title">How it works</div>
+      <div class="hw-step" style="margin-bottom:16px">
+        <div class="hw-num">1</div>
+        <div class="hw-text">
+          <div class="hw-label">Read the question</div>
+          <div class="hw-desc">Q will give you context if needed. Take a moment to think.</div>
+        </div>
+      </div>
+      <div class="hw-step" style="margin-bottom:16px">
+        <div class="hw-num">2</div>
+        <div class="hw-text">
+          <div class="hw-label">Answer in English</div>
+          <div class="hw-desc">Write your answer in your own words. No copy-paste from memory — think it through.</div>
+        </div>
+      </div>
+      <div class="hw-step">
+        <div class="hw-num">3</div>
+        <div class="hw-text">
+          <div class="hw-label">Get Q's feedback</div>
+          <div class="hw-desc">Q analyzes your answer and tells you what you got right, what's missing, and what to remember.</div>
+        </div>
+      </div>
+    </div>
+
+    <button class="start-cta-btn" onclick="startChallenge()">
+      <span>🔍</span> Start QA Challenge
+    </button>
+  </div>
+
+  <!-- ══ CHALLENGE SCREEN ══ -->
+  <div id="challengeScreen" class="challenge-screen">
+
+    <!-- Streak dots -->
+    <div class="streak-bar" id="streakBar"></div>
+
+    <!-- Q says -->
+    <div class="q-says">
+      <div class="q-av">
+        <img src="q-mascot.png" alt="Q" style="width:100%;height:100%;object-fit:contain" onerror="this.parentElement.innerHTML='🔍'"/>
+      </div>
+      <div class="q-bubble" id="qSays">Let's begin, Watson. Read carefully before you write.</div>
+    </div>
+
+    <!-- Question card -->
+    <div class="q-card">
+      <div class="q-number" id="qNumber">QUESTION 1 OF 5</div>
+      <div class="q-text" id="qText"></div>
+      <div class="q-context" id="qContext" style="display:none"></div>
+    </div>
+
+    <!-- Answer -->
+    <div class="answer-area">
+      <span class="answer-label">Your answer</span>
+      <textarea class="answer-input" id="answerInput"
+        placeholder="Write your answer here in English..."
+        oninput="updateCharCount()"></textarea>
+      <div class="char-row">
+        <div class="char-count"><span id="charCount">0</span> characters</div>
+        <div class="char-hint">Tip: aim for at least 2-3 sentences</div>
+      </div>
+    </div>
+
+    <button class="check-btn" id="checkBtn" onclick="checkAnswer()">
+      Check Answer →
+    </button>
+
+    <!-- Feedback -->
+    <div class="feedback-panel" id="feedbackPanel">
+      <div class="fb-top">
+        <div class="fb-icon" id="fbIcon">🔍</div>
+        <div>
+          <div class="fb-verdict" id="fbVerdict"></div>
+          <div class="fb-watson" id="fbWatson"></div>
+        </div>
+      </div>
+      <div class="fb-explanation" id="fbExplanation"></div>
+      <div class="fb-keywords" id="fbKeywords"></div>
+    </div>
+
+    <button class="next-btn" id="nextBtn" onclick="nextQuestion()">
+      Next Question →
+    </button>
+
+  </div>
+
+  <!-- ══ COMPLETE SCREEN ══ -->
+  <div id="completeScreen" class="complete-screen">
+    <span class="comp-trophy" id="compTrophy">🏆</span>
+    <div class="comp-h" id="compH">Case Closed!</div>
+    <div class="comp-score" id="compScore" style="color:var(--green)">5/5</div>
+    <div class="comp-label">correct answers</div>
+    <div class="comp-watson" id="compWatson">"QAlemental, Dear Watson."</div>
+    <div class="comp-stats">
+      <div class="cstat"><div class="cstat-val" id="statCorrect" style="color:var(--green)">5</div><div class="cstat-label">CORRECT</div></div>
+      <div class="cstat"><div class="cstat-val" id="statXP" style="color:var(--amber)">0</div><div class="cstat-label">XP EARNED</div></div>
+      <div class="cstat"><div class="cstat-val" id="statTime" style="color:var(--teal)">0m</div><div class="cstat-label">TIME</div></div>
+    </div>
+    <div class="comp-actions">
+      <button class="comp-btn-primary" onclick="retryChallenge()">🔄 Try Again</button>
+      <button class="comp-btn-primary" style="background:linear-gradient(135deg,var(--green),var(--teal-d))" onclick="window.location.href='qalingo-istqb-simulator.html'">🎯 Take the Full Exam</button>
+      <button class="comp-btn-secondary" onclick="window.location.href='index.html'">← Back to Main Menu</button>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<div class="bnav">
+  <a href="index.html">🏠 Home</a>
+  <a href="qalingo-challenge.html" class="act">🔍 Challenge</a>
+  <a href="qalingo-lesson-app.html">🎮 Lesson</a>
+  <a href="qalingo-istqb-simulator.html">🎯 Exam</a>
+  <a href="qalingo-interview-prep.html">💼 Interview</a>
+  <a href="qalingo-gamification.html">🏆 Progress</a>
+</div>
+
+<script>
+// ══ QUESTIONS ══
+const QUESTIONS = [
+  {
+    q: "What is a bug?",
+    context: "Think about what causes it, how it shows up, and what impact it has on users.",
+    keywords: ["error", "defect", "unexpected", "behavior", "failure", "software", "unintended"],
+    goodThreshold: 2,
+    feedback: {
+      good: {
+        verdict: "QAlemental. Excellent, Dear Watson.",
+        watson: "\"Elementary, my dear Watson. You've cracked the first case.\"",
+        explanation: "Solid definition. A bug is a defect or flaw in software that causes it to produce incorrect, unexpected, or unintended results — or behave in ways not specified by requirements.",
+        qSays: "Well done. A bug is the consequence of a human error introduced into the code or specification. Next case, Watson."
+      },
+      bad: {
+        verdict: "Not so fast, Dr. Jekyll...",
+        watson: "\"Try to mention 'error' or 'unexpected behavior' — that answer just turned into a bug itself.\"",
+        explanation: "A bug is an error, flaw, or unintended behavior in a software product. Think: something a developer did wrong (error) → caused a defect in the code → which leads to a failure the user sees. Keywords to use: <strong>defect, unexpected behavior, error, failure, unintended result.</strong>",
+        qSays: "Don't worry. Every detective misses a clue the first time. Keep reading the next question carefully."
+      }
+    }
+  },
+  {
+    q: "What is a test case?",
+    context: "Think about its structure — what does a test case include? What is it used for?",
+    keywords: ["precondition", "steps", "expected", "result", "input", "verify", "requirement", "condition", "test"],
+    goodThreshold: 2,
+    feedback: {
+      good: {
+        verdict: "QAlemental. Excellent, Dear Watson.",
+        watson: "\"You've described the blueprint of our investigation. Precise and structured.\"",
+        explanation: "A test case is a set of conditions, inputs, actions, and expected results designed to verify that a specific feature or requirement works as intended.",
+        qSays: "Excellent. A test case is the detective's plan before entering the crime scene. On to the next."
+      },
+      bad: {
+        verdict: "Hmm. Elementary mistake, Watson.",
+        watson: "\"A test case is not just 'a test'. It has structure. Mention steps, expected result, or preconditions.\"",
+        explanation: "A test case must include: <strong>preconditions, input data, test steps, expected result, and actual result.</strong> It's the formal document a tester follows to verify a specific behavior. Without a test case, you're just guessing — and Q doesn't guess.",
+        qSays: "Close — but vague. A test case has structure: preconditions, steps, expected result. Remember that for the next one."
+      }
+    }
+  },
+  {
+    q: "What is regression testing?",
+    context: "When is it done? What's its purpose? Why is it important in Agile?",
+    keywords: ["change", "modification", "existing", "functionality", "broken", "re-test", "verify", "previous", "new"],
+    goodThreshold: 2,
+    feedback: {
+      good: {
+        verdict: "QAlemental. Excellent, Dear Watson.",
+        watson: "\"Regression testing — the detective revisiting old evidence after new clues arrive.\"",
+        explanation: "Regression testing re-tests previously tested functionality after a change to ensure nothing that worked before has been broken by the modification.",
+        qSays: "Spot on. Regression testing is how we make sure fixing one bug doesn't create three new ones."
+      },
+      bad: {
+        verdict: "Not so fast, Dr. Jekyll...",
+        watson: "\"Regression isn't 'testing again'. It's testing what ALREADY WORKED to make sure it still does.\"",
+        explanation: "Regression testing verifies that recent changes — bug fixes, new features, refactoring — haven't broken previously working functionality. Key keywords: <strong>existing functionality, modification, after changes, re-test, broken.</strong>",
+        qSays: "Think of it this way: you fixed the lock on the front door. Regression testing checks that the back door still works too."
+      }
+    }
+  },
+  {
+    q: "What is bug severity?",
+    context: "How is it different from priority? Who usually defines it?",
+    keywords: ["impact", "system", "critical", "high", "medium", "low", "functionality", "affects", "degree", "operation"],
+    goodThreshold: 2,
+    feedback: {
+      good: {
+        verdict: "QAlemental. Excellent, Dear Watson.",
+        watson: "\"Severity — the weight of evidence. You understand the distinction perfectly.\"",
+        explanation: "Severity measures the technical impact a bug has on the system's functionality — how badly it breaks things. It's defined by the QA team, not the business.",
+        qSays: "Well reasoned. Severity tells us how bad the wound is. Priority tells us when to treat it."
+      },
+      bad: {
+        verdict: "Hmm. Severity and priority are NOT the same, Watson.",
+        watson: "\"Severity = technical impact on the system. Not urgency. Not business. Impact.\"",
+        explanation: "Severity is the degree of impact a defect has on the operation of the component or system. <strong>Critical</strong> = system crash. <strong>High</strong> = major feature broken. <strong>Medium</strong> = partial impact. <strong>Low</strong> = cosmetic issue. Severity is set by QA. Priority is set by the business.",
+        qSays: "Remember: severity is the size of the crime. Priority is how urgently we investigate it."
+      }
+    }
+  },
+  {
+    q: "What is exploratory testing?",
+    context: "How does it differ from scripted testing? When is it most useful?",
+    keywords: ["simultaneous", "design", "execution", "charter", "adaptive", "experience", "unscripted", "discover", "intuition", "learning"],
+    goodThreshold: 2,
+    feedback: {
+      good: {
+        verdict: "QAlemental. Excellent, Dear Watson.",
+        watson: "\"Exploratory testing — the detective's intuition at work. No script. Just intelligence.\"",
+        explanation: "Exploratory testing is the simultaneous design and execution of tests, guided by a charter. It's adaptive, experience-based, and excellent for discovering unexpected defects.",
+        qSays: "Exactly. Exploratory testing is how Q operates — no rigid script, just a charter and sharp instincts."
+      },
+      bad: {
+        verdict: "Not so fast, Dr. Jekyll...",
+        watson: "\"Exploratory testing is not 'testing without a plan'. It has a charter. It's structured freedom.\"",
+        explanation: "Exploratory testing is <strong>simultaneous test design and execution</strong> — the tester designs tests as they execute them, guided by a test charter. It's not random. It's adaptive and experience-based. Key keywords: <strong>simultaneous, charter, adaptive, unscripted, discovery.</strong>",
+        qSays: "Think of it as jazz, not noise. There's structure — the charter — but room to improvise based on what you find."
+      }
+    }
+  }
+];
+
+// ══ STATE ══
+let currentQ = 0;
+let correctCount = 0;
+let xpEarned = 0;
+let startTime = null;
+let answered = false;
+
+// ══ INIT ══
+function startChallenge() {
+  document.getElementById('introScreen').style.display = 'none';
+  document.getElementById('challengeScreen').style.display = 'block';
+  startTime = Date.now();
+  buildStreakBar();
+  loadQuestion(0);
+}
+
+function buildStreakBar() {
+  const bar = document.getElementById('streakBar');
+  bar.innerHTML = QUESTIONS.map((_, i) =>
+    `<div class="streak-dot ${i === 0 ? 'current' : ''}" id="sdot${i}"></div>`
+  ).join('');
+}
+
+function updateStreakBar(idx, correct) {
+  for (let i = 0; i < QUESTIONS.length; i++) {
+    const dot = document.getElementById(`sdot${i}`);
+    if (!dot) continue;
+    if (i < idx) dot.style.background = 'var(--green)';
+    else if (i === idx) dot.className = 'streak-dot current';
+    else dot.className = 'streak-dot';
+  }
+}
+
+function loadQuestion(idx) {
+  currentQ = idx;
+  answered = false;
+  const q = QUESTIONS[idx];
+
+  document.getElementById('qNumber').textContent = `QUESTION ${idx + 1} OF ${QUESTIONS.length}`;
+  document.getElementById('qText').textContent = q.q;
+
+  const ctx = document.getElementById('qContext');
+  if (q.context) {
+    ctx.textContent = q.context;
+    ctx.style.display = 'block';
+  } else {
+    ctx.style.display = 'none';
+  }
+
+  document.getElementById('qSays').innerHTML = `Let's see what you know about <strong>${q.q.replace('?','').toLowerCase()}</strong>, Watson.`;
+  document.getElementById('answerInput').value = '';
+  document.getElementById('answerInput').disabled = false;
+  document.getElementById('charCount').textContent = '0';
+  document.getElementById('checkBtn').disabled = false;
+  document.getElementById('feedbackPanel').className = 'feedback-panel';
+  document.getElementById('nextBtn').className = 'next-btn';
+
+  // Progress bar
+  const pct = (idx / QUESTIONS.length) * 100;
+  document.getElementById('progFill').style.width = pct + '%';
+
+  // Animate question in
+  const card = document.querySelector('.q-card');
+  card.style.animation = 'none';
+  card.offsetHeight;
+  card.style.animation = 'fadeUp .35s ease both';
+
+  // Update streak dots
+  for (let i = 0; i < QUESTIONS.length; i++) {
+    const dot = document.getElementById(`sdot${i}`);
+    if (!dot) continue;
+    if (i < idx) {
+      dot.className = 'streak-dot done';
+    } else if (i === idx) {
+      dot.className = 'streak-dot current';
+    } else {
+      dot.className = 'streak-dot';
+    }
+  }
+}
+
+function updateCharCount() {
+  const val = document.getElementById('answerInput').value;
+  document.getElementById('charCount').textContent = val.length;
+}
+
+function checkAnswer() {
+  if (answered) return;
+  const answer = document.getElementById('answerInput').value.trim().toLowerCase();
+
+  if (answer.length < 15) {
+    document.getElementById('answerInput').style.borderColor = 'var(--red)';
+    document.getElementById('answerInput').style.boxShadow = '0 0 0 4px rgba(224,85,85,.12)';
+    document.getElementById('qSays').innerHTML = '<em style="color:var(--amber)">Come now, Watson. Q requires more than a few words. Write a proper answer.</em>';
+    setTimeout(() => {
+      document.getElementById('answerInput').style.borderColor = '';
+      document.getElementById('answerInput').style.boxShadow = '';
+    }, 2500);
+    return;
+  }
+
+  answered = true;
+  document.getElementById('checkBtn').disabled = true;
+  document.getElementById('answerInput').disabled = true;
+
+  const q = QUESTIONS[currentQ];
+  const matchCount = q.keywords.filter(kw => answer.includes(kw)).length;
+  const isCorrect = matchCount >= q.goodThreshold;
+
+  const fb = isCorrect ? q.feedback.good : q.feedback.bad;
+
+  if (isCorrect) {
+    correctCount++;
+    xpEarned += 40;
+    showXPPop('+40 XP');
+  }
+
+  // Show feedback
+  const panel = document.getElementById('feedbackPanel');
+  panel.className = `feedback-panel show ${isCorrect ? 'correct' : 'wrong'}`;
+  document.getElementById('fbIcon').textContent = isCorrect ? '🔍' : '💡';
+  document.getElementById('fbVerdict').textContent = fb.verdict;
+  document.getElementById('fbWatson').textContent = fb.watson;
+  document.getElementById('fbExplanation').innerHTML = fb.explanation;
+
+  // Keywords found
+  const found = q.keywords.filter(kw => answer.includes(kw));
+  const kwEl = document.getElementById('fbKeywords');
+  if (found.length > 0) {
+    kwEl.innerHTML = '<span style="font-size:11px;color:var(--muted);font-family:DM Mono,monospace;margin-right:6px">KEYWORDS FOUND:</span>' +
+      found.map(k => `<div class="fb-kw">✓ ${k}</div>`).join('');
+  } else {
+    kwEl.innerHTML = '<span style="font-size:12px;color:var(--muted);font-style:italic">No key terms detected — review the model answer above.</span>';
+  }
+
+  // Q reacts
+  document.getElementById('qSays').innerHTML = fb.qSays;
+
+  // Show next button
+  const nextBtn = document.getElementById('nextBtn');
+  nextBtn.className = 'next-btn show';
+  nextBtn.textContent = currentQ < QUESTIONS.length - 1 ? 'Next Question →' : 'See Results →';
+
+  // Update dot
+  const dot = document.getElementById(`sdot${currentQ}`);
+  if (dot) dot.style.background = isCorrect ? 'var(--green)' : 'var(--red)';
+}
+
+function nextQuestion() {
+  if (currentQ < QUESTIONS.length - 1) {
+    loadQuestion(currentQ + 1);
+  } else {
+    showComplete();
+  }
+}
+
+function showComplete() {
+  document.getElementById('challengeScreen').style.display = 'none';
+  const comp = document.getElementById('completeScreen');
+  comp.className = 'complete-screen show';
+
+  const elapsed = Math.round((Date.now() - startTime) / 1000);
+  const mins = Math.floor(elapsed / 60);
+  const secs = elapsed % 60;
+
+  document.getElementById('progFill').style.width = '100%';
+  document.getElementById('compScore').textContent = `${correctCount}/${QUESTIONS.length}`;
+  document.getElementById('statCorrect').textContent = correctCount;
+  document.getElementById('statXP').textContent = xpEarned;
+  document.getElementById('statTime').textContent = mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
+
+  const pct = (correctCount / QUESTIONS.length) * 100;
+  document.getElementById('compScore').style.color = pct >= 80 ? 'var(--green)' : pct >= 60 ? 'var(--amber)' : 'var(--red)';
+  document.getElementById('compTrophy').textContent = pct === 100 ? '🏆' : pct >= 80 ? '🎯' : pct >= 60 ? '📈' : '📖';
+  document.getElementById('compH').textContent = pct === 100 ? 'Case Closed!' : pct >= 80 ? 'Well Done, Watson!' : pct >= 60 ? 'Getting Warmer...' : 'Back to the Books.';
+
+  const watsonLines = {
+    100: '"QAlemental, Dear Watson. A flawless investigation. You\'re ready for the ISTQB."',
+    80: '"A strong performance, Watson. A few loose ends — but the case is nearly cracked."',
+    60: '"You\'re on the right track. But a good detective reviews their notes before closing a case."',
+    0: '"Even Sherlock had bad days. Study the explanations. Return sharper, Watson."'
+  };
+  const watsonKey = pct === 100 ? 100 : pct >= 80 ? 80 : pct >= 60 ? 60 : 0;
+  document.getElementById('compWatson').textContent = watsonLines[watsonKey];
+}
+
+function retryChallenge() {
+  currentQ = 0;
+  correctCount = 0;
+  xpEarned = 0;
+  answered = false;
+  document.getElementById('completeScreen').className = 'complete-screen';
+  document.getElementById('challengeScreen').style.display = 'block';
+  document.getElementById('progFill').style.width = '0%';
+  startTime = Date.now();
+  buildStreakBar();
+  loadQuestion(0);
+}
+
+// ══ XP POP ══
+function showXPPop(text) {
+  const el = document.createElement('div');
+  el.className = 'xp-pop';
+  el.textContent = text;
+  el.style.left = '50%';
+  el.style.top = '30%';
+  el.style.transform = 'translateX(-50%)';
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 1500);
+}
+
+// ══ THEME ══
+function toggleTheme() {
+  document.body.classList.toggle('light');
+  const l = document.body.classList.contains('light');
+  document.getElementById('themeBtn').textContent = l ? '🌙 Dark' : '☀️ Light';
+  localStorage.setItem('qt', l ? 'l' : 'd');
+}
+if (localStorage.getItem('qt') === 'l') {
+  document.body.classList.add('light');
+  document.getElementById('themeBtn').textContent = '🌙 Dark';
+}
+</script>
+</body>
+</html>
