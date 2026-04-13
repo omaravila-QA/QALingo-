@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Glossary Test</title>
+<style>
+body{background:#080c10;color:#dde8f0;font-family:sans-serif;padding:32px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:20px}
+.card{background:#111820;border:1px solid #1e2e3e;border-radius:12px;padding:16px}
+.term{color:#1aab98;font-weight:700;font-size:16px;margin-bottom:6px}
+.def{color:#8aa4bc;font-size:14px;line-height:1.6}
+.tag{background:rgba(26,171,152,.1);color:#1aab98;font-size:10px;padding:2px 8px;border-radius:4px;display:inline-block;margin-top:6px}
+input{width:100%;padding:14px;background:#131c26;border:1.5px solid #2a4055;border-radius:10px;color:#dde8f0;font-size:16px;outline:none;margin-bottom:8px}
+input:focus{border-color:#1aab98}
+#status{font-size:12px;color:#5a7490;margin-bottom:16px;font-family:monospace}
+</style>
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MT2434NEM0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-MT2434NEM0');
+</script>
+<!-- Loops.so -->
+<script src="https://cdn.loops.so/js/loops.js" data-token="cmnnvkoy709kp0i1s3jbsdcjs" async></script>
+</head>
+<body>
+
+<h2 style="font-size:24px;margin-bottom:16px">🔍 Glossary Debug Test</h2>
+<input type="text" id="search" placeholder="Search terms..." oninput="filter()">
+<div id="status">Loading...</div>
+<div class="grid" id="grid"></div>
+
+<script>
+var DATA = [
+  {t:'Defect',d:'An imperfection in a work product that causes failure to meet requirements.',tag:'Fundamentals'},
+  {t:'Error',d:'A human action that produces an incorrect result.',tag:'Fundamentals'},
+  {t:'Failure',d:'Visible deviation of system from expected behavior at runtime.',tag:'Fundamentals'},
+  {t:'Test Case',d:'A set of conditions, inputs and expected results to verify a requirement.',tag:'Documentation'},
+  {t:'Severity',d:'The degree of impact a defect has on the system. Set by QA.',tag:'Documentation'},
+  {t:'Priority',d:'Business urgency to fix a defect. Set by product/business.',tag:'Documentation'},
+  {t:'Smoke Testing',d:'Broad shallow test of critical functions to verify build stability.',tag:'Test Types'},
+  {t:'Regression Testing',d:'Re-testing after changes to ensure existing functionality still works.',tag:'Test Types'},
+  {t:'Exploratory Testing',d:'Simultaneous test design and execution guided by a charter.',tag:'Test Types'},
+  {t:'Boundary Value Analysis',d:'Testing at boundaries of equivalence partitions — min, max, and just outside.',tag:'Test Design'},
+  {t:'Equivalence Partitioning',d:'Dividing inputs into partitions and testing one representative per partition.',tag:'Test Design'},
+  {t:'Pesticide Paradox',d:'Running same tests repeatedly stops finding new defects. Update your tests.',tag:'ISTQB Principles'},
+  {t:'Absence of Errors Fallacy',d:'A bug-free system can still be useless if it does not meet user needs.',tag:'ISTQB Principles'},
+  {t:'Static Testing',d:'Testing work products without executing them — reviews, inspections.',tag:'Test Types'},
+  {t:'Dynamic Testing',d:'Testing by executing the software.',tag:'Test Types'},
+  {t:'Test Plan',d:'Document describing scope, approach, resources and objectives for testing.',tag:'Documentation'},
+  {t:'Risk-Based Testing',d:'Prioritizing test activities by likelihood of failure times business impact.',tag:'Test Strategy'},
+  {t:'Entry Criteria',d:'Conditions that must be met before a test activity begins.',tag:'Test Strategy'},
+  {t:'Exit Criteria',d:'Conditions that must be met to declare a test activity complete.',tag:'Test Strategy'},
+  {t:'Defect Density',d:'Number of defects per unit size of a work product.',tag:'Metrics'}
+];
+
+function render(items) {
+  var grid = document.getElementById('grid');
+  var status = document.getElementById('status');
+  status.textContent = items.length + ' terms found';
+  if (items.length === 0) {
+    grid.innerHTML = '<div style="color:#5a7490;font-style:italic;grid-column:span 2">No terms match. Try a different search.</div>';
+    return;
+  }
+  var html = '';
+  for (var i = 0; i < items.length; i++) {
+    html += '<div class="card">';
+    html += '<div class="term">' + items[i].t + '</div>';
+    html += '<div class="def">' + items[i].d + '</div>';
+    html += '<span class="tag">' + items[i].tag + '</span>';
+    html += '</div>';
+  }
+  grid.innerHTML = html;
+}
+
+function filter() {
+  var val = document.getElementById('search').value.toLowerCase();
+  var filtered = [];
+  for (var i = 0; i < DATA.length; i++) {
+    if (DATA[i].t.toLowerCase().indexOf(val) > -1 ||
+        DATA[i].d.toLowerCase().indexOf(val) > -1 ||
+        DATA[i].tag.toLowerCase().indexOf(val) > -1) {
+      filtered.push(DATA[i]);
+    }
+  }
+  render(filtered);
+}
+
+// Init
+render(DATA);
+</script>
+</body>
+</html>
