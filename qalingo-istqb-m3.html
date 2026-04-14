@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+(function(){
+  var LIGHT={'--dark':'#eef4fb','--d2':'#e0ecf7','--d3':'#cfe0f0','--card':'#f8fbff','--border':'#b8d4e8','--bhi':'#90b8d5','--text':'#0f1f35','--muted':'#3d607a','--white':'#0a1828'};
+  if(localStorage.getItem('qt')==='l'){var r=document.documentElement;Object.keys(LIGHT).forEach(function(k){r.style.setProperty(k,LIGHT[k]);});r.setAttribute('data-theme','light');}
+})();
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QALingo — ISTQB Module 3: Static Testing</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MT2434NEM0"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-MT2434NEM0');</script>
+<script src="https://cdn.loops.so/js/loops.js" data-token="cmnnvkoy709kp0i1s3jbsdcjs" async></script>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--teal:#1aab98;--teal-d:#0f7a6e;--teal-g:rgba(26,171,152,.13);--green:#7ec94a;--amber:#f0c040;--red:#e05555;--purple:#9b6ff7;--blue:#74b4f8;--orange:#ff8c42;--dark:#080c10;--d2:#0d1319;--d3:#131c26;--card:#111820;--border:#1e2e3e;--bhi:#2a4055;--text:#dde8f0;--muted:#8aa4bc;--white:#f0f4f8;}
+html{scroll-behavior:smooth}
+body{background:var(--dark);color:var(--text);font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.7;overflow-x:hidden;padding-bottom:80px}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;background:rgba(8,12,16,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.nlogo{font-family:'Syne',sans-serif;font-weight:800;font-size:17px;text-decoration:none;display:flex;align-items:center;gap:8px}
+.nlogo .qa{color:var(--teal)}.nlogo .li{color:var(--green)}
+.nright{display:flex;gap:8px;align-items:center}
+.back-btn{background:var(--d3);border:1px solid var(--border);border-radius:8px;padding:6px 14px;font-family:'Syne',sans-serif;font-weight:700;font-size:12px;color:var(--text);text-decoration:none;transition:all .15s}
+.back-btn:hover{border-color:var(--teal);color:var(--teal)}
+.ttog{background:var(--d3);border:1px solid var(--border);border-radius:20px;padding:5px 12px;cursor:pointer;font-size:12px;color:var(--text);font-family:'DM Sans',sans-serif;transition:all .15s}
+.hero{padding:90px 24px 40px;max-width:860px;margin:0 auto;text-align:center}
+.mod-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,140,66,.1);border:1px solid rgba(255,140,66,.3);border-radius:20px;padding:6px 14px;font-family:'DM Mono',monospace;font-size:11px;color:var(--orange);letter-spacing:.5px;margin-bottom:16px}
+.mod-num{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);margin-bottom:8px;letter-spacing:2px}
+.mod-h{font-family:'Syne',sans-serif;font-size:clamp(28px,5vw,48px);font-weight:800;letter-spacing:-2px;line-height:1.05;color:var(--white);margin-bottom:10px}
+.mod-h span{background:linear-gradient(135deg,var(--orange),var(--amber));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.mod-sub{font-size:16px;color:var(--muted);max-width:520px;margin:0 auto 24px;line-height:1.7}
+.mod-stats{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-bottom:28px}
+.ms{text-align:center;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 18px}
+.ms-val{font-family:'Syne',sans-serif;font-weight:800;font-size:18px;color:var(--white)}
+.ms-lbl{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:1px}
+.prog-wrap{background:var(--d3);border:1px solid var(--border);border-radius:12px;padding:12px 20px;max-width:860px;margin:0 auto 28px;display:flex;align-items:center;gap:14px}
+.prog-bg{flex:1;height:7px;background:var(--border);border-radius:4px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--orange),var(--amber));border-radius:4px;transition:width .4s ease;width:0%}
+.prog-lbl{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);white-space:nowrap}
+.prog-xp{font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--amber)}
+.content{max-width:860px;margin:0 auto;padding:0 24px}
+.lcard{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;margin-bottom:16px;position:relative;overflow:hidden}
+.lcard::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--orange),var(--amber))}
+.lnum{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:8px}
+.ltitle{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--white);margin-bottom:12px;letter-spacing:-.5px}
+.lbody{font-size:16px;color:var(--text);line-height:1.8;margin-bottom:14px}
+.lbody strong{color:var(--white)}.lbody em{color:var(--teal);font-style:normal}
+.lbody code{font-family:'DM Mono',monospace;font-size:13px;color:var(--amber);background:rgba(240,192,64,.08);padding:2px 6px;border-radius:4px}
+.qbub{display:flex;gap:12px;background:var(--d3);border:1px solid var(--bhi);border-radius:13px;padding:15px;margin:16px 0}
+.qbav{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,var(--teal-d),var(--teal));display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}
+.qbav img{width:100%;height:100%;object-fit:contain}
+.qbnm{font-family:'DM Mono',monospace;font-size:9px;color:var(--teal);letter-spacing:1px;margin-bottom:3px}
+.qbtxt{font-size:14px;color:var(--text);line-height:1.6;font-style:italic}
+.qbtxt strong{color:var(--teal);font-style:normal}.qbtxt em{color:var(--amber);font-style:normal}
+.cgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:14px 0}
+.cbox{background:var(--d3);border-radius:11px;padding:15px}
+.cbox-title{font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--white);margin-bottom:6px}
+.cbox-body{font-size:14px;color:var(--muted);line-height:1.6}
+.quiz-sec{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+.qs-hdr{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.qs-badge{background:var(--orange);color:#fff;font-family:'Syne',sans-serif;font-weight:700;font-size:11px;padding:3px 9px;border-radius:6px}
+.qs-title{font-family:'Syne',sans-serif;font-weight:700;font-size:15px;color:var(--white)}
+.qq{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--white);margin-bottom:5px;letter-spacing:-.3px;line-height:1.4}
+.qhnt{font-size:12px;color:var(--muted);margin-bottom:13px;font-style:italic}
+.qopts{display:flex;flex-direction:column;gap:7px}
+.qopt{display:flex;align-items:flex-start;gap:10px;background:var(--d3);border:2px solid var(--border);border-radius:10px;padding:11px 14px;cursor:pointer;transition:all .15s;text-align:left;width:100%;font-size:15px;color:var(--text);line-height:1.5}
+.qopt:hover:not(.lk){border-color:var(--orange);background:rgba(255,140,66,.05);transform:translateX(3px)}
+.qopt.ok{border-color:var(--green);background:rgba(126,201,74,.08)}
+.qopt.ng{border-color:var(--red);background:rgba(224,85,85,.08)}
+.qopt.lk{cursor:default}
+.oltr{width:24px;height:24px;border-radius:6px;background:var(--card);border:1.5px solid var(--bhi);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);flex-shrink:0;transition:all .15s;margin-top:1px}
+.qopt:hover:not(.lk) .oltr{background:rgba(255,140,66,.1);border-color:var(--orange);color:var(--orange)}
+.qopt.ok .oltr{background:var(--green);border-color:var(--green);color:#fff}
+.qopt.ng .oltr{background:var(--red);border-color:var(--red);color:#fff}
+.qfb{display:none;background:var(--d3);border:1px solid var(--bhi);border-radius:11px;padding:13px 15px;margin-top:9px;animation:fu .3s ease both}
+.qfb.on{display:flex;gap:11px;align-items:flex-start}
+.qfbav{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--teal-d),var(--teal));flex-shrink:0;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.qfbav img{width:100%;height:100%;object-fit:contain}
+.qfblbl{font-family:'DM Mono',monospace;font-size:9px;color:var(--teal);letter-spacing:1px;margin-bottom:2px}
+.qfbmsg{font-size:13px;color:var(--text);line-height:1.6}
+.qfbmsg strong{color:var(--teal)}.qfbmsg em{color:var(--amber);font-style:normal}
+.nxtbtn{background:var(--orange);color:#fff;border:none;border-radius:9px;padding:10px 20px;font-family:'Syne',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:all .15s;margin-top:10px;display:none}
+.nxtbtn:hover{transform:translateY(-1px);box-shadow:0 5px 16px rgba(255,140,66,.3)}
+.done-card{background:linear-gradient(135deg,rgba(255,140,66,.08),rgba(240,192,64,.05));border:1px solid rgba(255,140,66,.25);border-radius:16px;padding:28px;margin-bottom:16px;text-align:center;display:none}
+.dc-xp{font-family:'Syne',sans-serif;font-size:44px;font-weight:800;color:var(--amber);margin-bottom:4px}
+.dc-h{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--white);margin-bottom:6px}
+.dc-wat{font-style:italic;font-size:14px;color:var(--teal);margin-bottom:18px}
+.dc-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.dc-btn{background:linear-gradient(135deg,var(--orange),var(--amber));color:#fff;border:none;border-radius:11px;padding:12px 24px;font-family:'Syne',sans-serif;font-weight:700;font-size:14px;cursor:pointer;transition:all .15s;text-decoration:none;display:inline-block}
+.dc-btn:hover{transform:translateY(-2px)}
+.dc-btn2{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:11px;padding:12px 20px;font-family:'Syne',sans-serif;font-weight:600;font-size:13px;text-decoration:none;display:inline-block;transition:all .15s}
+.cheat{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:26px;margin-bottom:16px}
+.cheat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:14px}
+.ci{background:var(--d3);border-radius:10px;padding:14px}
+.ci-t{font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--white);margin-bottom:7px}
+.ci-b{font-size:13px;color:var(--muted);line-height:1.6}
+.ci-b code{font-family:'DM Mono',monospace;color:var(--teal);font-size:12px;background:rgba(26,171,152,.08);padding:1px 5px;border-radius:4px}
+.dvd{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:24px 0}
+.bnav{position:fixed;bottom:0;left:0;right:0;background:rgba(8,12,16,.97);border-top:1px solid var(--border);padding:9px 14px;z-index:200;display:flex;justify-content:center;gap:7px;flex-wrap:wrap;backdrop-filter:blur(12px)}
+.bnav a{text-decoration:none;background:var(--d3);border:1px solid var(--border);border-radius:8px;padding:6px 11px;font-family:'Syne',sans-serif;font-weight:700;font-size:11px;color:var(--text);transition:all .15s}
+.bnav a:hover{border-color:var(--teal);color:var(--teal)}
+.bnav a.act{background:var(--orange);border-color:var(--orange);color:#fff}
+@keyframes fu{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fl{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@media(max-width:768px){.cgrid,.cheat-grid{grid-template-columns:1fr}.content{padding:0 16px}nav{padding:11px 16px}}
+</style>
+</head>
+<body>
+<nav>
+  <a class="nlogo" href="index.html"><span class="qa">QA</span><span class="li">Lingo</span></a>
+  <div class="nright">
+    <a class="back-btn" href="index.html">← Main Menu</a>
+    <button class="ttog" onclick="toggleTheme()" id="themeBtn">☀️ Light</button>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="mod-badge">📘 ISTQB CTFL v4.0</div>
+  <div class="mod-num">MODULE 03 OF 06</div>
+  <h1 class="mod-h"><span>Static Testing</span></h1>
+  <p class="mod-sub">Find defects without running the code. Reviews, walkthroughs, inspections, and static analysis — the QA tools that work before the first line executes.</p>
+  <div class="mod-stats">
+    <div class="ms"><div class="ms-val">5</div><div class="ms-lbl">LESSONS</div></div>
+    <div class="ms"><div class="ms-val">5</div><div class="ms-lbl">QUIZ QUESTIONS</div></div>
+    <div class="ms"><div class="ms-val">500</div><div class="ms-lbl">XP AVAILABLE</div></div>
+    <div class="ms"><div class="ms-val">~15</div><div class="ms-lbl">MINUTES</div></div>
+  </div>
+  <div class="prog-wrap">
+    <div class="prog-bg"><div class="prog-fill" id="pf"></div></div>
+    <div class="prog-lbl" id="pl">0 / 5 questions</div>
+    <div class="prog-xp" id="px">+0 XP</div>
+  </div>
+</div>
+
+<div class="content">
+
+<div class="lcard" id="s1">
+  <div class="lnum">LESSON 3.1 · WHAT IS STATIC TESTING</div>
+  <div class="ltitle">Static Testing — No Execution Required</div>
+  <div class="lbody">
+    <strong>Static testing</strong> examines work products without executing the software. You can find defects in requirements, design documents, user stories, test plans, and source code — all before a single test is run.<br><br>
+    This is one of the most cost-effective testing techniques. <em>A defect found in a requirements document costs almost nothing to fix. The same defect found in production can cost 100x more.</em><br><br>
+    Static testing includes two main categories: <strong>reviews</strong> (human examination) and <strong>static analysis</strong> (automated tool examination).
+  </div>
+  <div class="cgrid">
+    <div class="cbox">
+      <div class="cbox-title">📄 What can be statically tested?</div>
+      <div class="cbox-body">Requirements specs · User stories · Architecture documents · Source code · Test plans · Test cases · User manuals · Contracts</div>
+    </div>
+    <div class="cbox">
+      <div class="cbox-title">🐛 What defects does it find?</div>
+      <div class="cbox-body">Ambiguous requirements · Missing requirements · Inconsistencies · Code standard violations · Security vulnerabilities · Unreachable code</div>
+    </div>
+  </div>
+  <div class="qbub">
+    <div class="qbav"><img src="q-mascot.png" alt="Q" onerror="this.parentElement.innerHTML='🔍'"/></div>
+    <div><div class="qbnm">Q — QA DETECTIVE</div>
+    <div class="qbtxt">"<strong>The best bug is the one that never gets written.</strong> Static testing catches the defect in the blueprint before the building is constructed. <em>Dynamic testing demolishes the building and rebuilds it to prove it was wrong.</em> Q prefers blueprints."</div></div>
+  </div>
+</div>
+
+<div class="quiz-sec">
+  <div class="qs-hdr"><div class="qs-badge">QUIZ</div><div class="qs-title">3.1 — Static Testing Basics</div></div>
+  <div class="qq" id="q1q"></div><div class="qhnt" id="q1h"></div>
+  <div class="qopts" id="q1o"></div>
+  <div class="qfb" id="q1f"><div class="qfbav"><img src="q-mascot.png" alt="Q" onerror="this.parentElement.innerHTML='🔍'"/></div><div><div class="qfblbl">Q — QA DETECTIVE</div><div class="qfbmsg" id="q1m"></div></div></div>
+  <button class="nxtbtn" id="q1n" onclick="goto('s2')">Next Lesson →</button>
+</div>
+
+<div class="dvd"></div>
+
+<div class="lcard" id="s2">
+  <div class="lnum">LESSON 3.2 · REVIEW TYPES</div>
+  <div class="ltitle">The 4 Review Types — From Informal to Formal</div>
+  <div class="lbody">ISTQB defines four review types, ranging from informal to highly structured. Each has different formality, roles, and objectives.</div>
+  <div style="display:flex;flex-direction:column;gap:10px;margin:14px 0">
+    <div style="background:var(--d3);border-radius:11px;padding:15px;border-left:3px solid var(--muted)">
+      <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:14px;color:var(--white);margin-bottom:5px">1. Informal Review</div>
+      <div style="font-size:14px;color:var(--muted);line-height:1.6">No formal process. A colleague reviews your work and gives feedback. Fast and cheap. No documentation required. Common in Agile — "can you take a look at this story?"</div>
+    </div>
+    <div style="background:var(--d3);border-radius:11px;padding:15px;border-left:3px solid var(--blue)">
+      <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:14px;color:var(--white);margin-bottom:5px">2. Walkthrough</div>
+      <div style="font-size:14px;color:var(--muted);line-height:1.6">The <strong style="color:var(--text)">author</strong> leads the review. Reviewers ask questions and raise issues. Goal: share knowledge and find defects. Partially documented. Useful for complex features.</div>
+    </div>
+    <div style="background:var(--d3);border-radius:11px;padding:15px;border-left:3px solid var(--amber)">
+      <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:14px;color:var(--white);margin-bottom:5px">3. Technical Review</div>
+      <div style="font-size:14px;color:var(--muted);line-height:1.6">Peers evaluate the work product. Focuses on technical correctness. A <strong style="color:var(--text)">moderator</strong> leads (not the author). Documented. Used for architecture, design, or code review.</div>
+    </div>
+    <div style="background:var(--d3);border-radius:11px;padding:15px;border-left:3px solid var(--orange)">
+      <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:14px;color:var(--white);margin-bottom:5px">4. Inspection</div>
+      <div style="font-size:14px;color:var(--muted);line-height:1.6">The most <strong style="color:var(--text)">formal</strong> review type. Defined roles: author, moderator, reviewers, scribe. Entry/exit criteria required. Fully documented with metrics. Proven to find the most defects per hour.</div>
+    </div>
+  </div>
+  <div class="qbub">
+    <div class="qbav"><img src="q-mascot.png" alt="Q" onerror="this.parentElement.innerHTML='🔍'"/></div>
+    <div><div class="qbnm">Q — QA DETECTIVE</div>
+    <div class="qbtxt">"In an Inspection, <strong>the author does NOT lead</strong>. The moderator leads. The author listens, takes notes, and does not defend their work. <em>This is the hardest part for most developers — and the most valuable part for everyone else.</em>"</div></div>
+  </div>
+</div>
+
+<div class="quiz-sec">
+  <div class="qs-hdr"><div class="qs-badge">QUIZ</div><div class="qs-title">3.2 — Review Types</div></div>
+  <div class="qq" id="q2q"></div><div class="qhnt" id="q2h"></div>
+  <div class="qopts" id="q2o"></div>
+  <div class="qfb" id="q2f"><div class="qfbav"><img src="q-mascot.png" alt="Q" onerror="this.parentElement.innerHTML='🔍'"/></div><div><div class="qfblbl">Q — QA DETECTIVE</div><div class="qfbmsg" id="q2m"></div></div></div>
+  <button class="nxtbtn" id="q2n" onclick="goto('s3')">Next Lesson →</button>
+</div>
+
+<div class="dvd"></div>
+
+<div class="lcard" id="s3">
+  <div class="lnum">LESSON 3.3 · REVIEW ROLES</div>
+  <div class="ltitle">Review Roles and Responsibilities</div>
+  <div class="lbody">Formal reviews have clearly defined roles. Knowing them is essential for the ISTQB exam.</div>
+  <div class="cgrid">
+    <div class="cbox"><div class="cbox-title">👔 Manager</div><div class="cbox-body">Decides to conduct the review. Allocates time and resources. Ensures follow-up actions are completed.</div></div>
+    <div class="cbox"><div class="cbox-title">🎯 Moderator (Facilitator)</div><div class="cbox-body">Leads the review meeting. Ensures process is followed. Does NOT have to be a domain expert. Keeps discussion on track.</div></div>
+    <div class="cbox"><div class="cbox-title">✍️ Author</div><div class="cbox-body">Created the work product. Participates in the review but does NOT lead or defend. Listens and takes notes on findings.</div></div>
+    <div class="cbox"><div class="cbox-title">📝 Scribe (Recorder)</div><div class="cbox-body">Documents all defects, issues, and decisions during the review meeting. Produces the review log.</div></div>
+    <div class="cbox"><div class="cbox-title">🔍 Reviewer (Inspector)</div><div class="cbox-body">Reviews the work product and identifies defects. Can be domain expert, QA engineer, developer, or stakeholder.</div></div>
+    <div class="cbox"><div class="cbox-title">👥 Review Leader</div><div class="cbox-body">Plans and organizes the review. Selects reviewers, distributes materials, tracks completion.</div></div>
+  </div>
+</div>
+
+<div class="quiz-sec">
+  <div class="qs-hdr"><div class="qs-badge">QUIZ</div><div class="qs-title">3.3 — Review Roles</div></div>
+  <div class="qq" id="q3q"></div><div class="qhnt" id="q3h"></div>
+  <div class="qopts" id="q3o"></div>
+  <div class="qfb" id="q3f"><div class="qfbav"><img src="q-mascot.png" alt="Q" onerror="this.parentElement.innerHTML='🔍'"/></div><div><div class="qfblbl">Q — QA DETECTIVE</div><div class="qfbmsg" id="q3m"></div></div></div>
+  <button class="nxtbtn" id="q3n" onclick="goto('s4')">Next Lesson →</button>
+</div>
+
+<div class="dvd"></div>
+
+<div class="lcard" id="s4">
+  <div class="lnum">LESSON 3.4 · STATIC ANALYSIS</div>
+  <div class="ltitle">Static Analysis — Automated Code Examination</div>
+  <div class="lbody">
+    <strong>Static analysis</strong> uses tools to automatically examine source code or other work products without executing them. Tools can detect defects that humans easily miss at scale.<br><br>
+    Static analysis is performed <em>by developers</em> as part of their development workflow — often integrated into CI/CD pipelines.
+  </div>
+  <div class="cgrid">
+    <div class="cbox"><div class="cbox-title">🔎 What static analysis finds</div><div class="cbox-body">Coding standard violations · Security vulnerabilities (SQL injection, XSS) · Unreachable code · Undefined variables · Memory leaks · Overly complex code</div></div>
+    <div class="cbox"><div class="cbox-title">🛠 Common tools</div><div class="cbox-body">SonarQube · ESLint · Checkstyle · PMD · Pylint · Coverity · Fortify · SpotBugs · Semgrep</div></div>
+    <div class="cbox"><div class="cbox-title">✅ Benefits</div><div class="cbox-body">Consistent application of coding standards · Finds defects before testing · Fast — runs automatically · Scales to millions of lines of code</div></div>
+    <div class="cbox"><div class="cbox-title">⚠️ Limitations</div><div class="cbox-body">Cannot find all defects · High false positive rate possible · Cannot replace testing · Does not verify business logic correctness</div></div>
+  </div>
+  <div class="qbub">
+    <div class="qbav"><img src="q-mascot.png" alt="Q" onerror="this.parentElement.innerHTML='🔍'"/></div>
+    <div><div class="qbnm">Q — QA DETECTIVE</div>
+    <div class="qbtxt">"SonarQube flagged 47 issues before the sprint demo. The developer said 'those are just warnings.' <em>Three of them were SQL injection vulnerabilities.</em> <strong>Static analysis warnings are evidence, Watson. Treat them as such.</strong>"</div></div>
+  </div>
+</div>
+
+<div class="quiz-sec">
+  <div class="qs-hdr"><div class="qs-badge">QUIZ</div><div class="qs-title">3.4 — Static Analysis</div></div>
+  <div class="qq" id="q4q"></div><div class="qhnt" id="q4h"></div>
+  <div class="qopts" id="q4o"></div>
+  <div class="qfb" id="q4f"><div class="qfbav"><img src="q-mascot.png" alt="Q" onerror="this.parentElement.innerHTML='🔍'"/></div><div><div class="qfblbl">Q — QA DETECTIVE</div><div class="qfbmsg" id="q4m"></div></div></div>
+  <button class="nxtbtn" id="q4n" onclick="goto('s5')">Next Lesson →</button>
+</div>
+
+<div class="dvd"></div>
+
+<div class="lcard" id="s5">
+  <div class="lnum">LESSON 3.5 · REVIEW PROCESS</div>
+  <div class="ltitle">The Formal Review Process — 6 Activities</div>
+  <div class="lbody">ISTQB defines a formal review process with 6 activities. These apply mainly to Technical Reviews and Inspections.</div>
+  <div style="display:flex;flex-direction:column;gap:8px;margin:14px 0">
+    <div style="background:var(--d3);border-radius:10px;padding:13px;display:flex;gap:12px;align-items:flex-start">
+      <div style="min-width:28px;height:28px;border-radius:7px;background:rgba(255,140,66,.15);color:var(--orange);font-family:'Syne',sans-serif;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div>
+      <div><div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--white);margin-bottom:3px">Planning</div><div style="font-size:14px;color:var(--muted)">Define scope, objectives, roles. Check entry criteria. Distribute work products to reviewers.</div></div>
+    </div>
+    <div style="background:var(--d3);border-radius:10px;padding:13px;display:flex;gap:12px;align-items:flex-start">
+      <div style="min-width:28px;height:28px;border-radius:7px;background:rgba(255,140,66,.15);color:var(--orange);font-family:'Syne',sans-serif;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div>
+      <div><div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--white);margin-bottom:3px">Review Initiation</div><div style="font-size:14px;color:var(--muted)">Confirm everyone has access to materials and is prepared. Check entry criteria are met.</div></div>
+    </div>
+    <div style="background:var(--d3);border-radius:10px;padding:13px;display:flex;gap:12px;align-items:flex-start">
+      <div style="min-width:28px;height:28px;border-radius:7px;background:rgba(255,140,66,.15);color:var(--orange);font-family:'Syne',sans-serif;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</div>
+      <div><div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--white);margin-bottom:3px">Individual Review</div><div style="font-size:14px;color:var(--muted)">Each reviewer examines the work product independently. Logs potential defects, questions, and suggestions.</div></div>
+    </div>
+    <div style="background:var(--d3);border-radius:10px;padding:13px;display:flex;gap:12px;align-items:flex-start">
+      <div style="min-width:28px;height:28px;border-radius:7px;background:rgba(255,140,66,.15);color:var(--orange);font-family:'Syne',sans-serif;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0">4</div>
+      <div><div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--white);margin-bottom:3px">Communication and Analysis</div><div style="font-size:14px;color:var(--muted)">Group meeting where reviewers communicate findings. Moderator facilitates. Scribe records. Defects evaluated and logged.</div></div>
+    </div>
+    <div style="background:var(--d3);border-radius:10px;padding:13px;display:flex;gap:12px;align-items:flex-start">
+      <div style="min-width:28px;height:28px;border-radius:7px;background:rgba(255,140,66,.15);color:var(--orange);font-family:'Syne',sans-serif;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0">5</div>
+      <div><div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--white);margin-bottom:3px">Fixing and Reporting</div><div style="font-size:14px;color:var(--muted)">Author fixes defects. Review report produced. Exit criteria checked.</div></div>
+    </div>
+    <div style="background:var(--d3);border-radius:10px;padding:13px;display:flex;gap:12px;align-items:flex-start">
+      <div style="min-width:28px;height:28px;border-radius:7px;background:rgba(126,201,74,.15);color:var(--green);font-family:'Syne',sans-serif;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0">6</div>
+      <div><div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--white);margin-bottom:3px">Closing</div><div style="font-size:14px;color:var(--muted)">Confirm exit criteria are met. Collect metrics. Lessons learned. Work product accepted or rejected.</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="quiz-sec">
+  <div class="qs-hdr"><div class="qs-badge">FINAL QUIZ</div><div class="qs-title">3.5 — Review Process</div></div>
+  <div class="qq" id="q5q"></div><div class="qhnt" id="q5h"></div>
+  <div class="qopts" id="q5o"></div>
+  <div class="qfb" id="q5f"><div class="qfbav"><img src="q-mascot.png" alt="Q" onerror="this.parentElement.innerHTML='🔍'"/></div><div><div class="qfblbl">Q — QA DETECTIVE</div><div class="qfbmsg" id="q5m"></div></div></div>
+  <button class="nxtbtn" id="q5n" onclick="showDone()">Complete Module →</button>
+</div>
+
+<div class="done-card" id="doneCard">
+  <div style="font-size:52px;margin-bottom:10px;animation:fl 3s ease-in-out infinite">🏆</div>
+  <div class="dc-xp" id="dcXP">+0 XP</div>
+  <div class="dc-h">Module 3 Complete, Watson.</div>
+  <div class="dc-wat">"You now find defects before the code runs. That is real QA power."</div>
+  <div style="display:flex;gap:20px;justify-content:center;margin-bottom:20px;flex-wrap:wrap">
+    <div style="text-align:center"><div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--white)" id="dcScore">0/5</div><div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace">CORRECT</div></div>
+    <div style="text-align:center"><div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--orange)">5</div><div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace">LESSONS</div></div>
+    <div style="text-align:center"><div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--purple)">M3</div><div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace">ISTQB</div></div>
+  </div>
+  <div class="dc-btns">
+    <a href="qalingo-istqb-m4.html" class="dc-btn">Module 4: Test Analysis →</a>
+    <a href="index.html" class="dc-btn2">← Main Menu</a>
+  </div>
+</div>
+
+<div class="cheat">
+  <div class="lnum">REFERENCE</div>
+  <div style="font-family:'Syne',sans-serif;font-size:19px;font-weight:800;color:var(--white);margin-bottom:2px">Module 3 Cheat Sheet</div>
+  <div class="cheat-grid">
+    <div class="ci"><div class="ci-t">🔍 Static vs Dynamic</div><div class="ci-b"><code>Static</code> — No code execution, finds defects in artifacts<br><code>Dynamic</code> — Executes the software, finds runtime failures</div></div>
+    <div class="ci"><div class="ci-t">📋 4 Review Types</div><div class="ci-b"><code>Informal</code> — No process, fast feedback<br><code>Walkthrough</code> — Author leads<br><code>Technical Review</code> — Moderator leads, peer review<br><code>Inspection</code> — Most formal, documented, metrics</div></div>
+    <div class="ci"><div class="ci-t">👥 Key Review Roles</div><div class="ci-b"><code>Moderator</code> — Leads meeting (not the author)<br><code>Author</code> — Created work product, does NOT lead<br><code>Scribe</code> — Documents findings<br><code>Reviewer</code> — Finds defects</div></div>
+    <div class="ci"><div class="ci-t">🔬 Static Analysis</div><div class="ci-b">Automated tool examination<br>Finds: code violations, security issues, dead code<br>Tools: SonarQube, ESLint, PMD<br>Performed by developers in CI/CD</div></div>
+  </div>
+</div>
+
+</div>
+
+<div class="bnav">
+  <a href="index.html">🏠 Home</a>
+  <a href="qalingo-lesson-app.html">📘 M1</a>
+  <a href="qalingo-istqb-m2.html">📘 M2</a>
+  <a href="qalingo-istqb-m3.html" class="act">📘 M3</a>
+  <a href="qalingo-istqb-m4.html">📘 M4</a>
+  <a href="qalingo-istqb-m5.html">📘 M5</a>
+  <a href="qalingo-istqb-m6.html">📘 M6</a>
+  <a href="qalingo-istqb-simulator.html">🎯 Exam</a>
+</div>
+
+<script>
+var QUIZ=[
+  {q:"Which of the following is an example of STATIC testing?",h:"No code execution involved.",opts:["Running a test suite after deployment","Reviewing a requirements document for ambiguities","Executing performance tests under load","Performing exploratory testing on a new feature"],ans:1,ok:"<strong>QAlemental.</strong> Reviewing a requirements document is static testing — examining a work product without executing any software. Defects found here are the cheapest to fix.",ng:["Running a test suite is dynamic testing — the software executes.","Performance tests execute the software under load — dynamic testing.","Exploratory testing executes the software — dynamic testing."]},
+  {q:"In which review type does the AUTHOR lead the review session?",h:"Think about who presents the work to the group.",opts:["Inspection","Technical Review","Walkthrough","Informal Review"],ans:2,ok:"<strong>Correct.</strong> In a Walkthrough, the author leads the session — presenting the work product, explaining decisions, and guiding reviewers through it. In Inspections and Technical Reviews, a moderator leads.",ng:["In an Inspection, a moderator (not the author) leads. The author listens and takes notes.","In a Technical Review, a moderator leads — not the author.","Informal reviews have no defined leader — typically just a colleague giving feedback."]},
+  {q:"What is the PRIMARY role of the Scribe in a formal review?",h:"Think about documentation during the meeting.",opts:["Leading the review meeting","Identifying defects in the work product","Documenting defects, decisions, and action items during the review","Deciding whether the work product is accepted or rejected"],ans:2,ok:"<strong>QAlemental.</strong> The Scribe (Recorder) documents everything that happens during the review — defects found, decisions made, open questions. Without the Scribe, the review produces no audit trail.",ng:["The Moderator leads the review meeting — not the Scribe.","Reviewers identify defects — the Scribe records them.","The Review Leader or management makes the final acceptance decision."]},
+  {q:"A static analysis tool flags a potential SQL injection vulnerability in a login function. No test has been run yet. This is an example of:",h:"What type of testing finds defects without code execution?",opts:["Dynamic testing finding a runtime failure","Regression testing identifying a new defect","Static analysis finding a defect before execution","Performance testing identifying a security issue"],ans:2,ok:"<strong>Precisely.</strong> Static analysis examines code without executing it — finding issues like SQL injection vulnerabilities before any test runs. This is a key advantage: security defects found before deployment.",ng:["Dynamic testing requires code execution — no execution happened here.","Regression testing runs tests after a change — this is code analysis, not test execution.","Performance testing is about load and speed — and requires execution."]},
+  {q:"Which review activity involves each reviewer independently examining the work product BEFORE the group meeting?",h:"Think about the 6-step review process — which step happens alone?",opts:["Planning","Review Initiation","Individual Review","Communication and Analysis"],ans:2,ok:"<strong>QAlemental.</strong> Individual Review (Step 3) is where each reviewer independently examines the work product and logs potential defects before the group meeting. This ensures reviewers come prepared with their own findings — not just reacting to others.",ng:["Planning is about organizing the review — selecting reviewers and distributing materials.","Review Initiation confirms everyone is prepared and has materials — it's an administrative check.","Communication and Analysis is the group meeting where findings are discussed — happens AFTER individual review."]}
+];
+var correct=0,done=0;
+var LTRS=['A','B','C','D'];
+function renderQ(id,qi){var q=QUIZ[qi];document.getElementById('q'+id+'q').textContent=q.q;document.getElementById('q'+id+'h').textContent=q.h;document.getElementById('q'+id+'o').innerHTML=q.opts.map(function(o,i){return'<button class="qopt" onclick="ansQ('+id+','+qi+',this,'+i+')"><div class="oltr">'+LTRS[i]+'</div><span>'+o+'</span></button>';}).join('');}
+function ansQ(id,qi,btn,idx){var q=QUIZ[qi];document.getElementById('q'+id+'o').querySelectorAll('.qopt').forEach(function(b){b.classList.add('lk');});var ok=idx===q.ans;if(ok){btn.classList.add('ok');correct++;}else{btn.classList.add('ng');document.getElementById('q'+id+'o').querySelectorAll('.qopt')[q.ans].classList.add('ok');}var snarky=["<em>Hmm.</em> ","<em>Really, Watson?</em> ","<em>Come now.</em> "];document.getElementById('q'+id+'m').innerHTML=ok?'<strong style="color:var(--green)">QAlemental.</strong> '+q.ok:snarky[Math.floor(Math.random()*3)]+q.ng[idx];document.getElementById('q'+id+'f').classList.add('on');document.getElementById('q'+id+'n').style.display='block';done++;updateProg();}
+function updateProg(){document.getElementById('pf').style.width=(done/5*100)+'%';document.getElementById('pl').textContent=done+' / 5 questions';document.getElementById('px').textContent='+'+(done*100)+' XP';}
+function goto(id){document.getElementById(id).scrollIntoView({behavior:'smooth',block:'start'});}
+function showDone(){var dc=document.getElementById('doneCard');dc.style.display='block';document.getElementById('dcXP').textContent='+'+(correct*100)+' XP';document.getElementById('dcScore').textContent=correct+'/5';dc.scrollIntoView({behavior:'smooth',block:'center'});}
+function toggleTheme(){var LIGHT={'--dark':'#eef4fb','--d2':'#e0ecf7','--d3':'#cfe0f0','--card':'#f8fbff','--border':'#b8d4e8','--bhi':'#90b8d5','--text':'#0f1f35','--muted':'#3d607a','--white':'#0a1828'};var DARK={'--dark':'#080c10','--d2':'#0d1319','--d3':'#131c26','--card':'#111820','--border':'#1e2e3e','--bhi':'#2a4055','--text':'#dde8f0','--muted':'#8aa4bc','--white':'#f0f4f8'};var l=localStorage.getItem('qt')==='l';var theme=l?DARK:LIGHT;var r=document.documentElement;Object.keys(theme).forEach(function(k){r.style.setProperty(k,theme[k]);});localStorage.setItem('qt',l?'d':'l');document.getElementById('themeBtn').textContent=l?'☀️ Light':'🌙 Dark';}
+if(localStorage.getItem('qt')==='l'){document.getElementById('themeBtn').textContent='🌙 Dark';}
+[1,2,3,4,5].forEach(function(i){renderQ(i,i-1);});
+</script>
+</body>
+</html>

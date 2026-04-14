@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+(function(){
+  var LIGHT={'--dark':'#eef4fb','--d2':'#e0ecf7','--d3':'#cfe0f0','--card':'#f8fbff','--border':'#b8d4e8','--bhi':'#90b8d5','--text':'#0f1f35','--muted':'#3d607a','--white':'#0a1828'};
+  if(localStorage.getItem('qt')==='l'){var r=document.documentElement;Object.keys(LIGHT).forEach(function(k){r.style.setProperty(k,LIGHT[k]);});r.setAttribute('data-theme','light');}
+})();
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QALingo — ISTQB Module 6: Test Tools</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MT2434NEM0"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-MT2434NEM0');</script>
+<script src="https://cdn.loops.so/js/loops.js" data-token="cmnnvkoy709kp0i1s3jbsdcjs" async></script>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--teal:#1aab98;--teal-d:#0f7a6e;--green:#7ec94a;--amber:#f0c040;--red:#e05555;--purple:#9b6ff7;--blue:#74b4f8;--dark:#080c10;--d2:#0d1319;--d3:#131c26;--card:#111820;--border:#1e2e3e;--bhi:#2a4055;--text:#dde8f0;--muted:#8aa4bc;--white:#f0f4f8;--accent:#1aab98;}
+html{scroll-behavior:smooth}
+body{background:var(--dark);color:var(--text);font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.7;overflow-x:hidden;padding-bottom:80px}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;background:rgba(8,12,16,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.nlogo{font-family:'Syne',sans-serif;font-weight:800;font-size:17px;text-decoration:none;display:flex;align-items:center;gap:8px}
+.nlogo .qa{color:var(--teal)}.nlogo .li{color:var(--green)}
+.nright{display:flex;gap:8px;align-items:center}
+.back-btn{background:var(--d3);border:1px solid var(--border);border-radius:8px;padding:6px 14px;font-family:'Syne',sans-serif;font-weight:700;font-size:12px;color:var(--text);text-decoration:none;transition:all .15s}
+.back-btn:hover{border-color:var(--teal);color:var(--teal)}
+.ttog{background:var(--d3);border:1px solid var(--border);border-radius:20px;padding:5px 12px;cursor:pointer;font-size:12px;color:var(--text);transition:all .15s}
+.hero{padding:90px 24px 40px;max-width:860px;margin:0 auto;text-align:center}
+.mod-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(26,171,152,.1);border:1px solid rgba(26,171,152,.3);border-radius:20px;padding:6px 14px;font-family:'DM Mono',monospace;font-size:11px;color:var(--accent);letter-spacing:.5px;margin-bottom:16px}
+.mod-num{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);margin-bottom:8px;letter-spacing:2px}
+.mod-h{font-family:'Syne',sans-serif;font-size:clamp(26px,5vw,46px);font-weight:800;letter-spacing:-2px;line-height:1.05;color:var(--white);margin-bottom:10px}
+.mod-h span{background:linear-gradient(135deg,var(--accent),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.mod-sub{font-size:16px;color:var(--muted);max-width:520px;margin:0 auto 24px;line-height:1.7}
+.mod-stats{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-bottom:28px}
+.ms{text-align:center;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 18px}
+.ms-val{font-family:'Syne',sans-serif;font-weight:800;font-size:18px;color:var(--white)}
+.ms-lbl{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:1px}
+.prog-wrap{background:var(--d3);border:1px solid var(--border);border-radius:12px;padding:12px 20px;max-width:860px;margin:0 auto 28px;display:flex;align-items:center;gap:14px}
+.prog-bg{flex:1;height:7px;background:var(--border);border-radius:4px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--teal));border-radius:4px;transition:width .4s ease;width:0%}
+.prog-lbl{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);white-space:nowrap}
+.prog-xp{font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--amber)}
+.content{max-width:860px;margin:0 auto;padding:0 24px}
+.lcard{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;margin-bottom:16px;position:relative;overflow:hidden}
+.lcard::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--teal))}
+.lnum{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+.ltitle{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--white);margin-bottom:12px;letter-spacing:-.5px}
+.lbody{font-size:16px;color:var(--text);line-height:1.8;margin-bottom:14px}
+.lbody strong{color:var(--white)}.lbody em{color:var(--teal);font-style:normal}
+.qbub{display:flex;gap:12px;background:var(--d3);border:1px solid var(--bhi);border-radius:13px;padding:15px;margin:16px 0}
+.qbav{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,var(--teal-d),var(--teal));display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}
+.qbav img{width:100%;height:100%;object-fit:contain}
+.qbnm{font-family:'DM Mono',monospace;font-size:9px;color:var(--teal);letter-spacing:1px;margin-bottom:3px}
+.qbtxt{font-size:14px;color:var(--text);line-height:1.6;font-style:italic}
+.qbtxt strong{color:var(--teal);font-style:normal}.qbtxt em{color:var(--amber);font-style:normal}
+.cgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:14px 0}
+.cbox{background:var(--d3);border-radius:11px;padding:15px}
+.cbox-title{font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--white);margin-bottom:6px}
+.cbox-body{font-size:14px;color:var(--muted);line-height:1.6}
+.quiz-sec{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+.qs-hdr{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.qs-badge{background:var(--accent);color:#fff;font-family:'Syne',sans-serif;font-weight:700;font-size:11px;padding:3px 9px;border-radius:6px}
+.qs-title{font-family:'Syne',sans-serif;font-weight:700;font-size:15px;color:var(--white)}
+.qq{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--white);margin-bottom:5px;letter-spacing:-.3px;line-height:1.4}
+.qhnt{font-size:12px;color:var(--muted);margin-bottom:13px;font-style:italic}
+.qopts{display:flex;flex-direction:column;gap:7px}
+.qopt{display:flex;align-items:flex-start;gap:10px;background:var(--d3);border:2px solid var(--border);border-radius:10px;padding:11px 14px;cursor:pointer;transition:all .15s;text-align:left;width:100%;font-size:15px;color:var(--text);line-height:1.5}
+.qopt:hover:not(.lk){border-color:var(--accent);background:rgba(26,171,152,.05);transform:translateX(3px)}
+.qopt.ok{border-color:var(--green);background:rgba(126,201,74,.08)}
+.qopt.ng{border-color:var(--red);background:rgba(224,85,85,.08)}
+.qopt.lk{cursor:default}
+.oltr{width:24px;height:24px;border-radius:6px;background:var(--card);border:1.5px solid var(--bhi);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);flex-shrink:0;transition:all .15s;margin-top:1px}
+.qopt.ok .oltr{background:var(--green);border-color:var(--green);color:#fff}
+.qopt.ng .oltr{background:var(--red);border-color:var(--red);color:#fff}
+.qfb{display:none;background:var(--d3);border:1px solid var(--bhi);border-radius:11px;padding:13px 15px;margin-top:9px;animation:fu .3s ease both}
+.qfb.on{display:flex;gap:11px;align-items:flex-start}
+.qfbav{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--teal-d),var(--teal));flex-shrink:0;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.qfbav img{width:100%;height:100%;object-fit:contain}
+.qfblbl{font-family:'DM Mono',monospace;font-size:9px;color:var(--teal);letter-spacing:1px;margin-bottom:2px}
+.qfbmsg{font-size:13px;color:var(--text);line-height:1.6}
+.qfbmsg strong{color:var(--teal)}.qfbmsg em{color:var(--amber);font-style:normal}
+.nxtbtn{background:var(--accent);color:#fff;border:none;border-radius:9px;padding:10px 20px;font-family:'Syne',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:all .15s;margin-top:10px;display:none}
+.nxtbtn:hover{transform:translateY(-1px)}
+.done-card{background:var(--d3);border:1px solid var(--border);border-radius:16px;padding:28px;margin-bottom:16px;text-align:center;display:none}
+.dc-xp{font-family:'Syne',sans-serif;font-size:44px;font-weight:800;color:var(--amber);margin-bottom:4px}
+.dc-h{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--white);margin-bottom:6px}
+.dc-wat{font-style:italic;font-size:14px;color:var(--teal);margin-bottom:18px}
+.dc-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.dc-btn{background:linear-gradient(135deg,var(--accent),var(--teal));color:#fff;border:none;border-radius:11px;padding:12px 24px;font-family:'Syne',sans-serif;font-weight:700;font-size:14px;cursor:pointer;text-decoration:none;display:inline-block;transition:all .15s}
+.dc-btn2{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:11px;padding:12px 20px;font-family:'Syne',sans-serif;font-weight:600;font-size:13px;text-decoration:none;display:inline-block;transition:all .15s}
+.dvd{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:24px 0}
+.bnav{position:fixed;bottom:0;left:0;right:0;background:rgba(8,12,16,.97);border-top:1px solid var(--border);padding:9px 14px;z-index:200;display:flex;justify-content:center;gap:7px;flex-wrap:wrap;backdrop-filter:blur(12px)}
+.bnav a{text-decoration:none;background:var(--d3);border:1px solid var(--border);border-radius:8px;padding:6px 11px;font-family:'Syne',sans-serif;font-weight:700;font-size:11px;color:var(--text);transition:all .15s}
+.bnav a:hover{border-color:var(--teal);color:var(--teal)}
+.bnav a.act{background:var(--accent);border-color:var(--accent);color:#fff}
+@keyframes fu{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fl{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@media(max-width:768px){.cgrid{grid-template-columns:1fr}.content{padding:0 16px}nav{padding:11px 16px}}
+</style>
+</head>
+<body>
+<nav>
+  <a class="nlogo" href="index.html"><span class="qa">QA</span><span class="li">Lingo</span></a>
+  <div class="nright">
+    <a class="back-btn" href="index.html">← Main Menu</a>
+    <button class="ttog" onclick="toggleTheme()" id="themeBtn">☀️ Light</button>
+  </div>
+</nav>
+<div class="hero">
+  <div class="mod-badge">📘 ISTQB CTFL v4.0</div>
+  <div class="mod-num">MODULE 06 OF 06</div>
+  <h1 class="mod-h"><span>Test Tools</span></h1>
+  <p class="mod-sub">Understand the test tool landscape — automation, management, defect tracking, performance, and how to evaluate and select tools.</p>
+  <div class="mod-stats">
+    <div class="ms"><div class="ms-val">4</div><div class="ms-lbl">LESSONS</div></div>
+    <div class="ms"><div class="ms-val">4</div><div class="ms-lbl">QUIZ QUESTIONS</div></div>
+    <div class="ms"><div class="ms-val">400</div><div class="ms-lbl">XP AVAILABLE</div></div>
+    <div class="ms"><div class="ms-val">~15</div><div class="ms-lbl">MINUTES</div></div>
+  </div>
+  <div class="prog-wrap">
+    <div class="prog-bg"><div class="prog-fill" id="pf"></div></div>
+    <div class="prog-lbl" id="pl">0 / 4 questions</div>
+    <div class="prog-xp" id="px">+0 XP</div>
+  </div>
+</div>
+<div class="content">
+<div class="lcard" id="s1">
+  <div class="lnum">LESSON 6.1 · TEST TOOL CATEGORIES</div>
+  <div class="ltitle">The Test Tool Landscape</div>
+  <div class="lbody">ISTQB categorizes test tools by purpose. Knowing the categories — not just specific tools — is what the exam tests.</div>
+  <div class="cgrid">
+    <div class="cbox"><div class="cbox-title">📋 Test Management</div><div class="cbox-body">Organize test cases, track execution, link to requirements. Tools: Jira + Zephyr, TestRail, qTest, Azure DevOps Test Plans.</div></div>
+    <div class="cbox"><div class="cbox-title">⚡ Test Execution / Automation</div><div class="cbox-body">Execute tests automatically. UI: Selenium, Cypress, Playwright. API: Postman, RestAssured. Mobile: Appium, Espresso.</div></div>
+    <div class="cbox"><div class="cbox-title">📊 Performance Testing</div><div class="cbox-body">Simulate load and measure performance. Tools: JMeter, k6, Gatling, Locust. Used for load, stress, and soak testing.</div></div>
+    <div class="cbox"><div class="cbox-title">🔒 Security Testing</div><div class="cbox-body">Find vulnerabilities. SAST (code): SonarQube, Checkmarx. DAST (runtime): OWASP ZAP, Burp Suite. Dependency scanning: Snyk.</div></div>
+    <div class="cbox"><div class="cbox-title">🐛 Defect Tracking</div><div class="cbox-body">Log, track, and manage defects. Tools: Jira, GitHub Issues, Azure DevOps Boards, Bugzilla, MantisBT.</div></div>
+    <div class="cbox"><div class="cbox-title">🔬 Static Analysis</div><div class="cbox-body">Examine code without execution. Tools: SonarQube, ESLint, Pylint, PMD, Checkstyle. Integrated in CI/CD pipelines.</div></div>
+  </div>
+</div>
+<div class="quiz-sec"><div class="qs-hdr"><div class="qs-badge">QUIZ</div><div class="qs-title">6.1 — Tool Categories</div></div><div class="qq" id="q1q"></div><div class="qhnt" id="q1h"></div><div class="qopts" id="q1o"></div><div class="qfb" id="q1f"><div class="qfbav"><img src="q-mascot.png" alt="Q" onerror="this.parentElement.innerHTML='🔍'"/></div><div><div class="qfblbl">Q — QA DETECTIVE</div><div class="qfbmsg" id="q1m"></div></div></div><button class="nxtbtn" id="q1n" onclick="goto('s2')">Next Lesson →</button></div>
+<div class="dvd"></div>
+<div class="lcard" id="s2">
+  <div class="lnum">LESSON 6.2 · TEST AUTOMATION</div>
+  <div class="ltitle">Test Automation — Benefits, Risks, and Reality</div>
+  <div class="lbody">
+    <strong>Test automation</strong> uses tools to execute tests and compare actual results to expected results automatically. It is most valuable for regression testing and CI/CD pipelines.
+  </div>
+  <div class="cgrid">
+    <div class="cbox"><div class="cbox-title">✅ When to automate</div><div class="cbox-body">Regression tests run frequently · Stable features unlikely to change · Repetitive data-driven tests · Smoke tests run on every build · API contract tests</div></div>
+    <div class="cbox"><div class="cbox-title">❌ When NOT to automate</div><div class="cbox-body">Exploratory testing · Usability testing · One-off tests · Frequently changing UI · Tests requiring human judgment · Accessibility assessment</div></div>
+    <div class="cbox"><div class="cbox-title">⚠️ Automation risks</div><div class="cbox-body">High initial investment · Maintenance cost when UI/API changes · False sense of security (passing tests ≠ no bugs) · Requires coding skills · Test debt accumulates</div></div>
+    <div class="cbox"><div class="cbox-title">📈 ROI of automation</div><div class="cbox-body">ROI increases over time as tests are reused. Break-even point: typically after 3–5 regression cycles. High-frequency, stable tests have the best ROI.</div></div>
+  </div>
+  <div class="qbub">
+    <div class="qbav"><img src="q-mascot.png" alt="Q" onerror="this.parentElement.innerHTML='🔍'"/></div>
+    <div><div class="qbnm">Q — QA DETECTIVE</div>
+    <div class="qbtxt">"A 100% automated test suite that all passes is not a guarantee of quality. <em>It is a guarantee that the code behaves exactly as it did when the tests were written.</em> <strong>If the requirements were wrong, the tests are wrong too.</strong> Automation confirms consistency — not correctness."</div></div>
+  </div>
+</div>
+<div class="quiz-sec"><div class="qs-hdr"><div class="qs-badge">QUIZ</div><div class="qs-title">6.2 — Test Automation</div></div><div class="qq" id="q2q"></div><div class="qhnt" id="q2h"></div><div class="qopts" id="q2o"></div><div class="qfb" id="q2f"><div class="qfbav"><img src="q-mascot.png" alt="Q" onerror="this.parentElement.innerHTML='🔍'"/></div><div><div class="qfblbl">Q — QA DETECTIVE</div><div class="qfbmsg" id="q2m"></div></div></div><button class="nxtbtn" id="q2n" onclick="goto('s3')">Next Lesson →</button></div>
+<div class="dvd"></div>
+<div class="lcard" id="s3">
+  <div class="lnum">LESSON 6.3 · TOOL SELECTION</div>
+  <div class="ltitle">Selecting and Introducing Test Tools</div>
+  <div class="lbody">Choosing the wrong tool is a common and expensive mistake. ISTQB provides a structured approach to tool evaluation and adoption.</div>
+  <div style="display:flex;flex-direction:column;gap:8px;margin:14px 0">
+    <div style="background:var(--d3);border-radius:10px;padding:13px;display:flex;gap:12px"><div style="min-width:26px;height:26px;border-radius:6px;background:rgba(26,171,152,.15);color:var(--teal);font-family:'Syne',sans-serif;font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div><div><div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--white);margin-bottom:2px">Assess organizational needs</div><div style="font-size:13px;color:var(--muted)">What problem are you solving? What is your technology stack? What skills does the team have?</div></div></div>
+    <div style="background:var(--d3);border-radius:10px;padding:13px;display:flex;gap:12px"><div style="min-width:26px;height:26px;border-radius:6px;background:rgba(26,171,152,.15);color:var(--teal);font-family:'Syne',sans-serif;font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div><div><div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--white);margin-bottom:2px">Evaluate against criteria</div><div style="font-size:13px;color:var(--muted)">Compatibility with stack · Ease of use · Vendor support · Licensing cost · Community and documentation</div></div></div>
+    <div style="background:var(--d3);border-radius:10px;padding:13px;display:flex;gap:12px"><div style="min-width:26px;height:26px;border-radius:6px;background:rgba(26,171,152,.15);color:var(--teal);font-family:'Syne',sans-serif;font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</div><div><div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--white);margin-bottom:2px">Pilot on a real project</div><div style="font-size:13px;color:var(--muted)">Test the tool on a real (but non-critical) project before full rollout. Measure ROI and identify integration challenges.</div></div></div>
+    <div style="background:var(--d3);border-radius:10px;padding:13px;display:flex;gap:12px"><div style="min-width:26px;height:26px;border-radius:6px;background:rgba(126,201,74,.15);color:var(--green);font-family:'Syne',sans-serif;font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0">4</div><div><div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--white);margin-bottom:2px">Roll out with training and support</div><div style="font-size:13px;color:var(--muted)">Train the team. Define standards for tool use. Monitor adoption. Measure impact on quality and efficiency.</div></div></div>
+  </div>
+</div>
+<div class="quiz-sec"><div class="qs-hdr"><div class="qs-badge">QUIZ</div><div class="qs-title">6.3 — Tool Selection</div></div><div class="qq" id="q3q"></div><div class="qhnt" id="q3h"></div><div class="qopts" id="q3o"></div><div class="qfb" id="q3f"><div class="qfbav"><img src="q-mascot.png" alt="Q" onerror="this.parentElement.innerHTML='🔍'"/></div><div><div class="qfblbl">Q — QA DETECTIVE</div><div class="qfbmsg" id="q3m"></div></div></div><button class="nxtbtn" id="q3n" onclick="goto('s4')">Next Lesson →</button></div>
+<div class="dvd"></div>
+<div class="lcard" id="s4">
+  <div class="lnum">LESSON 6.4 · CI/CD AND TESTING</div>
+  <div class="ltitle">Testing in CI/CD Pipelines</div>
+  <div class="lbody">
+    In modern development, tests are automatically triggered by code changes. <strong>CI/CD (Continuous Integration/Continuous Delivery)</strong> pipelines run tests at every stage of the build and deployment process.
+  </div>
+  <div class="cgrid">
+    <div class="cbox"><div class="cbox-title">🔄 CI — Continuous Integration</div><div class="cbox-body">Every code commit triggers: build → static analysis → unit tests → integration tests. Defects are detected within minutes. Developers fix immediately while context is fresh.</div></div>
+    <div class="cbox"><div class="cbox-title">🚀 CD — Continuous Delivery</div><div class="cbox-body">Automated pipeline deploys to staging/production after CI passes. Triggers: system tests, performance tests, security scans. One-click or automated deployment to production.</div></div>
+    <div class="cbox"><div class="cbox-title">🧪 Test Pyramid</div><div class="cbox-body">Many unit tests (fast, cheap) → fewer integration tests → fewer UI/E2E tests (slow, expensive). More tests at the bottom = faster feedback, lower maintenance cost.</div></div>
+    <div class="cbox"><div class="cbox-title">⚡ Shift-Left in CI/CD</div><div class="cbox-body">Static analysis and unit tests run on every commit. API tests on every build. E2E tests on every release candidate. Problems found in seconds — not days.</div></div>
+  </div>
+  <div class="qbub">
+    <div class="qbav"><img src="q-mascot.png" alt="Q" onerror="this.parentElement.innerHTML='🔍'"/></div>
+    <div><div class="qbnm">Q — QA DETECTIVE</div>
+    <div class="qbtxt">"In a mature CI/CD pipeline, every code commit is a crime scene investigation. <strong>Static analysis is the first responder. Unit tests are the forensics team. Integration tests are the investigators.</strong> <em>By the time it reaches production, it has been interrogated at every level.</em>"</div></div>
+  </div>
+</div>
+<div class="quiz-sec"><div class="qs-hdr"><div class="qs-badge">FINAL QUIZ</div><div class="qs-title">6.4 — CI/CD and Testing</div></div><div class="qq" id="q4q"></div><div class="qhnt" id="q4h"></div><div class="qopts" id="q4o"></div><div class="qfb" id="q4f"><div class="qfbav"><img src="q-mascot.png" alt="Q" onerror="this.parentElement.innerHTML='🔍'"/></div><div><div class="qfblbl">Q — QA DETECTIVE</div><div class="qfbmsg" id="q4m"></div></div></div><button class="nxtbtn" id="q4n" onclick="showDone()">Complete Module →</button></div>
+<div class="done-card" id="doneCard">
+  <div style="font-size:52px;margin-bottom:10px;animation:fl 3s ease-in-out infinite">🏆</div>
+  <div class="dc-xp" id="dcXP">+0 XP</div>
+  <div class="dc-h">Module 6 Complete, Watson.</div>
+  <div class="dc-wat">"QAlemental. You have completed all 6 ISTQB Foundation modules. The certification exam awaits, Watson."</div>
+  <div style="display:flex;gap:20px;justify-content:center;margin-bottom:20px;flex-wrap:wrap">
+    <div style="text-align:center"><div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--white)" id="dcScore">0/4</div><div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace">CORRECT</div></div>
+    <div style="text-align:center"><div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--accent)">4</div><div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace">LESSONS</div></div>
+  </div>
+  <div class="dc-btns">
+    <a href="qalingo-istqb-simulator.html" class="dc-btn">🎯 Take the Full Exam →</a>
+    <a href="index.html" class="dc-btn2">← Main Menu</a>
+  </div>
+</div>
+</div>
+<div class="bnav">
+  <a href="index.html">🏠 Home</a>
+  <a href="qalingo-lesson-app.html">📘 M1</a>
+  <a href="qalingo-istqb-m2.html">📘 M2</a>
+  <a href="qalingo-istqb-m3.html">📘 M3</a>
+  <a href="qalingo-istqb-m4.html">📘 M4</a>
+  <a href="qalingo-istqb-m5.html">📘 M5</a>
+  <a href="qalingo-istqb-m6.html" class="act">📘 M6</a>
+  <a href="qalingo-istqb-simulator.html">🎯 Exam</a>
+</div>
+<script>
+var QUIZ=[{"q": "What is the PRIMARY benefit of test automation?", "h": "Think about what automation does better than humans at scale.", "opts": ["It replaces all manual testing", "It executes repetitive tests faster and more reliably than humans, freeing QA for exploratory and complex testing", "It finds more defects than manual testing", "It eliminates the need for test planning"], "ans": 1, "ok": "Test automation excels at repetitive, regression-heavy testing \u2014 running thousands of test cases faster and more reliably than humans. This frees QA professionals for exploratory testing, risk analysis, and complex scenarios automation cannot handle.", "ng": ["Automation cannot replace manual testing \u2014 exploratory, usability, and ad-hoc testing require human judgment.", "Automation often finds fewer unique defects than skilled exploratory testing \u2014 it finds regressions reliably.", "Test planning is always required \u2014 automation increases execution efficiency, not planning efficiency."]}, {"q": "Which factor is MOST important when evaluating a test tool for adoption?", "h": "Think about what makes a tool actually useful in your specific context.", "opts": ["It is the most popular tool on the market", "It fits the team's skills, technology stack, and testing objectives", "It is the cheapest available option", "It has the most features listed on its website"], "ans": 1, "ok": "Tool selection must be based on fit: does it work with your technology stack, can your team learn and use it effectively, and does it support your actual testing objectives? Popularity and features are secondary to fit.", "ng": ["Popularity means a large community and resources \u2014 but a popular tool that doesn't fit your stack is useless.", "Cost is a factor but secondary to fitness for purpose \u2014 a cheap tool that doesn't work is not a saving.", "Feature count is irrelevant if the tool doesn't integrate with your workflow and technology."]}, {"q": "A test management tool is primarily used to:", "h": "Think about organizing and tracking \u2014 not executing tests.", "opts": ["Automatically execute test cases", "Manage test cases, test plans, test results, and requirements traceability", "Monitor application performance under load", "Analyze source code for security vulnerabilities"], "ans": 1, "ok": "Test management tools (Jira+Zephyr, TestRail, qTest, Azure DevOps) organize test cases, track execution results, link to requirements, and provide reporting. They are the central hub for all test documentation and tracking.", "ng": ["Test execution frameworks (Selenium, Cypress) run tests \u2014 management tools organize and track them.", "Performance monitoring tools (k6, JMeter, Gatling) handle load testing \u2014 not management tools.", "SAST tools (SonarQube, Checkmarx) analyze source code \u2014 not test management tools."]}, {"q": "Which statement about test automation is TRUE according to ISTQB?", "h": "Think about realistic limitations of automation.", "opts": ["Test automation always improves test coverage", "Automated tests require maintenance when the system under test changes", "Test automation eliminates the need for testers", "Automated tests always find more defects than manual tests"], "ans": 1, "ok": "Automated tests break when the system changes \u2014 UI changes, API contract changes, or database schema changes all require test maintenance. This maintenance cost is the most significant challenge of test automation.", "ng": ["Automation can improve coverage but is no guarantee \u2014 poorly designed automated tests can have low coverage.", "Automation increases the need for skilled testers who can design, maintain, and interpret automation.", "Manual exploratory testing routinely finds defects that automated tests miss \u2014 automation is complementary, not superior."]}];
+var correct=0,done=0,total=4;
+var LTRS=['A','B','C','D'];
+function renderQ(id,qi){var q=QUIZ[qi];document.getElementById('q'+id+'q').textContent=q.q;document.getElementById('q'+id+'h').textContent=q.h;document.getElementById('q'+id+'o').innerHTML=q.opts.map(function(o,i){return'<button class="qopt" onclick="ansQ('+id+','+qi+',this,'+i+')"><div class="oltr">'+LTRS[i]+'</div><span>'+o+'</span></button>';}).join('');}
+function ansQ(id,qi,btn,idx){var q=QUIZ[qi];document.getElementById('q'+id+'o').querySelectorAll('.qopt').forEach(function(b){b.classList.add('lk');});var ok=idx===q.ans;if(ok){btn.classList.add('ok');correct++;}else{btn.classList.add('ng');document.getElementById('q'+id+'o').querySelectorAll('.qopt')[q.ans].classList.add('ok');}var snarky=["<em>Hmm.</em> ","<em>Really, Watson?</em> ","<em>Come now.</em> "];document.getElementById('q'+id+'m').innerHTML=ok?'<strong style="color:var(--green)">QAlemental.</strong> '+q.ok:snarky[Math.floor(Math.random()*3)]+q.ng[idx];document.getElementById('q'+id+'f').classList.add('on');document.getElementById('q'+id+'n').style.display='block';done++;updateProg();}
+function updateProg(){document.getElementById('pf').style.width=(done/total*100)+'%';document.getElementById('pl').textContent=done+' / '+total+' questions';document.getElementById('px').textContent='+'+(done*100)+' XP';}
+function goto(id){document.getElementById(id).scrollIntoView({behavior:'smooth',block:'start'});}
+function showDone(){var dc=document.getElementById('doneCard');dc.style.display='block';document.getElementById('dcXP').textContent='+'+(correct*100)+' XP';document.getElementById('dcScore').textContent=correct+'/'+total;dc.scrollIntoView({behavior:'smooth',block:'center'});}
+function toggleTheme(){var LIGHT={'--dark':'#eef4fb','--d2':'#e0ecf7','--d3':'#cfe0f0','--card':'#f8fbff','--border':'#b8d4e8','--bhi':'#90b8d5','--text':'#0f1f35','--muted':'#3d607a','--white':'#0a1828'};var DARK={'--dark':'#080c10','--d2':'#0d1319','--d3':'#131c26','--card':'#111820','--border':'#1e2e3e','--bhi':'#2a4055','--text':'#dde8f0','--muted':'#8aa4bc','--white':'#f0f4f8'};var l=localStorage.getItem('qt')==='l';var theme=l?DARK:LIGHT;var r=document.documentElement;Object.keys(theme).forEach(function(k){r.style.setProperty(k,theme[k]);});localStorage.setItem('qt',l?'d':'l');document.getElementById('themeBtn').textContent=l?'☀️ Light':'🌙 Dark';}
+if(localStorage.getItem('qt')==='l'){document.getElementById('themeBtn').textContent='🌙 Dark';}
+Array.from({length:total},function(_,i){renderQ(i+1,i);});
+</script>
+</body>
+</html>

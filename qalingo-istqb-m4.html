@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+(function(){
+  var LIGHT={'--dark':'#eef4fb','--d2':'#e0ecf7','--d3':'#cfe0f0','--card':'#f8fbff','--border':'#b8d4e8','--bhi':'#90b8d5','--text':'#0f1f35','--muted':'#3d607a','--white':'#0a1828'};
+  if(localStorage.getItem('qt')==='l'){var r=document.documentElement;Object.keys(LIGHT).forEach(function(k){r.style.setProperty(k,LIGHT[k]);});r.setAttribute('data-theme','light');}
+})();
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QALingo — ISTQB Module 4: Test Analysis and Design</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MT2434NEM0"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-MT2434NEM0');</script>
+<script src="https://cdn.loops.so/js/loops.js" data-token="cmnnvkoy709kp0i1s3jbsdcjs" async></script>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--teal:#1aab98;--teal-d:#0f7a6e;--green:#7ec94a;--amber:#f0c040;--red:#e05555;--purple:#9b6ff7;--blue:#74b4f8;--dark:#080c10;--d2:#0d1319;--d3:#131c26;--card:#111820;--border:#1e2e3e;--bhi:#2a4055;--text:#dde8f0;--muted:#8aa4bc;--white:#f0f4f8;--accent:#9b6ff7;}
+html{scroll-behavior:smooth}
+body{background:var(--dark);color:var(--text);font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.7;overflow-x:hidden;padding-bottom:80px}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;background:rgba(8,12,16,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.nlogo{font-family:'Syne',sans-serif;font-weight:800;font-size:17px;text-decoration:none;display:flex;align-items:center;gap:8px}
+.nlogo .qa{color:var(--teal)}.nlogo .li{color:var(--green)}
+.nright{display:flex;gap:8px;align-items:center}
+.back-btn{background:var(--d3);border:1px solid var(--border);border-radius:8px;padding:6px 14px;font-family:'Syne',sans-serif;font-weight:700;font-size:12px;color:var(--text);text-decoration:none;transition:all .15s}
+.back-btn:hover{border-color:var(--teal);color:var(--teal)}
+.ttog{background:var(--d3);border:1px solid var(--border);border-radius:20px;padding:5px 12px;cursor:pointer;font-size:12px;color:var(--text);transition:all .15s}
+.hero{padding:90px 24px 40px;max-width:860px;margin:0 auto;text-align:center}
+.mod-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(26,171,152,.1);border:1px solid rgba(26,171,152,.3);border-radius:20px;padding:6px 14px;font-family:'DM Mono',monospace;font-size:11px;color:var(--accent);letter-spacing:.5px;margin-bottom:16px}
+.mod-num{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);margin-bottom:8px;letter-spacing:2px}
+.mod-h{font-family:'Syne',sans-serif;font-size:clamp(26px,5vw,46px);font-weight:800;letter-spacing:-2px;line-height:1.05;color:var(--white);margin-bottom:10px}
+.mod-h span{background:linear-gradient(135deg,var(--accent),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.mod-sub{font-size:16px;color:var(--muted);max-width:520px;margin:0 auto 24px;line-height:1.7}
+.mod-stats{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-bottom:28px}
+.ms{text-align:center;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 18px}
+.ms-val{font-family:'Syne',sans-serif;font-weight:800;font-size:18px;color:var(--white)}
+.ms-lbl{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:1px}
+.prog-wrap{background:var(--d3);border:1px solid var(--border);border-radius:12px;padding:12px 20px;max-width:860px;margin:0 auto 28px;display:flex;align-items:center;gap:14px}
+.prog-bg{flex:1;height:7px;background:var(--border);border-radius:4px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--teal));border-radius:4px;transition:width .4s ease;width:0%}
+.prog-lbl{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);white-space:nowrap}
+.prog-xp{font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--amber)}
+.content{max-width:860px;margin:0 auto;padding:0 24px}
+.lcard{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;margin-bottom:16px;position:relative;overflow:hidden}
+.lcard::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--teal))}
+.lnum{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+.ltitle{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--white);margin-bottom:12px;letter-spacing:-.5px}
+.lbody{font-size:16px;color:var(--text);line-height:1.8;margin-bottom:14px}
+.lbody strong{color:var(--white)}.lbody em{color:var(--teal);font-style:normal}
+.qbub{display:flex;gap:12px;background:var(--d3);border:1px solid var(--bhi);border-radius:13px;padding:15px;margin:16px 0}
+.qbav{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,var(--teal-d),var(--teal));display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}
+.qbav img{width:100%;height:100%;object-fit:contain}
+.qbnm{font-family:'DM Mono',monospace;font-size:9px;color:var(--teal);letter-spacing:1px;margin-bottom:3px}
+.qbtxt{font-size:14px;color:var(--text);line-height:1.6;font-style:italic}
+.qbtxt strong{color:var(--teal);font-style:normal}.qbtxt em{color:var(--amber);font-style:normal}
+.cgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:14px 0}
+.cbox{background:var(--d3);border-radius:11px;padding:15px}
+.cbox-title{font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--white);margin-bottom:6px}
+.cbox-body{font-size:14px;color:var(--muted);line-height:1.6}
+.quiz-sec{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+.qs-hdr{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.qs-badge{background:var(--accent);color:#fff;font-family:'Syne',sans-serif;font-weight:700;font-size:11px;padding:3px 9px;border-radius:6px}
+.qs-title{font-family:'Syne',sans-serif;font-weight:700;font-size:15px;color:var(--white)}
+.qq{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--white);margin-bottom:5px;letter-spacing:-.3px;line-height:1.4}
+.qhnt{font-size:12px;color:var(--muted);margin-bottom:13px;font-style:italic}
+.qopts{display:flex;flex-direction:column;gap:7px}
+.qopt{display:flex;align-items:flex-start;gap:10px;background:var(--d3);border:2px solid var(--border);border-radius:10px;padding:11px 14px;cursor:pointer;transition:all .15s;text-align:left;width:100%;font-size:15px;color:var(--text);line-height:1.5}
+.qopt:hover:not(.lk){border-color:var(--accent);background:rgba(26,171,152,.05);transform:translateX(3px)}
+.qopt.ok{border-color:var(--green);background:rgba(126,201,74,.08)}
+.qopt.ng{border-color:var(--red);background:rgba(224,85,85,.08)}
+.qopt.lk{cursor:default}
+.oltr{width:24px;height:24px;border-radius:6px;background:var(--card);border:1.5px solid var(--bhi);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);flex-shrink:0;transition:all .15s;margin-top:1px}
+.qopt.ok .oltr{background:var(--green);border-color:var(--green);color:#fff}
+.qopt.ng .oltr{background:var(--red);border-color:var(--red);color:#fff}
+.qfb{display:none;background:var(--d3);border:1px solid var(--bhi);border-radius:11px;padding:13px 15px;margin-top:9px;animation:fu .3s ease both}
+.qfb.on{display:flex;gap:11px;align-items:flex-start}
+.qfbav{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--teal-d),var(--teal));flex-shrink:0;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.qfbav img{width:100%;height:100%;object-fit:contain}
+.qfblbl{font-family:'DM Mono',monospace;font-size:9px;color:var(--teal);letter-spacing:1px;margin-bottom:2px}
+.qfbmsg{font-size:13px;color:var(--text);line-height:1.6}
+.qfbmsg strong{color:var(--teal)}.qfbmsg em{color:var(--amber);font-style:normal}
+.nxtbtn{background:var(--accent);color:#fff;border:none;border-radius:9px;padding:10px 20px;font-family:'Syne',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:all .15s;margin-top:10px;display:none}
+.nxtbtn:hover{transform:translateY(-1px)}
+.done-card{background:var(--d3);border:1px solid var(--border);border-radius:16px;padding:28px;margin-bottom:16px;text-align:center;display:none}
+.dc-xp{font-family:'Syne',sans-serif;font-size:44px;font-weight:800;color:var(--amber);margin-bottom:4px}
+.dc-h{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--white);margin-bottom:6px}
+.dc-wat{font-style:italic;font-size:14px;color:var(--teal);margin-bottom:18px}
+.dc-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.dc-btn{background:linear-gradient(135deg,var(--accent),var(--teal));color:#fff;border:none;border-radius:11px;padding:12px 24px;font-family:'Syne',sans-serif;font-weight:700;font-size:14px;cursor:pointer;text-decoration:none;display:inline-block;transition:all .15s}
+.dc-btn2{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:11px;padding:12px 20px;font-family:'Syne',sans-serif;font-weight:600;font-size:13px;text-decoration:none;display:inline-block;transition:all .15s}
+.dvd{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:24px 0}
+.bnav{position:fixed;bottom:0;left:0;right:0;background:rgba(8,12,16,.97);border-top:1px solid var(--border);padding:9px 14px;z-index:200;display:flex;justify-content:center;gap:7px;flex-wrap:wrap;backdrop-filter:blur(12px)}
+.bnav a{text-decoration:none;background:var(--d3);border:1px solid var(--border);border-radius:8px;padding:6px 11px;font-family:'Syne',sans-serif;font-weight:700;font-size:11px;color:var(--text);transition:all .15s}
+.bnav a:hover{border-color:var(--teal);color:var(--teal)}
+.bnav a.act{background:var(--accent);border-color:var(--accent);color:#fff}
+@keyframes fu{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fl{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@media(max-width:768px){.cgrid{grid-template-columns:1fr}.content{padding:0 16px}nav{padding:11px 16px}}
+</style>
+</head>
+<body>
+<nav>
+  <a class="nlogo" href="index.html"><span class="qa">QA</span><span class="li">Lingo</span></a>
+  <div class="nright">
+    <a class="back-btn" href="index.html">← Main Menu</a>
+    <button class="ttog" onclick="toggleTheme()" id="themeBtn">☀️ Light</button>
+  </div>
+</nav>
+<div class="hero">
+  <div class="mod-badge">📘 ISTQB CTFL v4.0</div>
+  <div class="mod-num">MODULE 04 OF 06</div>
+  <h1 class="mod-h"><span>Test Analysis and Design</span></h1>
+  <p class="mod-sub">Master test techniques — black-box, white-box, and experience-based. Learn how to design effective test cases from requirements.</p>
+  <div class="mod-stats">
+    <div class="ms"><div class="ms-val">5</div><div class="ms-lbl">LESSONS</div></div>
+    <div class="ms"><div class="ms-val">5</div><div class="ms-lbl">QUIZ QUESTIONS</div></div>
+    <div class="ms"><div class="ms-val">500</div><div class="ms-lbl">XP AVAILABLE</div></div>
+    <div class="ms"><div class="ms-val">~18</div><div class="ms-lbl">MINUTES</div></div>
+  </div>
+  <div class="prog-wrap">
+    <div class="prog-bg"><div class="prog-fill" id="pf"></div></div>
+    <div class="prog-lbl" id="pl">0 / 5 questions</div>
+    <div class="prog-xp" id="px">+0 XP</div>
+  </div>
+</div>
+<div class="content">
+<div class="lcard" id="s1">
+  <div class="lnum">LESSON 4.1 · BLACK-BOX TECHNIQUES</div>
+  <div class="ltitle">Black-Box Test Techniques</div>
+  <div class="lbody">
+    <strong>Black-box testing</strong> treats the system as a black box — you can only see inputs and outputs. You have no access to the internal code. Tests are derived from requirements, user stories, and specifications.<br><br>
+    The four main ISTQB black-box techniques:
+  </div>
+  <div class="cgrid">
+    <div class="cbox"><div class="cbox-title">📦 Equivalence Partitioning (EP)</div><div class="cbox-body">Divide inputs into partitions where all values should behave the same. Test ONE value per partition. If one fails, they all should fail — so one is enough.</div></div>
+    <div class="cbox"><div class="cbox-title">📐 Boundary Value Analysis (BVA)</div><div class="cbox-body">Test values AT boundaries and just OUTSIDE them. If a field accepts 1–100, test: 0, 1, 100, 101. Defects cluster at boundaries.</div></div>
+    <div class="cbox"><div class="cbox-title">📊 Decision Table Testing</div><div class="cbox-body">For systems with multiple conditions producing different actions. Each column = one rule (combination of conditions + action). Ensures all combinations are tested.</div></div>
+    <div class="cbox"><div class="cbox-title">🔄 State Transition Testing</div><div class="cbox-body">For systems with states (e.g. pending → active → suspended). Test valid transitions AND invalid ones. A common source of production bugs.</div></div>
+  </div>
+  <div class="qbub">
+    <div class="qbav"><img src="q-mascot.png" alt="Q" onerror="this.parentElement.innerHTML='🔍'"/></div>
+    <div><div class="qbnm">Q — QA DETECTIVE</div>
+    <div class="qbtxt">"<em>The exam trick:</em> BVA always tests 4 values for a simple range — min-1, min, max, max+1. <strong>Always.</strong> If you see a question with a range and only 2 boundary values, the answer is wrong. Q has never seen an exception."</div></div>
+  </div>
+</div>
+<div class="quiz-sec"><div class="qs-hdr"><div class="qs-badge">QUIZ</div><div class="qs-title">4.1 — Black-Box Techniques</div></div><div class="qq" id="q1q"></div><div class="qhnt" id="q1h"></div><div class="qopts" id="q1o"></div><div class="qfb" id="q1f"><div class="qfbav"><img src="q-mascot.png" alt="Q" onerror="this.parentElement.innerHTML='🔍'"/></div><div><div class="qfblbl">Q — QA DETECTIVE</div><div class="qfbmsg" id="q1m"></div></div></div><button class="nxtbtn" id="q1n" onclick="goto('s2')">Next Lesson →</button></div>
+<div class="dvd"></div>
+<div class="lcard" id="s2">
+  <div class="lnum">LESSON 4.2 · BOUNDARY VALUE ANALYSIS</div>
+  <div class="ltitle">BVA Deep Dive — The Most Tested Technique</div>
+  <div class="lbody">
+    BVA is the most frequently tested technique in the ISTQB exam. The rule is simple:<br><br>
+    For a range <strong>min to max</strong>, test: <strong>min-1, min, max, max+1</strong><br><br>
+    For a field accepting ages 18–65: test <strong>17, 18, 65, 66</strong>.<br>
+    For a password of 6–12 characters: test <strong>5, 6, 12, 13</strong>.<br><br>
+    <em>Why?</em> Most boundary defects are "off by one" errors — the developer coded >= instead of > or used the wrong boundary value. BVA catches these systematically.
+  </div>
+  <div class="qbub">
+    <div class="qbav"><img src="q-mascot.png" alt="Q" onerror="this.parentElement.innerHTML='🔍'"/></div>
+    <div><div class="qbnm">Q — QA DETECTIVE</div>
+    <div class="qbtxt">"<strong>The 2-value vs 3-value BVA debate.</strong> ISTQB CTFL v4.0 uses 2-value BVA by default: min and max+1, min-1 and max. Some older material uses 3-value (min-1, min, min+1). <em>In the exam, apply what the question implies. When in doubt, go with 2-value.</em>"</div></div>
+  </div>
+</div>
+<div class="quiz-sec"><div class="qs-hdr"><div class="qs-badge">QUIZ</div><div class="qs-title">4.2 — BVA</div></div><div class="qq" id="q2q"></div><div class="qhnt" id="q2h"></div><div class="qopts" id="q2o"></div><div class="qfb" id="q2f"><div class="qfbav"><img src="q-mascot.png" alt="Q" onerror="this.parentElement.innerHTML='🔍'"/></div><div><div class="qfblbl">Q — QA DETECTIVE</div><div class="qfbmsg" id="q2m"></div></div></div><button class="nxtbtn" id="q2n" onclick="goto('s3')">Next Lesson →</button></div>
+<div class="dvd"></div>
+<div class="lcard" id="s3">
+  <div class="lnum">LESSON 4.3 · EXPERIENCE-BASED TECHNIQUES</div>
+  <div class="ltitle">Experience-Based Testing — Error Guessing and Exploratory</div>
+  <div class="lbody">
+    Experience-based techniques rely on the tester's knowledge, intuition, and past experience. They complement formal techniques and are especially valuable when time is limited or requirements are incomplete.
+  </div>
+  <div class="cgrid">
+    <div class="cbox"><div class="cbox-title">🎯 Error Guessing</div><div class="cbox-body">Tester uses experience to predict likely defects. Often documented as a "defect attack list." Ask: "Where have bugs hidden before?" Empty fields, null values, special characters, race conditions.</div></div>
+    <div class="cbox"><div class="cbox-title">🔍 Exploratory Testing</div><div class="cbox-body">Simultaneous test design, execution, and learning. Guided by a charter. Adaptive — tester follows the evidence. Best used by experienced QAs on complex or poorly documented systems.</div></div>
+    <div class="cbox"><div class="cbox-title">📋 Checklist-Based Testing</div><div class="cbox-body">Tests derived from a checklist of items to verify. Covers high-level conditions. Provides consistency across testers. Less detailed than formal test cases.</div></div>
+    <div class="cbox"><div class="cbox-title">⚡ When to use them</div><div class="cbox-body">When time is short · When requirements are unclear · To supplement formal techniques · When testing legacy systems · During regression to find regressions formal tests miss</div></div>
+  </div>
+</div>
+<div class="quiz-sec"><div class="qs-hdr"><div class="qs-badge">QUIZ</div><div class="qs-title">4.3 — Experience-Based</div></div><div class="qq" id="q3q"></div><div class="qhnt" id="q3h"></div><div class="qopts" id="q3o"></div><div class="qfb" id="q3f"><div class="qfbav"><img src="q-mascot.png" alt="Q" onerror="this.parentElement.innerHTML='🔍'"/></div><div><div class="qfblbl">Q — QA DETECTIVE</div><div class="qfbmsg" id="q3m"></div></div></div><button class="nxtbtn" id="q3n" onclick="goto('s4')">Next Lesson →</button></div>
+<div class="dvd"></div>
+<div class="lcard" id="s4">
+  <div class="lnum">LESSON 4.4 · WHITE-BOX TECHNIQUES</div>
+  <div class="ltitle">White-Box Testing — Testing the Inside</div>
+  <div class="lbody">
+    <strong>White-box testing</strong> uses the internal structure of the code as the test basis. The tester has full access to the source code, logic, and paths.
+  </div>
+  <div class="cgrid">
+    <div class="cbox"><div class="cbox-title">📊 Statement Coverage</div><div class="cbox-body">Every executable statement in the code is executed at least once. 100% statement coverage does NOT mean all bugs are found — just all statements ran.</div></div>
+    <div class="cbox"><div class="cbox-title">🌿 Branch Coverage</div><div class="cbox-body">Every decision point (if/else) has both TRUE and FALSE outcomes tested. Stronger than statement coverage. 100% branch → 100% statement.</div></div>
+    <div class="cbox"><div class="cbox-title">🔀 Path Coverage</div><div class="cbox-body">Every possible path through the code is tested. Most thorough but often impractical — the number of paths can be enormous in complex code.</div></div>
+    <div class="cbox"><div class="cbox-title">👥 Who does it?</div><div class="cbox-body">Primarily developers during unit testing. QA may use white-box thinking to design better black-box tests. Required for safety-critical systems.</div></div>
+  </div>
+</div>
+<div class="quiz-sec"><div class="qs-hdr"><div class="qs-badge">QUIZ</div><div class="qs-title">4.4 — White-Box</div></div><div class="qq" id="q4q"></div><div class="qhnt" id="q4h"></div><div class="qopts" id="q4o"></div><div class="qfb" id="q4f"><div class="qfbav"><img src="q-mascot.png" alt="Q" onerror="this.parentElement.innerHTML='🔍'"/></div><div><div class="qfblbl">Q — QA DETECTIVE</div><div class="qfbmsg" id="q4m"></div></div></div><button class="nxtbtn" id="q4n" onclick="goto('s5')">Next Lesson →</button></div>
+<div class="dvd"></div>
+<div class="lcard" id="s5">
+  <div class="lnum">LESSON 4.5 · COLLABORATION TECHNIQUES</div>
+  <div class="ltitle">Collaboration-Based Test Design — BDD and ATDD</div>
+  <div class="lbody">
+    Modern Agile teams use collaboration techniques that bring developers, QA, and business together to define tests BEFORE development begins.
+  </div>
+  <div class="cgrid">
+    <div class="cbox"><div class="cbox-title">🤝 ATDD</div><div class="cbox-body">Acceptance Test-Driven Development. Team defines acceptance tests before coding. Tests become the definition of "done." Shared understanding from day one.</div></div>
+    <div class="cbox"><div class="cbox-title">📝 BDD</div><div class="cbox-body">Behaviour-Driven Development. Uses Given-When-Then format. Business-readable scenarios that serve as both documentation and automated tests. Tools: Cucumber, SpecFlow.</div></div>
+    <div class="cbox"><div class="cbox-title">📋 Given-When-Then</div><div class="cbox-body"><strong style="color:var(--white)">Given</strong> a logged-in user<br><strong style="color:var(--white)">When</strong> they submit an empty form<br><strong style="color:var(--white)">Then</strong> validation error is shown</div></div>
+    <div class="cbox"><div class="cbox-title">✅ Benefits</div><div class="cbox-body">Shared understanding of requirements · Tests as living documentation · Fewer misunderstandings · QA involved from day one · Business validates logic</div></div>
+  </div>
+</div>
+<div class="quiz-sec"><div class="qs-hdr"><div class="qs-badge">FINAL QUIZ</div><div class="qs-title">4.5 — Test Design</div></div><div class="qq" id="q5q"></div><div class="qhnt" id="q5h"></div><div class="qopts" id="q5o"></div><div class="qfb" id="q5f"><div class="qfbav"><img src="q-mascot.png" alt="Q" onerror="this.parentElement.innerHTML='🔍'"/></div><div><div class="qfblbl">Q — QA DETECTIVE</div><div class="qfbmsg" id="q5m"></div></div></div><button class="nxtbtn" id="q5n" onclick="showDone()">Complete Module →</button></div>
+<div class="done-card" id="doneCard">
+  <div style="font-size:52px;margin-bottom:10px;animation:fl 3s ease-in-out infinite">🏆</div>
+  <div class="dc-xp" id="dcXP">+0 XP</div>
+  <div class="dc-h">Module 4 Complete, Watson.</div>
+  <div class="dc-wat">"You now design test cases like a detective — systematic, thorough, and evidence-based."</div>
+  <div style="display:flex;gap:20px;justify-content:center;margin-bottom:20px;flex-wrap:wrap">
+    <div style="text-align:center"><div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--white)" id="dcScore">0/5</div><div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace">CORRECT</div></div>
+    <div style="text-align:center"><div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--accent)">5</div><div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace">LESSONS</div></div>
+  </div>
+  <div class="dc-btns">
+    <a href="qalingo-istqb-m5.html" class="dc-btn">Module 5: Managing Testing →</a>
+    <a href="index.html" class="dc-btn2">← Main Menu</a>
+  </div>
+</div>
+</div>
+<div class="bnav">
+  <a href="index.html">🏠 Home</a>
+  <a href="qalingo-lesson-app.html">📘 M1</a>
+  <a href="qalingo-istqb-m2.html">📘 M2</a>
+  <a href="qalingo-istqb-m3.html">📘 M3</a>
+  <a href="qalingo-istqb-m4.html" class="act">📘 M4</a>
+  <a href="qalingo-istqb-m5.html">📘 M5</a>
+  <a href="qalingo-istqb-m6.html">📘 M6</a>
+  <a href="qalingo-istqb-simulator.html">🎯 Exam</a>
+</div>
+<script>
+var QUIZ=[{"q": "Which black-box test technique divides input data into groups expected to behave the same way?", "h": "Think: test one value from each group.", "opts": ["Boundary Value Analysis", "Equivalence Partitioning", "Decision Table Testing", "State Transition Testing"], "ans": 1, "ok": "Equivalence Partitioning divides inputs into partitions where all values are expected to behave identically. Test one value per partition \u2014 if it passes, they all should.", "ng": ["BVA focuses on the edges of partitions, not the partitions themselves.", "Decision tables deal with combinations of conditions \u2014 not input grouping.", "State transition tests how a system responds to events that change its state."]}, {"q": "A login form accepts passwords of 6\u201312 characters. Using BVA, which set of values MUST be tested?", "h": "Test AT boundaries and just OUTSIDE them.", "opts": ["6 and 12 only", "5, 6, 12 and 13", "1, 6, 9, 12, 20", "Any values between 6 and 12"], "ans": 1, "ok": "BVA requires testing at boundaries (6, 12) and just outside them (5, 13). Four values total. This maximizes coverage of boundary defects with minimum test cases.", "ng": ["Testing only the boundaries misses the critical edge cases just outside.", "These values lack the critical \"just outside\" boundary values of 5 and 13.", "Testing random values inside the range adds no boundary coverage value."]}, {"q": "A test technique that uses the tester's knowledge and experience rather than a formal method is called:", "h": "Think: no documented technique required.", "opts": ["Equivalence Partitioning", "Decision Table Testing", "Error Guessing", "Boundary Value Analysis"], "ans": 2, "ok": "Error Guessing is an experience-based technique where the tester uses intuition and past experience to predict where defects are likely to be \u2014 without a formal technique. Checklists may be used.", "ng": ["EP is a formal black-box technique with defined rules for partitioning.", "Decision tables are formal structured techniques for condition/action combinations.", "BVA is a formal black-box technique targeting edge values."]}, {"q": "White-box testing techniques are based on:", "h": "Think about what information the tester has access to.", "opts": ["User requirements and acceptance criteria", "The internal structure, code, and logic of the system", "External user behavior and business rules", "Tester experience and intuition"], "ans": 1, "ok": "White-box techniques use the internal structure of the code \u2014 paths, branches, conditions \u2014 as the test basis. Statement coverage and branch coverage are classic examples.", "ng": ["User requirements are the basis for black-box techniques, not white-box.", "External user behavior is the domain of black-box testing.", "Tester intuition is the basis for experience-based techniques like error guessing."]}, {"q": "In a decision table, each column represents:", "h": "Think about what combination of conditions produces an action.", "opts": ["A test level", "A combination of conditions and their resulting actions (a rule)", "A single test case step", "A test type"], "ans": 1, "ok": "Each column in a decision table is a rule \u2014 a unique combination of condition values (True/False) and the corresponding action(s). Decision tables ensure all condition combinations are tested systematically.", "ng": ["Test levels (component, integration, system) are not related to decision table columns.", "A test case step is one action in a sequence \u2014 not a decision table column.", "Test types (functional, non-functional) are not represented by decision table columns."]}];
+var correct=0,done=0,total=5;
+var LTRS=['A','B','C','D'];
+function renderQ(id,qi){var q=QUIZ[qi];document.getElementById('q'+id+'q').textContent=q.q;document.getElementById('q'+id+'h').textContent=q.h;document.getElementById('q'+id+'o').innerHTML=q.opts.map(function(o,i){return'<button class="qopt" onclick="ansQ('+id+','+qi+',this,'+i+')"><div class="oltr">'+LTRS[i]+'</div><span>'+o+'</span></button>';}).join('');}
+function ansQ(id,qi,btn,idx){var q=QUIZ[qi];document.getElementById('q'+id+'o').querySelectorAll('.qopt').forEach(function(b){b.classList.add('lk');});var ok=idx===q.ans;if(ok){btn.classList.add('ok');correct++;}else{btn.classList.add('ng');document.getElementById('q'+id+'o').querySelectorAll('.qopt')[q.ans].classList.add('ok');}var snarky=["<em>Hmm.</em> ","<em>Really, Watson?</em> ","<em>Come now.</em> "];document.getElementById('q'+id+'m').innerHTML=ok?'<strong style="color:var(--green)">QAlemental.</strong> '+q.ok:snarky[Math.floor(Math.random()*3)]+q.ng[idx];document.getElementById('q'+id+'f').classList.add('on');document.getElementById('q'+id+'n').style.display='block';done++;updateProg();}
+function updateProg(){document.getElementById('pf').style.width=(done/total*100)+'%';document.getElementById('pl').textContent=done+' / '+total+' questions';document.getElementById('px').textContent='+'+(done*100)+' XP';}
+function goto(id){document.getElementById(id).scrollIntoView({behavior:'smooth',block:'start'});}
+function showDone(){var dc=document.getElementById('doneCard');dc.style.display='block';document.getElementById('dcXP').textContent='+'+(correct*100)+' XP';document.getElementById('dcScore').textContent=correct+'/'+total;dc.scrollIntoView({behavior:'smooth',block:'center'});}
+function toggleTheme(){var LIGHT={'--dark':'#eef4fb','--d2':'#e0ecf7','--d3':'#cfe0f0','--card':'#f8fbff','--border':'#b8d4e8','--bhi':'#90b8d5','--text':'#0f1f35','--muted':'#3d607a','--white':'#0a1828'};var DARK={'--dark':'#080c10','--d2':'#0d1319','--d3':'#131c26','--card':'#111820','--border':'#1e2e3e','--bhi':'#2a4055','--text':'#dde8f0','--muted':'#8aa4bc','--white':'#f0f4f8'};var l=localStorage.getItem('qt')==='l';var theme=l?DARK:LIGHT;var r=document.documentElement;Object.keys(theme).forEach(function(k){r.style.setProperty(k,theme[k]);});localStorage.setItem('qt',l?'d':'l');document.getElementById('themeBtn').textContent=l?'☀️ Light':'🌙 Dark';}
+if(localStorage.getItem('qt')==='l'){document.getElementById('themeBtn').textContent='🌙 Dark';}
+Array.from({length:total},function(_,i){renderQ(i+1,i);});
+</script>
+</body>
+</html>

@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+(function(){
+  var LIGHT={'--dark':'#eef4fb','--d2':'#e0ecf7','--d3':'#cfe0f0','--card':'#f8fbff','--border':'#b8d4e8','--bhi':'#90b8d5','--text':'#0f1f35','--muted':'#3d607a','--white':'#0a1828','--nav-bg':'rgba(238,244,251,.97)','--bnav-bg':'rgba(238,244,251,.97)'};
+  if(localStorage.getItem('qt')==='l'){var r=document.documentElement;Object.keys(LIGHT).forEach(function(k){r.style.setProperty(k,LIGHT[k]);});r.setAttribute('data-theme','light');}
+})();
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QALingo — ISTQB Module 2: Testing in the SDLC</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MT2434NEM0"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-MT2434NEM0');</script>
+<script src="https://cdn.loops.so/js/loops.js" data-token="cmnnvkoy709kp0i1s3jbsdcjs" async></script>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --teal:#1aab98;--teal-d:#0f7a6e;--teal-g:rgba(26,171,152,.13);
+  --green:#7ec94a;--amber:#f0c040;--red:#e05555;--purple:#9b6ff7;--blue:#74b4f8;
+  --dark:#080c10;--d2:#0d1319;--d3:#131c26;
+  --card:#111820;--border:#1e2e3e;--bhi:#2a4055;
+  --text:#dde8f0;--muted:#8aa4bc;--white:#f0f4f8;
+}
+html{scroll-behavior:smooth}
+body{background:var(--dark);color:var(--text);font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.7;overflow-x:hidden;padding-bottom:80px}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;background:rgba(8,12,16,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.nlogo{font-family:'Syne',sans-serif;font-weight:800;font-size:17px;text-decoration:none;display:flex;align-items:center;gap:8px}
+.nlogo .qa{color:var(--teal)}.nlogo .li{color:var(--green)}
+.nright{display:flex;gap:8px;align-items:center}
+.back-btn{background:var(--d3);border:1px solid var(--border);border-radius:8px;padding:6px 14px;font-family:'Syne',sans-serif;font-weight:700;font-size:12px;color:var(--text);text-decoration:none;transition:all .15s}
+.back-btn:hover{border-color:var(--teal);color:var(--teal)}
+.ttog{background:var(--d3);border:1px solid var(--border);border-radius:20px;padding:5px 12px;cursor:pointer;font-size:12px;color:var(--text);font-family:'DM Sans',sans-serif;transition:all .15s}
+
+.hero{padding:90px 24px 40px;max-width:860px;margin:0 auto;text-align:center}
+.mod-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(116,180,248,.1);border:1px solid rgba(116,180,248,.3);border-radius:20px;padding:6px 14px;font-family:'DM Mono',monospace;font-size:11px;color:var(--blue);letter-spacing:.5px;margin-bottom:16px}
+.mod-num{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);margin-bottom:8px;letter-spacing:2px}
+.mod-h{font-family:'Syne',sans-serif;font-size:clamp(28px,5vw,48px);font-weight:800;letter-spacing:-2px;line-height:1.05;color:var(--white);margin-bottom:10px}
+.mod-h span{background:linear-gradient(135deg,var(--blue),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.mod-sub{font-size:16px;color:var(--muted);max-width:520px;margin:0 auto 24px;line-height:1.7}
+.mod-stats{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-bottom:28px}
+.ms{text-align:center;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 18px}
+.ms-val{font-family:'Syne',sans-serif;font-weight:800;font-size:18px;color:var(--white)}
+.ms-lbl{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:1px}
+
+.prog-wrap{background:var(--d3);border:1px solid var(--border);border-radius:12px;padding:12px 20px;max-width:860px;margin:0 auto 28px;display:flex;align-items:center;gap:14px}
+.prog-bg{flex:1;height:7px;background:var(--border);border-radius:4px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--teal));border-radius:4px;transition:width .4s ease;width:0%}
+.prog-lbl{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);white-space:nowrap}
+.prog-xp{font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--amber)}
+
+.content{max-width:860px;margin:0 auto;padding:0 24px}
+
+/* LESSON CARD */
+.lcard{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;margin-bottom:16px;position:relative;overflow:hidden}
+.lcard::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--blue),var(--teal))}
+.lnum{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:8px}
+.ltitle{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--white);margin-bottom:12px;letter-spacing:-.5px}
+.lbody{font-size:16px;color:var(--text);line-height:1.8;margin-bottom:14px}
+.lbody strong{color:var(--white)}.lbody em{color:var(--teal);font-style:normal}
+.lbody code{font-family:'DM Mono',monospace;font-size:13px;color:var(--amber);background:rgba(240,192,64,.08);padding:2px 6px;border-radius:4px}
+
+/* Q BUBBLE */
+.qbub{display:flex;gap:12px;background:var(--d3);border:1px solid var(--bhi);border-radius:13px;padding:15px;margin:16px 0}
+.qbav{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,var(--teal-d),var(--teal));display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}
+.qbav img{width:100%;height:100%;object-fit:contain}
+.qbnm{font-family:'DM Mono',monospace;font-size:9px;color:var(--teal);letter-spacing:1px;margin-bottom:3px}
+.qbtxt{font-size:14px;color:var(--text);line-height:1.6;font-style:italic}
+.qbtxt strong{color:var(--teal);font-style:normal}.qbtxt em{color:var(--amber);font-style:normal}
+
+/* CONCEPT GRID */
+.cgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:14px 0}
+.cbox{background:var(--d3);border-radius:11px;padding:15px}
+.cbox-title{font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--white);margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.cbox-body{font-size:14px;color:var(--muted);line-height:1.6}
+
+/* V-MODEL DIAGRAM */
+.vmodel{background:var(--d3);border-radius:13px;padding:20px;margin:14px 0;overflow-x:auto}
+.vm-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:13px}
+.vm-row:last-child{margin-bottom:0}
+.vm-left{min-width:200px;text-align:right;font-family:'DM Mono',monospace;font-size:12px;padding:6px 12px;border-radius:6px}
+.vm-arrow{color:var(--muted);font-size:16px;flex-shrink:0}
+.vm-right{min-width:200px;font-family:'DM Mono',monospace;font-size:12px;padding:6px 12px;border-radius:6px}
+
+/* QUIZ */
+.quiz-sec{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+.qs-hdr{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.qs-badge{background:var(--blue);color:#fff;font-family:'Syne',sans-serif;font-weight:700;font-size:11px;padding:3px 9px;border-radius:6px}
+.qs-title{font-family:'Syne',sans-serif;font-weight:700;font-size:15px;color:var(--white)}
+.qq{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--white);margin-bottom:5px;letter-spacing:-.3px;line-height:1.4}
+.qhnt{font-size:12px;color:var(--muted);margin-bottom:13px;font-style:italic}
+.qopts{display:flex;flex-direction:column;gap:7px;margin-bottom:10px}
+.qopt{display:flex;align-items:flex-start;gap:10px;background:var(--d3);border:2px solid var(--border);border-radius:10px;padding:11px 14px;cursor:pointer;transition:all .15s;text-align:left;width:100%;font-size:15px;color:var(--text);line-height:1.5}
+.qopt:hover:not(.lk){border-color:var(--blue);background:rgba(116,180,248,.05);transform:translateX(3px)}
+.qopt.ok{border-color:var(--green);background:rgba(126,201,74,.08)}
+.qopt.ng{border-color:var(--red);background:rgba(224,85,85,.08)}
+.qopt.lk{cursor:default}
+.oltr{width:24px;height:24px;border-radius:6px;background:var(--card);border:1.5px solid var(--bhi);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);flex-shrink:0;transition:all .15s;margin-top:1px}
+.qopt:hover:not(.lk) .oltr{background:rgba(116,180,248,.1);border-color:var(--blue);color:var(--blue)}
+.qopt.ok .oltr{background:var(--green);border-color:var(--green);color:#fff}
+.qopt.ng .oltr{background:var(--red);border-color:var(--red);color:#fff}
+.qfb{display:none;background:var(--d3);border:1px solid var(--bhi);border-radius:11px;padding:13px 15px;margin-top:9px;animation:fu .3s ease both}
+.qfb.on{display:flex;gap:11px;align-items:flex-start}
+.qfbav{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--teal-d),var(--teal));flex-shrink:0;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.qfbav img{width:100%;height:100%;object-fit:contain}
+.qfblbl{font-family:'DM Mono',monospace;font-size:9px;color:var(--teal);letter-spacing:1px;margin-bottom:2px}
+.qfbmsg{font-size:13px;color:var(--text);line-height:1.6}
+.qfbmsg strong{color:var(--teal)}.qfbmsg em{color:var(--amber);font-style:normal}
+.nxtbtn{background:var(--blue);color:#fff;border:none;border-radius:9px;padding:10px 20px;font-family:'Syne',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:all .15s;margin-top:10px;display:none}
+.nxtbtn:hover{transform:translateY(-1px);box-shadow:0 5px 16px rgba(116,180,248,.3)}
+
+/* DONE CARD */
+.done-card{background:linear-gradient(135deg,rgba(116,180,248,.08),rgba(26,171,152,.05));border:1px solid rgba(116,180,248,.25);border-radius:16px;padding:28px;margin-bottom:16px;text-align:center;display:none}
+.dc-xp{font-family:'Syne',sans-serif;font-size:44px;font-weight:800;color:var(--amber);margin-bottom:4px}
+.dc-h{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--white);margin-bottom:6px}
+.dc-wat{font-style:italic;font-size:14px;color:var(--teal);margin-bottom:18px}
+.dc-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.dc-btn{background:linear-gradient(135deg,var(--blue),var(--teal));color:#fff;border:none;border-radius:11px;padding:12px 24px;font-family:'Syne',sans-serif;font-weight:700;font-size:14px;cursor:pointer;transition:all .15s;text-decoration:none;display:inline-block}
+.dc-btn:hover{transform:translateY(-2px)}
+.dc-btn2{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:11px;padding:12px 20px;font-family:'Syne',sans-serif;font-weight:600;font-size:13px;cursor:pointer;text-decoration:none;display:inline-block;transition:all .15s}
+.dc-btn2:hover{border-color:var(--bhi);color:var(--text)}
+
+/* CHEAT SHEET */
+.cheat{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:26px;margin-bottom:16px}
+.cheat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:14px}
+.ci{background:var(--d3);border-radius:10px;padding:14px}
+.ci-t{font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--white);margin-bottom:7px}
+.ci-b{font-size:13px;color:var(--muted);line-height:1.6}
+.ci-b code{font-family:'DM Mono',monospace;color:var(--teal);font-size:12px;background:rgba(26,171,152,.08);padding:1px 5px;border-radius:4px}
+
+.dvd{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:24px 0}
+
+.bnav{position:fixed;bottom:0;left:0;right:0;background:rgba(8,12,16,.97);border-top:1px solid var(--border);padding:9px 14px;z-index:200;display:flex;justify-content:center;gap:7px;flex-wrap:wrap;backdrop-filter:blur(12px)}
+.bnav a{text-decoration:none;background:var(--d3);border:1px solid var(--border);border-radius:8px;padding:6px 11px;font-family:'Syne',sans-serif;font-weight:700;font-size:11px;color:var(--text);transition:all .15s}
+.bnav a:hover{border-color:var(--teal);color:var(--teal)}
+.bnav a.act{background:var(--blue);border-color:var(--blue);color:#fff}
+
+@keyframes fu{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fl{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@media(max-width:768px){.cgrid,.cheat-grid{grid-template-columns:1fr}.content{padding:0 16px}nav{padding:11px 16px}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nlogo" href="index.html"><span class="qa">QA</span><span class="li">Lingo</span></a>
+  <div class="nright">
+    <a class="back-btn" href="index.html">← Main Menu</a>
+    <button class="ttog" onclick="toggleTheme()" id="themeBtn">☀️ Light</button>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="mod-badge">📘 ISTQB CTFL v4.0</div>
+  <div class="mod-num">MODULE 02 OF 06</div>
+  <h1 class="mod-h">Testing Throughout the<br><span>Software Development Lifecycle</span></h1>
+  <p class="mod-sub">Understand how testing fits every SDLC model — Waterfall, Agile, V-Model — and why testing is everyone's responsibility, not just QA's.</p>
+  <div class="mod-stats">
+    <div class="ms"><div class="ms-val">6</div><div class="ms-lbl">LESSONS</div></div>
+    <div class="ms"><div class="ms-val">8</div><div class="ms-lbl">QUIZ QUESTIONS</div></div>
+    <div class="ms"><div class="ms-val">600</div><div class="ms-lbl">XP AVAILABLE</div></div>
+    <div class="ms"><div class="ms-val">~20</div><div class="ms-lbl">MINUTES</div></div>
+  </div>
+  <div class="prog-wrap">
+    <div class="prog-bg"><div class="prog-fill" id="pf"></div></div>
+    <div class="prog-lbl" id="pl">0 / 8 questions</div>
+    <div class="prog-xp" id="px">+0 XP</div>
+  </div>
+</div>
+
+<div class="content">
+
+<!-- ═══ LESSON 1: SDLC MODELS ═══ -->
+<div class="lcard" id="s1">
+  <div class="lnum">LESSON 2.1 · SDLC MODELS</div>
+  <div class="ltitle">Testing in Different SDLC Models</div>
+  <div class="lbody">
+    The <strong>Software Development Lifecycle (SDLC)</strong> is the structured process for planning, creating, testing, and delivering software. Different SDLC models have different implications for how and when testing happens.<br><br>
+    The key ISTQB principle: <em>testing activities must be adapted to the SDLC model in use</em>. There is no one-size-fits-all approach.
+  </div>
+
+  <div class="cgrid">
+    <div class="cbox">
+      <div class="cbox-title">🌊 Sequential (Waterfall)</div>
+      <div class="cbox-body">Testing happens at the end, after development is complete. High risk — defects found late are expensive. Each phase flows into the next with no overlap.</div>
+    </div>
+    <div class="cbox">
+      <div class="cbox-title">📐 V-Model</div>
+      <div class="cbox-body">Each development phase has a corresponding test level. Testing planned in parallel with development. Defects found earlier than Waterfall.</div>
+    </div>
+    <div class="cbox">
+      <div class="cbox-title">🔄 Iterative / Incremental</div>
+      <div class="cbox-body">Software built in cycles. Each iteration delivers working functionality. Testing happens within every iteration — not just at the end.</div>
+    </div>
+    <div class="cbox">
+      <div class="cbox-title">⚡ Agile (Scrum/Kanban)</div>
+      <div class="cbox-body">Testing integrated into every sprint. QA works alongside developers. Continuous feedback, fast bug detection. TDD and ATDD common practices.</div>
+    </div>
+  </div>
+
+  <div class="qbub">
+    <div class="qbav"><img src="q-mascot.png" alt="Q" onerror="this.parentElement.innerHTML='🔍'"/></div>
+    <div><div class="qbnm">Q — QA DETECTIVE</div>
+    <div class="qbtxt">"In Waterfall, testing is the last room in the house. By the time you get there, <strong>the foundation is already cracked.</strong> In Agile, every room gets inspected as it's built. <em>Q prefers Agile. Fewer surprises.</em>"</div></div>
+  </div>
+</div>
+
+<div class="quiz-sec">
+  <div class="qs-hdr"><div class="qs-badge">QUIZ</div><div class="qs-title">2.1 — SDLC Models</div></div>
+  <div class="qq" id="q1q"></div>
+  <div class="qhnt" id="q1h"></div>
+  <div class="qopts" id="q1o"></div>
+  <div class="qfb" id="q1f"><div class="qfbav"><img src="q-mascot.png" alt="Q" onerror="this.parentElement.innerHTML='🔍'"/></div><div><div class="qfblbl">Q — QA DETECTIVE</div><div class="qfbmsg" id="q1m"></div></div></div>
+  <button class="nxtbtn" id="q1n" onclick="goto('s2')">Next Lesson →</button>
+</div>
+
+<div class="dvd"></div>
+
+<!-- ═══ LESSON 2: V-MODEL ═══ -->
+<div class="lcard" id="s2">
+  <div class="lnum">LESSON 2.2 · THE V-MODEL</div>
+  <div class="ltitle">The V-Model — Test Levels and Development Phases</div>
+  <div class="lbody">
+    The <strong>V-Model</strong> maps each development phase on the left to a corresponding test level on the right. The key insight: <em>test planning starts when the corresponding development artifact is created</em> — not after.
+  </div>
+
+  <div class="vmodel">
+    <div class="vm-row">
+      <div class="vm-left" style="background:rgba(116,180,248,.1);color:var(--blue)">Requirements</div>
+      <div class="vm-arrow">⟷</div>
+      <div class="vm-right" style="background:rgba(126,201,74,.1);color:var(--green)">Acceptance Testing</div>
+    </div>
+    <div class="vm-row">
+      <div class="vm-left" style="background:rgba(155,111,247,.1);color:var(--purple)">System Design</div>
+      <div class="vm-arrow">⟷</div>
+      <div class="vm-right" style="background:rgba(126,201,74,.1);color:var(--green)">System Testing</div>
+    </div>
+    <div class="vm-row">
+      <div class="vm-left" style="background:rgba(26,171,152,.1);color:var(--teal)">Component Design</div>
+      <div class="vm-arrow">⟷</div>
+      <div class="vm-right" style="background:rgba(126,201,74,.1);color:var(--green)">Integration Testing</div>
+    </div>
+    <div class="vm-row">
+      <div class="vm-left" style="background:rgba(240,192,64,.1);color:var(--amber)">Coding</div>
+      <div class="vm-arrow">⟷</div>
+      <div class="vm-right" style="background:rgba(126,201,74,.1);color:var(--green)">Component Testing</div>
+    </div>
+  </div>
+
+  <div class="lbody">
+    <strong>Key rule:</strong> the left side produces the <em>basis</em> for the test on the right. Requirements → Acceptance test cases. System Design → System test cases. Never skip this mapping.
+  </div>
+
+  <div class="qbub">
+    <div class="qbav"><img src="q-mascot.png" alt="Q" onerror="this.parentElement.innerHTML='🔍'"/></div>
+    <div><div class="qbnm">Q — QA DETECTIVE</div>
+    <div class="qbtxt">"<em>Elementary, Watson.</em> If you're writing acceptance tests AFTER coding is done, you've already violated the V-Model. <strong>Test planning is not a post-development activity. It is a parallel one.</strong>"</div></div>
+  </div>
+</div>
+
+<div class="quiz-sec">
+  <div class="qs-hdr"><div class="qs-badge">QUIZ</div><div class="qs-title">2.2 — The V-Model</div></div>
+  <div class="qq" id="q2q"></div>
+  <div class="qhnt" id="q2h"></div>
+  <div class="qopts" id="q2o"></div>
+  <div class="qfb" id="q2f"><div class="qfbav"><img src="q-mascot.png" alt="Q" onerror="this.parentElement.innerHTML='🔍'"/></div><div><div class="qfblbl">Q — QA DETECTIVE</div><div class="qfbmsg" id="q2m"></div></div></div>
+  <button class="nxtbtn" id="q2n" onclick="goto('s3')">Next Lesson →</button>
+</div>
+
+<div class="dvd"></div>
+
+<!-- ═══ LESSON 3: TEST LEVELS ═══ -->
+<div class="lcard" id="s3">
+  <div class="lnum">LESSON 2.3 · TEST LEVELS</div>
+  <div class="ltitle">The 4 Test Levels — From Unit to Acceptance</div>
+  <div class="lbody">
+    ISTQB defines <strong>four test levels</strong>, each with a different scope, objective, and team responsible. Understanding them is critical for interviews.
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:10px;margin:14px 0">
+    <div style="background:var(--d3);border-radius:11px;padding:15px;border-left:3px solid var(--amber)">
+      <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:14px;color:var(--white);margin-bottom:5px">🔬 Component Testing (Unit Testing)</div>
+      <div style="font-size:14px;color:var(--muted);line-height:1.6"><strong style="color:var(--text)">Who:</strong> Developers · <strong style="color:var(--text)">What:</strong> Individual functions/modules · <strong style="color:var(--text)">Goal:</strong> Find defects in isolation. Fastest and cheapest level. Tools: JUnit, pytest, Jest.</div>
+    </div>
+    <div style="background:var(--d3);border-radius:11px;padding:15px;border-left:3px solid var(--purple)">
+      <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:14px;color:var(--white);margin-bottom:5px">🔗 Integration Testing</div>
+      <div style="font-size:14px;color:var(--muted);line-height:1.6"><strong style="color:var(--text)">Who:</strong> Developers or QA · <strong style="color:var(--text)">What:</strong> Interfaces between components · <strong style="color:var(--text)">Goal:</strong> Find defects in interactions. API testing lives here.</div>
+    </div>
+    <div style="background:var(--d3);border-radius:11px;padding:15px;border-left:3px solid var(--teal)">
+      <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:14px;color:var(--white);margin-bottom:5px">🖥️ System Testing</div>
+      <div style="font-size:14px;color:var(--muted);line-height:1.6"><strong style="color:var(--text)">Who:</strong> QA team · <strong style="color:var(--text)">What:</strong> Complete integrated system · <strong style="color:var(--text)">Goal:</strong> Verify the system meets requirements. Most functional testing happens here.</div>
+    </div>
+    <div style="background:var(--d3);border-radius:11px;padding:15px;border-left:3px solid var(--green)">
+      <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:14px;color:var(--white);margin-bottom:5px">✅ Acceptance Testing (UAT)</div>
+      <div style="font-size:14px;color:var(--muted);line-height:1.6"><strong style="color:var(--text)">Who:</strong> Users / Business · <strong style="color:var(--text)">What:</strong> Business requirements · <strong style="color:var(--text)">Goal:</strong> Confirm the system is ready for production. Final gate before go-live.</div>
+    </div>
+  </div>
+
+  <div class="qbub">
+    <div class="qbav"><img src="q-mascot.png" alt="Q" onerror="this.parentElement.innerHTML='🔍'"/></div>
+    <div><div class="qbnm">Q — QA DETECTIVE</div>
+    <div class="qbtxt">"A defect found in <strong>component testing</strong> costs $1 to fix. The same defect found in <strong>production</strong> costs $100. <em>This is why Q is always involved from day one.</em> The earlier the detective, the cheaper the case."</div></div>
+  </div>
+</div>
+
+<div class="quiz-sec">
+  <div class="qs-hdr"><div class="qs-badge">QUIZ</div><div class="qs-title">2.3 — Test Levels</div></div>
+  <div class="qq" id="q3q"></div>
+  <div class="qhnt" id="q3h"></div>
+  <div class="qopts" id="q3o"></div>
+  <div class="qfb" id="q3f"><div class="qfbav"><img src="q-mascot.png" alt="Q" onerror="this.parentElement.innerHTML='🔍'"/></div><div><div class="qfblbl">Q — QA DETECTIVE</div><div class="qfbmsg" id="q3m"></div></div></div>
+  <button class="nxtbtn" id="q3n" onclick="goto('s4')">Next Lesson →</button>
+</div>
+
+<div class="dvd"></div>
+
+<!-- ═══ LESSON 4: TEST TYPES ═══ -->
+<div class="lcard" id="s4">
+  <div class="lnum">LESSON 2.4 · TEST TYPES</div>
+  <div class="ltitle">Test Types — Functional vs Non-Functional</div>
+  <div class="lbody">
+    <strong>Test types</strong> classify testing by what they verify. They can be applied at any test level. ISTQB recognizes four main types:
+  </div>
+
+  <div class="cgrid">
+    <div class="cbox">
+      <div class="cbox-title">⚙️ Functional Testing</div>
+      <div class="cbox-body">Tests <strong style="color:var(--white)">WHAT</strong> the system does. Verifies functions, features, and business rules. Example: "Does the login button work?" Black-box by nature.</div>
+    </div>
+    <div class="cbox">
+      <div class="cbox-title">📊 Non-Functional Testing</div>
+      <div class="cbox-body">Tests <strong style="color:var(--white)">HOW WELL</strong> the system performs. Performance, security, usability, reliability, compatibility. "How fast does it load under 1000 users?"</div>
+    </div>
+    <div class="cbox">
+      <div class="cbox-title">🏗️ Structural Testing</div>
+      <div class="cbox-body">White-box testing. Tests the internal structure — code paths, branches, loops. Used to assess test coverage. Developers typically perform this.</div>
+    </div>
+    <div class="cbox">
+      <div class="cbox-title">🔄 Change-Related Testing</div>
+      <div class="cbox-body">Testing after changes. Includes <strong style="color:var(--white)">regression testing</strong> (nothing broke) and <strong style="color:var(--white)">confirmation testing</strong> (bug is fixed).</div>
+    </div>
+  </div>
+
+  <div class="qbub">
+    <div class="qbav"><img src="q-mascot.png" alt="Q" onerror="this.parentElement.innerHTML='🔍'"/></div>
+    <div><div class="qbnm">Q — QA DETECTIVE</div>
+    <div class="qbtxt">"<em>Rookie mistake:</em> thinking regression testing and retesting are the same. <strong>Retesting (confirmation testing)</strong> verifies a specific bug is fixed. <strong>Regression testing</strong> ensures fixing that bug didn't break anything else. Two different investigations."</div></div>
+  </div>
+</div>
+
+<div class="quiz-sec">
+  <div class="qs-hdr"><div class="qs-badge">QUIZ</div><div class="qs-title">2.4 — Test Types</div></div>
+  <div class="qq" id="q4q"></div>
+  <div class="qhnt" id="q4h"></div>
+  <div class="qopts" id="q4o"></div>
+  <div class="qfb" id="q4f"><div class="qfbav"><img src="q-mascot.png" alt="Q" onerror="this.parentElement.innerHTML='🔍'"/></div><div><div class="qfblbl">Q — QA DETECTIVE</div><div class="qfbmsg" id="q4m"></div></div></div>
+  <button class="nxtbtn" id="q4n" onclick="goto('s5')">Next Lesson →</button>
+</div>
+
+<div class="dvd"></div>
+
+<!-- ═══ LESSON 5: MAINTENANCE TESTING ═══ -->
+<div class="lcard" id="s5">
+  <div class="lnum">LESSON 2.5 · MAINTENANCE TESTING</div>
+  <div class="ltitle">Maintenance Testing — Testing After Release</div>
+  <div class="lbody">
+    <strong>Maintenance testing</strong> occurs after a system is deployed to production. Changes to a live system — whether fixes, improvements, or migrations — require testing to ensure stability.
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:10px;margin:14px 0">
+    <div style="background:var(--d3);border-radius:11px;padding:14px">
+      <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--white);margin-bottom:5px">🔧 Corrective maintenance</div>
+      <div style="font-size:14px;color:var(--muted)">Fixing defects reported in production. Requires confirmation testing + regression testing.</div>
+    </div>
+    <div style="background:var(--d3);border-radius:11px;padding:14px">
+      <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--white);margin-bottom:5px">📈 Adaptive maintenance</div>
+      <div style="font-size:14px;color:var(--muted)">Changing the system to work in a new environment (new OS, new database, new hardware). Impact analysis is critical.</div>
+    </div>
+    <div style="background:var(--d3);border-radius:11px;padding:14px">
+      <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--white);margin-bottom:5px">✨ Perfective maintenance</div>
+      <div style="font-size:14px;color:var(--muted)">Adding new features or improving existing ones after release. Full regression suite required.</div>
+    </div>
+    <div style="background:var(--d3);border-radius:11px;padding:14px">
+      <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--white);margin-bottom:5px">🌐 Impact Analysis</div>
+      <div style="font-size:14px;color:var(--muted)">Before any maintenance, assess what areas could be affected by the change. Determines regression scope. A bad impact analysis = missed bugs in production.</div>
+    </div>
+  </div>
+</div>
+
+<div class="quiz-sec">
+  <div class="qs-hdr"><div class="qs-badge">QUIZ</div><div class="qs-title">2.5 — Maintenance Testing</div></div>
+  <div class="qq" id="q5q"></div>
+  <div class="qhnt" id="q5h"></div>
+  <div class="qopts" id="q5o"></div>
+  <div class="qfb" id="q5f"><div class="qfbav"><img src="q-mascot.png" alt="Q" onerror="this.parentElement.innerHTML='🔍'"/></div><div><div class="qfblbl">Q — QA DETECTIVE</div><div class="qfbmsg" id="q5m"></div></div></div>
+  <button class="nxtbtn" id="q5n" onclick="goto('s6')">Next Lesson →</button>
+</div>
+
+<div class="dvd"></div>
+
+<!-- ═══ LESSON 6: AGILE TESTING ═══ -->
+<div class="lcard" id="s6">
+  <div class="lnum">LESSON 2.6 · AGILE TESTING</div>
+  <div class="ltitle">Testing in Agile — The QA Role in Scrum</div>
+  <div class="lbody">
+    In Agile, testing is <strong>continuous and collaborative</strong>. QA is not a phase at the end — it's embedded in every sprint. The QA detective is in every ceremony, every standup, every planning session.
+  </div>
+
+  <div class="cgrid">
+    <div class="cbox">
+      <div class="cbox-title">📋 Sprint Planning</div>
+      <div class="cbox-body">QA reviews user stories, asks "how will we test this?", identifies acceptance criteria and edge cases <strong style="color:var(--white)">before</strong> development starts.</div>
+    </div>
+    <div class="cbox">
+      <div class="cbox-title">🏃 During Sprint</div>
+      <div class="cbox-body">QA tests stories as they're completed — not waiting for the end. Continuous feedback. TDD (Test-Driven Development) and BDD (Behaviour-Driven Development) practiced.</div>
+    </div>
+    <div class="cbox">
+      <div class="cbox-title">✅ Definition of Done</div>
+      <div class="cbox-body">QA helps define DoD. A story is not "done" until it passes QA. DoD ensures consistent quality across all stories in every sprint.</div>
+    </div>
+    <div class="cbox">
+      <div class="cbox-title">🔄 Retrospective</div>
+      <div class="cbox-body">QA contributes to process improvement. "What escaped QA this sprint? Why? How do we prevent it?" Continuous improvement of the testing process itself.</div>
+    </div>
+  </div>
+
+  <div class="qbub">
+    <div class="qbav"><img src="q-mascot.png" alt="Q" onerror="this.parentElement.innerHTML='🔍'"/></div>
+    <div><div class="qbnm">Q — QA DETECTIVE</div>
+    <div class="qbtxt">"In Agile, QA who waits for development to finish is <em>already too late.</em> <strong>The best QA detective reads the requirements on day one and asks the uncomfortable questions</strong> — before a single line of code is written. That is shift-left in practice."</div></div>
+  </div>
+</div>
+
+<div class="quiz-sec">
+  <div class="qs-hdr"><div class="qs-badge">FINAL QUIZ</div><div class="qs-title">2.6 — Agile Testing</div></div>
+  <div class="qq" id="q6q"></div>
+  <div class="qhnt" id="q6h"></div>
+  <div class="qopts" id="q6o"></div>
+  <div class="qfb" id="q6f"><div class="qfbav"><img src="q-mascot.png" alt="Q" onerror="this.parentElement.innerHTML='🔍'"/></div><div><div class="qfblbl">Q — QA DETECTIVE</div><div class="qfbmsg" id="q6m"></div></div></div>
+  <button class="nxtbtn" id="q6n" onclick="showDone()">Complete Module →</button>
+</div>
+
+<!-- COMPLETE -->
+<div class="done-card" id="doneCard">
+  <div style="font-size:52px;margin-bottom:10px;animation:fl 3s ease-in-out infinite">🏆</div>
+  <div class="dc-xp" id="dcXP">+0 XP</div>
+  <div class="dc-h">Module 2 Complete, Watson.</div>
+  <div class="dc-wat">"You now understand where testing lives in every SDLC model. QAlemental."</div>
+  <div style="display:flex;gap:20px;justify-content:center;margin-bottom:20px;flex-wrap:wrap">
+    <div style="text-align:center"><div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--white)" id="dcScore">0/8</div><div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace">CORRECT</div></div>
+    <div style="text-align:center"><div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--blue)">6</div><div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace">LESSONS</div></div>
+    <div style="text-align:center"><div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--purple)">M2</div><div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace">ISTQB</div></div>
+  </div>
+  <div class="dc-btns">
+    <a href="qalingo-istqb-m3.html" class="dc-btn">Module 3: Static Testing →</a>
+    <a href="index.html" class="dc-btn2">← Main Menu</a>
+  </div>
+</div>
+
+<!-- CHEAT SHEET -->
+<div class="cheat">
+  <div class="lnum">REFERENCE</div>
+  <div style="font-family:'Syne',sans-serif;font-size:19px;font-weight:800;color:var(--white);margin-bottom:2px">Module 2 Cheat Sheet</div>
+  <div class="cheat-grid">
+    <div class="ci"><div class="ci-t">📐 V-Model mapping</div><div class="ci-b"><code>Requirements</code> → Acceptance Testing<br><code>System Design</code> → System Testing<br><code>Component Design</code> → Integration Testing<br><code>Coding</code> → Component Testing</div></div>
+    <div class="ci"><div class="ci-t">🔬 4 Test Levels</div><div class="ci-b"><code>Component</code> — Developers, unit level<br><code>Integration</code> — Interfaces & APIs<br><code>System</code> — Full system, QA team<br><code>Acceptance</code> — Business/users, UAT</div></div>
+    <div class="ci"><div class="ci-t">📊 4 Test Types</div><div class="ci-b"><code>Functional</code> — WHAT it does<br><code>Non-functional</code> — HOW WELL it does it<br><code>Structural</code> — Internal code paths<br><code>Change-related</code> — Regression & confirmation</div></div>
+    <div class="ci"><div class="ci-t">⚡ Agile QA Key Points</div><div class="ci-b">Testing in every sprint<br>QA in all ceremonies<br>Definition of Done includes QA<br>Shift-left: test early, test often<br>TDD / BDD common practices</div></div>
+  </div>
+</div>
+
+</div><!-- /content -->
+
+<div class="bnav">
+  <a href="index.html">🏠 Home</a>
+  <a href="qalingo-lesson-app.html">📘 M1</a>
+  <a href="qalingo-istqb-m2.html" class="act">📘 M2</a>
+  <a href="qalingo-istqb-m3.html">📘 M3</a>
+  <a href="qalingo-istqb-m4.html">📘 M4</a>
+  <a href="qalingo-istqb-m5.html">📘 M5</a>
+  <a href="qalingo-istqb-m6.html">📘 M6</a>
+  <a href="qalingo-istqb-simulator.html">🎯 Exam</a>
+</div>
+
+<script>
+var QUIZ=[
+  {q:"Which SDLC model is characterized by testing happening ONLY at the end, after all development is complete?",h:"Think about the oldest, most sequential model.",opts:["V-Model","Agile/Scrum","Waterfall","Iterative"],ans:2,ok:"<strong>QAlemental.</strong> Waterfall is purely sequential — each phase finishes before the next begins. Testing is the last phase, making it the highest-risk model for late defect detection.",ng:["V-Model maps testing to development phases — testing is planned in parallel, not just at the end.","Agile integrates testing into every sprint. The opposite of end-only testing.","Iterative models test within each iteration, not just at the end."]},
+  {q:"In the V-Model, which development artifact is used to design Acceptance Tests?",h:"The left side produces the basis for the right side.",opts:["Coding / Source Code","System Design","Component Design","Requirements"],ans:3,ok:"<strong>Precisely, Watson.</strong> Requirements on the left map directly to Acceptance Testing on the right. This is the V-Model's core principle — each development artifact is the test basis for its corresponding test level.",ng:["Source code maps to Component (unit) testing — the lowest level.","System Design maps to System Testing — one level up from integration.","Component Design maps to Integration Testing — testing the interfaces between components."]},
+  {q:"A QA engineer is testing the interactions between a payment module and an order management system. Which test level is this?",h:"It is testing the interfaces between components, not individual units.",opts:["Component Testing","Integration Testing","System Testing","Acceptance Testing"],ans:1,ok:"<strong>QAlemental.</strong> Integration Testing verifies the interfaces and interactions between components or systems. API testing is a classic integration testing activity.",ng:["Component Testing tests individual units in isolation — not their interactions.","System Testing tests the complete integrated system as a whole.","Acceptance Testing is performed by business users to validate business requirements."]},
+  {q:"After a production deployment, users report a slow API response. The QA team runs load tests to investigate. Which test TYPE is this?",h:"It is testing HOW WELL the system performs, not WHAT it does.",opts:["Functional testing","Structural testing","Non-functional testing","Change-related testing"],ans:2,ok:"<strong>Correct, Watson.</strong> Performance/load testing is non-functional — it tests HOW WELL the system behaves under load, not what it does. Non-functional = performance, security, usability, reliability.",ng:["Functional testing checks WHAT the system does — features and business rules.","Structural testing examines internal code paths and coverage — not runtime performance.","Change-related testing includes regression and confirmation — triggered by code changes."]},
+  {q:"A bug was fixed in production. The QA engineer runs the specific test case for that bug again. What type of testing is this?",h:"This is NOT regression testing. It has a more specific name.",opts:["Regression testing","Smoke testing","Confirmation testing (retesting)","Exploratory testing"],ans:2,ok:"<strong>QAlemental.</strong> Confirmation testing (retesting) verifies that a specific defect has been fixed. Regression testing ensures the fix didn't break anything else. Two different activities — both needed after a bug fix.",ng:["Regression testing checks that other areas were not broken by the fix — not the fix itself.","Smoke testing checks basic functionality after a new build — not a specific bug fix.","Exploratory testing is unscripted investigation — not verifying a specific fix."]},
+  {q:"In Agile, when should a QA engineer start reviewing user stories?",h:"Think shift-left and the QA's role in planning.",opts:["After the developer marks the story as done","During Sprint Review only","During Sprint Planning — before development starts","After the sprint ends during testing phase"],ans:2,ok:"<strong>Precisely.</strong> QA reviews user stories during Sprint Planning — asking about acceptance criteria, edge cases, and testability BEFORE development starts. This is shift-left in practice. Early questions prevent late defects.",ng:["Waiting until 'done' means defects are found too late — expensive to fix and delays the sprint.","Sprint Review is for demonstrating completed work — too late for story analysis.","There is no dedicated 'testing phase' in Agile. Testing happens throughout the sprint."]}
+];
+
+var correct=0, done=0;
+var LTRS=['A','B','C','D'];
+
+function renderQ(id,qi){
+  var q=QUIZ[qi];
+  document.getElementById('q'+id+'q').textContent=q.q;
+  document.getElementById('q'+id+'h').textContent=q.h;
+  var c=document.getElementById('q'+id+'o');
+  c.innerHTML=q.opts.map(function(o,i){
+    return '<button class="qopt" onclick="ansQ('+id+','+qi+',this,'+i+')"><div class="oltr">'+LTRS[i]+'</div><span>'+o+'</span></button>';
+  }).join('');
+}
+
+function ansQ(id,qi,btn,idx){
+  var q=QUIZ[qi];
+  document.getElementById('q'+id+'o').querySelectorAll('.qopt').forEach(function(b){b.classList.add('lk');});
+  var ok=idx===q.ans;
+  if(ok){btn.classList.add('ok');correct++;}
+  else{btn.classList.add('ng');document.getElementById('q'+id+'o').querySelectorAll('.qopt')[q.ans].classList.add('ok');}
+  var snarky=["<em>Hmm. Disappointing, Watson.</em> ","<em>Really?</em> ","<em>Come now.</em> "];
+  document.getElementById('q'+id+'m').innerHTML=ok
+    ?'<strong style="color:var(--green)">QAlemental.</strong> '+q.ok
+    :snarky[Math.floor(Math.random()*3)]+q.ng[idx];
+  document.getElementById('q'+id+'f').classList.add('on');
+  document.getElementById('q'+id+'n').style.display='block';
+  done++;updateProg();
+}
+
+function updateProg(){
+  var p=(done/6)*100;
+  document.getElementById('pf').style.width=p+'%';
+  document.getElementById('pl').textContent=done+' / 6 questions';
+  document.getElementById('px').textContent='+'+(done*100)+' XP';
+}
+
+function goto(id){document.getElementById(id).scrollIntoView({behavior:'smooth',block:'start'});}
+
+function showDone(){
+  var dc=document.getElementById('doneCard');dc.style.display='block';
+  document.getElementById('dcXP').textContent='+'+(correct*100)+' XP';
+  document.getElementById('dcScore').textContent=correct+'/6';
+  dc.scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+function toggleTheme(){
+  var LIGHT={'--dark':'#eef4fb','--d2':'#e0ecf7','--d3':'#cfe0f0','--card':'#f8fbff','--border':'#b8d4e8','--bhi':'#90b8d5','--text':'#0f1f35','--muted':'#3d607a','--white':'#0a1828'};
+  var DARK={'--dark':'#080c10','--d2':'#0d1319','--d3':'#131c26','--card':'#111820','--border':'#1e2e3e','--bhi':'#2a4055','--text':'#dde8f0','--muted':'#8aa4bc','--white':'#f0f4f8'};
+  var l=localStorage.getItem('qt')==='l';
+  var theme=l?DARK:LIGHT;
+  var r=document.documentElement;
+  Object.keys(theme).forEach(function(k){r.style.setProperty(k,theme[k]);});
+  localStorage.setItem('qt',l?'d':'l');
+  document.getElementById('themeBtn').textContent=l?'☀️ Light':'🌙 Dark';
+}
+if(localStorage.getItem('qt')==='l'){document.getElementById('themeBtn').textContent='🌙 Dark';}
+
+[1,2,3,4,5,6].forEach(function(i){renderQ(i,i-1);});
+</script>
+</body>
+</html>

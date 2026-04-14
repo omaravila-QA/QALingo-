@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+(function(){
+  var LIGHT={'--dark':'#eef4fb','--d2':'#e0ecf7','--d3':'#cfe0f0','--card':'#f8fbff','--border':'#b8d4e8','--bhi':'#90b8d5','--text':'#0f1f35','--muted':'#3d607a','--white':'#0a1828'};
+  if(localStorage.getItem('qt')==='l'){var r=document.documentElement;Object.keys(LIGHT).forEach(function(k){r.style.setProperty(k,LIGHT[k]);});r.setAttribute('data-theme','light');}
+})();
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QALingo — ISTQB Module 5: Managing the Test Activities</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MT2434NEM0"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-MT2434NEM0');</script>
+<script src="https://cdn.loops.so/js/loops.js" data-token="cmnnvkoy709kp0i1s3jbsdcjs" async></script>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--teal:#1aab98;--teal-d:#0f7a6e;--green:#7ec94a;--amber:#f0c040;--red:#e05555;--purple:#9b6ff7;--blue:#74b4f8;--dark:#080c10;--d2:#0d1319;--d3:#131c26;--card:#111820;--border:#1e2e3e;--bhi:#2a4055;--text:#dde8f0;--muted:#8aa4bc;--white:#f0f4f8;--accent:#7ec94a;}
+html{scroll-behavior:smooth}
+body{background:var(--dark);color:var(--text);font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.7;overflow-x:hidden;padding-bottom:80px}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;background:rgba(8,12,16,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.nlogo{font-family:'Syne',sans-serif;font-weight:800;font-size:17px;text-decoration:none;display:flex;align-items:center;gap:8px}
+.nlogo .qa{color:var(--teal)}.nlogo .li{color:var(--green)}
+.nright{display:flex;gap:8px;align-items:center}
+.back-btn{background:var(--d3);border:1px solid var(--border);border-radius:8px;padding:6px 14px;font-family:'Syne',sans-serif;font-weight:700;font-size:12px;color:var(--text);text-decoration:none;transition:all .15s}
+.back-btn:hover{border-color:var(--teal);color:var(--teal)}
+.ttog{background:var(--d3);border:1px solid var(--border);border-radius:20px;padding:5px 12px;cursor:pointer;font-size:12px;color:var(--text);transition:all .15s}
+.hero{padding:90px 24px 40px;max-width:860px;margin:0 auto;text-align:center}
+.mod-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(26,171,152,.1);border:1px solid rgba(26,171,152,.3);border-radius:20px;padding:6px 14px;font-family:'DM Mono',monospace;font-size:11px;color:var(--accent);letter-spacing:.5px;margin-bottom:16px}
+.mod-num{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);margin-bottom:8px;letter-spacing:2px}
+.mod-h{font-family:'Syne',sans-serif;font-size:clamp(26px,5vw,46px);font-weight:800;letter-spacing:-2px;line-height:1.05;color:var(--white);margin-bottom:10px}
+.mod-h span{background:linear-gradient(135deg,var(--accent),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.mod-sub{font-size:16px;color:var(--muted);max-width:520px;margin:0 auto 24px;line-height:1.7}
+.mod-stats{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-bottom:28px}
+.ms{text-align:center;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 18px}
+.ms-val{font-family:'Syne',sans-serif;font-weight:800;font-size:18px;color:var(--white)}
+.ms-lbl{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:1px}
+.prog-wrap{background:var(--d3);border:1px solid var(--border);border-radius:12px;padding:12px 20px;max-width:860px;margin:0 auto 28px;display:flex;align-items:center;gap:14px}
+.prog-bg{flex:1;height:7px;background:var(--border);border-radius:4px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--teal));border-radius:4px;transition:width .4s ease;width:0%}
+.prog-lbl{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);white-space:nowrap}
+.prog-xp{font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--amber)}
+.content{max-width:860px;margin:0 auto;padding:0 24px}
+.lcard{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;margin-bottom:16px;position:relative;overflow:hidden}
+.lcard::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--teal))}
+.lnum{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+.ltitle{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--white);margin-bottom:12px;letter-spacing:-.5px}
+.lbody{font-size:16px;color:var(--text);line-height:1.8;margin-bottom:14px}
+.lbody strong{color:var(--white)}.lbody em{color:var(--teal);font-style:normal}
+.qbub{display:flex;gap:12px;background:var(--d3);border:1px solid var(--bhi);border-radius:13px;padding:15px;margin:16px 0}
+.qbav{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,var(--teal-d),var(--teal));display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}
+.qbav img{width:100%;height:100%;object-fit:contain}
+.qbnm{font-family:'DM Mono',monospace;font-size:9px;color:var(--teal);letter-spacing:1px;margin-bottom:3px}
+.qbtxt{font-size:14px;color:var(--text);line-height:1.6;font-style:italic}
+.qbtxt strong{color:var(--teal);font-style:normal}.qbtxt em{color:var(--amber);font-style:normal}
+.cgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:14px 0}
+.cbox{background:var(--d3);border-radius:11px;padding:15px}
+.cbox-title{font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--white);margin-bottom:6px}
+.cbox-body{font-size:14px;color:var(--muted);line-height:1.6}
+.quiz-sec{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+.qs-hdr{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.qs-badge{background:var(--accent);color:#fff;font-family:'Syne',sans-serif;font-weight:700;font-size:11px;padding:3px 9px;border-radius:6px}
+.qs-title{font-family:'Syne',sans-serif;font-weight:700;font-size:15px;color:var(--white)}
+.qq{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--white);margin-bottom:5px;letter-spacing:-.3px;line-height:1.4}
+.qhnt{font-size:12px;color:var(--muted);margin-bottom:13px;font-style:italic}
+.qopts{display:flex;flex-direction:column;gap:7px}
+.qopt{display:flex;align-items:flex-start;gap:10px;background:var(--d3);border:2px solid var(--border);border-radius:10px;padding:11px 14px;cursor:pointer;transition:all .15s;text-align:left;width:100%;font-size:15px;color:var(--text);line-height:1.5}
+.qopt:hover:not(.lk){border-color:var(--accent);background:rgba(26,171,152,.05);transform:translateX(3px)}
+.qopt.ok{border-color:var(--green);background:rgba(126,201,74,.08)}
+.qopt.ng{border-color:var(--red);background:rgba(224,85,85,.08)}
+.qopt.lk{cursor:default}
+.oltr{width:24px;height:24px;border-radius:6px;background:var(--card);border:1.5px solid var(--bhi);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);flex-shrink:0;transition:all .15s;margin-top:1px}
+.qopt.ok .oltr{background:var(--green);border-color:var(--green);color:#fff}
+.qopt.ng .oltr{background:var(--red);border-color:var(--red);color:#fff}
+.qfb{display:none;background:var(--d3);border:1px solid var(--bhi);border-radius:11px;padding:13px 15px;margin-top:9px;animation:fu .3s ease both}
+.qfb.on{display:flex;gap:11px;align-items:flex-start}
+.qfbav{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--teal-d),var(--teal));flex-shrink:0;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.qfbav img{width:100%;height:100%;object-fit:contain}
+.qfblbl{font-family:'DM Mono',monospace;font-size:9px;color:var(--teal);letter-spacing:1px;margin-bottom:2px}
+.qfbmsg{font-size:13px;color:var(--text);line-height:1.6}
+.qfbmsg strong{color:var(--teal)}.qfbmsg em{color:var(--amber);font-style:normal}
+.nxtbtn{background:var(--accent);color:#fff;border:none;border-radius:9px;padding:10px 20px;font-family:'Syne',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:all .15s;margin-top:10px;display:none}
+.nxtbtn:hover{transform:translateY(-1px)}
+.done-card{background:var(--d3);border:1px solid var(--border);border-radius:16px;padding:28px;margin-bottom:16px;text-align:center;display:none}
+.dc-xp{font-family:'Syne',sans-serif;font-size:44px;font-weight:800;color:var(--amber);margin-bottom:4px}
+.dc-h{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--white);margin-bottom:6px}
+.dc-wat{font-style:italic;font-size:14px;color:var(--teal);margin-bottom:18px}
+.dc-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.dc-btn{background:linear-gradient(135deg,var(--accent),var(--teal));color:#fff;border:none;border-radius:11px;padding:12px 24px;font-family:'Syne',sans-serif;font-weight:700;font-size:14px;cursor:pointer;text-decoration:none;display:inline-block;transition:all .15s}
+.dc-btn2{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:11px;padding:12px 20px;font-family:'Syne',sans-serif;font-weight:600;font-size:13px;text-decoration:none;display:inline-block;transition:all .15s}
+.dvd{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:24px 0}
+.bnav{position:fixed;bottom:0;left:0;right:0;background:rgba(8,12,16,.97);border-top:1px solid var(--border);padding:9px 14px;z-index:200;display:flex;justify-content:center;gap:7px;flex-wrap:wrap;backdrop-filter:blur(12px)}
+.bnav a{text-decoration:none;background:var(--d3);border:1px solid var(--border);border-radius:8px;padding:6px 11px;font-family:'Syne',sans-serif;font-weight:700;font-size:11px;color:var(--text);transition:all .15s}
+.bnav a:hover{border-color:var(--teal);color:var(--teal)}
+.bnav a.act{background:var(--accent);border-color:var(--accent);color:#fff}
+@keyframes fu{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fl{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@media(max-width:768px){.cgrid{grid-template-columns:1fr}.content{padding:0 16px}nav{padding:11px 16px}}
+</style>
+</head>
+<body>
+<nav>
+  <a class="nlogo" href="index.html"><span class="qa">QA</span><span class="li">Lingo</span></a>
+  <div class="nright">
+    <a class="back-btn" href="index.html">← Main Menu</a>
+    <button class="ttog" onclick="toggleTheme()" id="themeBtn">☀️ Light</button>
+  </div>
+</nav>
+<div class="hero">
+  <div class="mod-badge">📘 ISTQB CTFL v4.0</div>
+  <div class="mod-num">MODULE 05 OF 06</div>
+  <h1 class="mod-h"><span>Managing the Test Activities</span></h1>
+  <p class="mod-sub">Learn test planning, risk-based testing, test monitoring, defect management, and how to communicate test results to stakeholders.</p>
+  <div class="mod-stats">
+    <div class="ms"><div class="ms-val">5</div><div class="ms-lbl">LESSONS</div></div>
+    <div class="ms"><div class="ms-val">5</div><div class="ms-lbl">QUIZ QUESTIONS</div></div>
+    <div class="ms"><div class="ms-val">500</div><div class="ms-lbl">XP AVAILABLE</div></div>
+    <div class="ms"><div class="ms-val">~18</div><div class="ms-lbl">MINUTES</div></div>
+  </div>
+  <div class="prog-wrap">
+    <div class="prog-bg"><div class="prog-fill" id="pf"></div></div>
+    <div class="prog-lbl" id="pl">0 / 5 questions</div>
+    <div class="prog-xp" id="px">+0 XP</div>
+  </div>
+</div>
+<div class="content">
+<div class="lcard" id="s1">
+  <div class="lnum">LESSON 5.1 · TEST PLANNING</div>
+  <div class="ltitle">Test Planning — The Test Plan Document</div>
+  <div class="lbody">
+    A <strong>Test Plan</strong> is the master document for all testing activities. It defines what will be tested, how, by whom, when, and what success looks like. It is the detective's case brief before the investigation begins.
+  </div>
+  <div class="cgrid">
+    <div class="cbox"><div class="cbox-title">📋 What a Test Plan contains</div><div class="cbox-body">Scope and objectives · Test approach and strategy · Test levels and types · Resources and roles · Schedule and milestones · Entry and exit criteria · Risks and mitigations</div></div>
+    <div class="cbox"><div class="cbox-title">🎯 Entry and Exit Criteria</div><div class="cbox-body"><strong style="color:var(--white)">Entry:</strong> conditions to START testing (build ready, environment set up, test data available)<br><strong style="color:var(--white)">Exit:</strong> conditions to STOP testing (pass rate ≥ 95%, no critical bugs open)</div></div>
+    <div class="cbox"><div class="cbox-title">⚡ In Agile</div><div class="cbox-body">Test plans are lightweight and evolve. Often a "test strategy" section in each sprint. Planning happens in sprint planning. Exit criteria = Definition of Done.</div></div>
+    <div class="cbox"><div class="cbox-title">📊 Test Estimation</div><div class="cbox-body">Techniques: metrics-based (historical data), expert-based (experience), planning poker (Agile). Always include buffer for defect retesting and regression.</div></div>
+  </div>
+  <div class="qbub">
+    <div class="qbav"><img src="q-mascot.png" alt="Q" onerror="this.parentElement.innerHTML='🔍'"/></div>
+    <div><div class="qbnm">Q — QA DETECTIVE</div>
+    <div class="qbtxt">"A test plan without exit criteria is a plan with no ending. <strong>How do you know when you're done?</strong> You cannot stop testing because time ran out — you stop because defined criteria were met. <em>Any other reason is guessing, Watson.</em>"</div></div>
+  </div>
+</div>
+<div class="quiz-sec"><div class="qs-hdr"><div class="qs-badge">QUIZ</div><div class="qs-title">5.1 — Test Planning</div></div><div class="qq" id="q1q"></div><div class="qhnt" id="q1h"></div><div class="qopts" id="q1o"></div><div class="qfb" id="q1f"><div class="qfbav"><img src="q-mascot.png" alt="Q" onerror="this.parentElement.innerHTML='🔍'"/></div><div><div class="qfblbl">Q — QA DETECTIVE</div><div class="qfbmsg" id="q1m"></div></div></div><button class="nxtbtn" id="q1n" onclick="goto('s2')">Next Lesson →</button></div>
+<div class="dvd"></div>
+<div class="lcard" id="s2">
+  <div class="lnum">LESSON 5.2 · RISK-BASED TESTING</div>
+  <div class="ltitle">Risk-Based Testing — Test What Matters Most</div>
+  <div class="lbody">
+    <strong>Risk-based testing</strong> prioritizes testing activities based on risk. Since you can never test everything, you focus on areas where failure would be most likely and most damaging.<br><br>
+    <strong>Risk = Likelihood of failure × Impact on business</strong><br><br>
+    High likelihood + High impact = test first, test thoroughly.<br>
+    Low likelihood + Low impact = test less, or not at all.
+  </div>
+  <div class="cgrid">
+    <div class="cbox"><div class="cbox-title">🔴 Product Risk</div><div class="cbox-body">Risk that the software will fail or not meet requirements. Examples: complex new feature, integration with external API, security-sensitive functionality, legacy code being modified.</div></div>
+    <div class="cbox"><div class="cbox-title">⚙️ Project Risk</div><div class="cbox-body">Risk that testing activities will be affected externally. Examples: environment not ready, test data unavailable, key team member sick, scope creep, tight deadline.</div></div>
+    <div class="cbox"><div class="cbox-title">📊 Risk Assessment</div><div class="cbox-body">Identify risks → Analyze likelihood and impact → Prioritize → Design tests for high-risk areas → Monitor risks throughout the project</div></div>
+    <div class="cbox"><div class="cbox-title">📉 Risk Mitigation</div><div class="cbox-body">Testing itself reduces product risk. The more thorough the testing of a high-risk area, the lower the residual risk of releasing it to production.</div></div>
+  </div>
+</div>
+<div class="quiz-sec"><div class="qs-hdr"><div class="qs-badge">QUIZ</div><div class="qs-title">5.2 — Risk-Based Testing</div></div><div class="qq" id="q2q"></div><div class="qhnt" id="q2h"></div><div class="qopts" id="q2o"></div><div class="qfb" id="q2f"><div class="qfbav"><img src="q-mascot.png" alt="Q" onerror="this.parentElement.innerHTML='🔍'"/></div><div><div class="qfblbl">Q — QA DETECTIVE</div><div class="qfbmsg" id="q2m"></div></div></div><button class="nxtbtn" id="q2n" onclick="goto('s3')">Next Lesson →</button></div>
+<div class="dvd"></div>
+<div class="lcard" id="s3">
+  <div class="lnum">LESSON 5.3 · TEST MONITORING</div>
+  <div class="ltitle">Test Monitoring and Control</div>
+  <div class="lbody">
+    <strong>Test monitoring</strong> tracks test progress against the plan. <strong>Test control</strong> takes corrective actions when the project deviates from the plan.
+  </div>
+  <div class="cgrid">
+    <div class="cbox"><div class="cbox-title">📊 Key Metrics</div><div class="cbox-body">Test cases planned vs executed · Pass rate % · Defect detection rate · Defect density · Test coverage % · Blocked tests (environment issues)</div></div>
+    <div class="cbox"><div class="cbox-title">📈 Test Progress Reports</div><div class="cbox-body">Regular reports to stakeholders. Show: what was tested, what passed/failed, open defects, risks, and whether the project is on track to meet exit criteria.</div></div>
+    <div class="cbox"><div class="cbox-title">🔄 Control Actions</div><div class="cbox-body">If behind schedule: reprioritize test cases, add resources, reduce scope. If defect rate is high: escalate, pause releases, add test cycles. Always communicate to stakeholders.</div></div>
+    <div class="cbox"><div class="cbox-title">📋 Test Summary Report</div><div class="cbox-body">Final report at end of testing. Summarizes what was tested, what was found, coverage achieved, risks remaining, and recommendation for release (go/no-go).</div></div>
+  </div>
+</div>
+<div class="quiz-sec"><div class="qs-hdr"><div class="qs-badge">QUIZ</div><div class="qs-title">5.3 — Monitoring</div></div><div class="qq" id="q3q"></div><div class="qhnt" id="q3h"></div><div class="qopts" id="q3o"></div><div class="qfb" id="q3f"><div class="qfbav"><img src="q-mascot.png" alt="Q" onerror="this.parentElement.innerHTML='🔍'"/></div><div><div class="qfblbl">Q — QA DETECTIVE</div><div class="qfbmsg" id="q3m"></div></div></div><button class="nxtbtn" id="q3n" onclick="goto('s4')">Next Lesson →</button></div>
+<div class="dvd"></div>
+<div class="lcard" id="s4">
+  <div class="lnum">LESSON 5.4 · DEFECT MANAGEMENT</div>
+  <div class="ltitle">Defect Management — From Discovery to Closure</div>
+  <div class="lbody">A defect lifecycle: <strong>New → Open → In Progress → Fixed → Retesting → Closed</strong> (or Rejected / Deferred)</div>
+  <div class="cgrid">
+    <div class="cbox"><div class="cbox-title">📝 Defect Report contents</div><div class="cbox-body">Unique ID · Title · Steps to reproduce · Expected result · Actual result · Environment · Severity · Priority · Status · Attachments (screenshots, logs)</div></div>
+    <div class="cbox"><div class="cbox-title">🔴 Severity vs Priority</div><div class="cbox-body"><strong style="color:var(--white)">Severity</strong> = technical impact (set by QA)<br><strong style="color:var(--white)">Priority</strong> = business urgency (set by product/business)<br>Typo on homepage: Low severity, High priority</div></div>
+    <div class="cbox"><div class="cbox-title">✅ Confirmation Testing</div><div class="cbox-body">After a defect is fixed, re-run the original failing test to confirm it passes. This is NOT regression testing — it is verifying the specific fix.</div></div>
+    <div class="cbox"><div class="cbox-title">🔄 Regression Testing</div><div class="cbox-body">After fixing a defect, run the full (or risk-based) regression suite to ensure the fix did not break anything else. Different from — and in addition to — confirmation testing.</div></div>
+  </div>
+</div>
+<div class="quiz-sec"><div class="qs-hdr"><div class="qs-badge">QUIZ</div><div class="qs-title">5.4 — Defect Management</div></div><div class="qq" id="q4q"></div><div class="qhnt" id="q4h"></div><div class="qopts" id="q4o"></div><div class="qfb" id="q4f"><div class="qfbav"><img src="q-mascot.png" alt="Q" onerror="this.parentElement.innerHTML='🔍'"/></div><div><div class="qfblbl">Q — QA DETECTIVE</div><div class="qfbmsg" id="q4m"></div></div></div><button class="nxtbtn" id="q4n" onclick="goto('s5')">Next Lesson →</button></div>
+<div class="dvd"></div>
+<div class="lcard" id="s5">
+  <div class="lnum">LESSON 5.5 · CONFIGURATION MANAGEMENT</div>
+  <div class="ltitle">Configuration Management in Testing</div>
+  <div class="lbody">
+    <strong>Configuration management</strong> ensures that test items, test environments, and test results are correctly identified, tracked, and controlled.<br><br>
+    Without configuration management, you cannot reproduce test results, trace defects to specific builds, or know exactly what version of the system was tested.
+  </div>
+  <div class="cgrid">
+    <div class="cbox"><div class="cbox-title">🏷️ What to control</div><div class="cbox-body">Software builds (versions) · Test environments · Test data · Test scripts · Test results · Defect reports</div></div>
+    <div class="cbox"><div class="cbox-title">🔍 Why it matters for QA</div><div class="cbox-body">Reproducibility: "Bug only on v2.3.1, not v2.3.2" · Traceability: link test cases to requirements · Auditability: prove what was tested and when</div></div>
+    <div class="cbox"><div class="cbox-title">🛠 Tools</div><div class="cbox-body">Version control: Git · Test management: Jira, TestRail, Zephyr · Environment management: Docker, Kubernetes · Build tracking: Jenkins, GitHub Actions</div></div>
+    <div class="cbox"><div class="cbox-title">📋 Traceability Matrix</div><div class="cbox-body">Links requirements → test cases → test results → defects. Shows exactly which requirements are covered, which tests cover them, and which defects were found.</div></div>
+  </div>
+</div>
+<div class="quiz-sec"><div class="qs-hdr"><div class="qs-badge">FINAL QUIZ</div><div class="qs-title">5.5 — Configuration Mgmt</div></div><div class="qq" id="q5q"></div><div class="qhnt" id="q5h"></div><div class="qopts" id="q5o"></div><div class="qfb" id="q5f"><div class="qfbav"><img src="q-mascot.png" alt="Q" onerror="this.parentElement.innerHTML='🔍'"/></div><div><div class="qfblbl">Q — QA DETECTIVE</div><div class="qfbmsg" id="q5m"></div></div></div><button class="nxtbtn" id="q5n" onclick="showDone()">Complete Module →</button></div>
+<div class="done-card" id="doneCard">
+  <div style="font-size:52px;margin-bottom:10px;animation:fl 3s ease-in-out infinite">🏆</div>
+  <div class="dc-xp" id="dcXP">+0 XP</div>
+  <div class="dc-h">Module 5 Complete, Watson.</div>
+  <div class="dc-wat">"QAlemental. You now manage testing like a lead detective — planning, monitoring, and reporting with precision."</div>
+  <div style="display:flex;gap:20px;justify-content:center;margin-bottom:20px;flex-wrap:wrap">
+    <div style="text-align:center"><div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--white)" id="dcScore">0/5</div><div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace">CORRECT</div></div>
+    <div style="text-align:center"><div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--accent)">5</div><div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace">LESSONS</div></div>
+  </div>
+  <div class="dc-btns">
+    <a href="qalingo-istqb-m6.html" class="dc-btn">Module 6: Test Tools →</a>
+    <a href="index.html" class="dc-btn2">← Main Menu</a>
+  </div>
+</div>
+</div>
+<div class="bnav">
+  <a href="index.html">🏠 Home</a>
+  <a href="qalingo-lesson-app.html">📘 M1</a>
+  <a href="qalingo-istqb-m2.html">📘 M2</a>
+  <a href="qalingo-istqb-m3.html">📘 M3</a>
+  <a href="qalingo-istqb-m4.html">📘 M4</a>
+  <a href="qalingo-istqb-m5.html" class="act">📘 M5</a>
+  <a href="qalingo-istqb-m6.html">📘 M6</a>
+  <a href="qalingo-istqb-simulator.html">🎯 Exam</a>
+</div>
+<script>
+var QUIZ=[{"q": "What is the PRIMARY purpose of a Test Plan?", "h": "Think about what it defines and who uses it.", "opts": ["To list all test cases to be executed", "To document the scope, objectives, approach, resources, and schedule for testing", "To record defects found during testing", "To define the Definition of Done for each sprint"], "ans": 1, "ok": "A Test Plan documents WHAT will be tested, HOW, by WHOM, and WHEN. It is the master planning document for all test activities \u2014 scope, objectives, approach, resources, risks, and schedule.", "ng": ["A test suite or test case repository lists test cases \u2014 not a test plan.", "A defect report or bug tracker records defects \u2014 not a test plan.", "Definition of Done is an Agile concept defined by the team \u2014 not a test plan deliverable."]}, {"q": "Risk-based testing prioritizes test cases based on:", "h": "Risk = Likelihood \u00d7 Impact. Think about what drives priority.", "opts": ["The number of test cases available", "The likelihood of defects and the business impact if they occur", "The order requirements were written", "The personal preference of the test lead"], "ans": 1, "ok": "Risk-based testing uses risk analysis to prioritize. Risk = Likelihood of failure \u00d7 Impact on business. High-risk areas get tested first and most thoroughly. Low-risk areas may get less coverage.", "ng": ["The number of test cases has nothing to do with risk priority.", "Requirement order is irrelevant to risk \u2014 a late-added requirement can be critical.", "Personal preference is not a valid basis for test prioritization \u2014 risk is."]}, {"q": "During test execution, the actual results do not match expected results. What should the tester do FIRST?", "h": "Before logging a bug, confirm it is a real defect.", "opts": ["Immediately log a critical defect", "Re-run the test to confirm the result is reproducible", "Ask the developer to fix it", "Escalate to the test manager"], "ans": 1, "ok": "Before logging a defect, always confirm the result is reproducible. Run the test again to rule out environment issues, data problems, or human error. A non-reproducible defect report wastes everyone's time.", "ng": ["Logging immediately without confirmation often results in false defect reports.", "The developer cannot fix what has not been confirmed and documented.", "Escalation before confirmation is premature \u2014 confirm first."]}, {"q": "What does \"test coverage\" measure?", "h": "Think about what percentage of something has been tested.", "opts": ["The number of bugs found per sprint", "The degree to which a test object has been tested by the test suite", "The total hours spent testing", "The number of test cases executed"], "ans": 1, "ok": "Test coverage measures the degree to which the test object (code, requirements, or other criteria) has been exercised by tests. 80% branch coverage means 80% of code branches have been tested.", "ng": ["Bug count measures quality/density \u2014 not coverage.", "Testing hours measure effort \u2014 not coverage.", "Test cases executed is a count \u2014 coverage is a percentage of what has been exercised."]}, {"q": "A defect report should always include:", "h": "Think about what a developer needs to reproduce and fix the bug.", "opts": ["The tester's opinion on how to fix it", "Steps to reproduce, expected result, actual result, severity, and priority", "Only a screenshot of the error", "The estimated time to fix the defect"], "ans": 1, "ok": "A complete defect report includes: title, steps to reproduce, expected result, actual result, environment, severity, priority, and attachments (screenshots, logs). Without these, developers cannot investigate.", "ng": ["Testers document defects \u2014 developers decide how to fix them.", "A screenshot alone is incomplete \u2014 steps to reproduce are essential.", "Testers do not estimate fix time \u2014 developers and leads do."]}];
+var correct=0,done=0,total=5;
+var LTRS=['A','B','C','D'];
+function renderQ(id,qi){var q=QUIZ[qi];document.getElementById('q'+id+'q').textContent=q.q;document.getElementById('q'+id+'h').textContent=q.h;document.getElementById('q'+id+'o').innerHTML=q.opts.map(function(o,i){return'<button class="qopt" onclick="ansQ('+id+','+qi+',this,'+i+')"><div class="oltr">'+LTRS[i]+'</div><span>'+o+'</span></button>';}).join('');}
+function ansQ(id,qi,btn,idx){var q=QUIZ[qi];document.getElementById('q'+id+'o').querySelectorAll('.qopt').forEach(function(b){b.classList.add('lk');});var ok=idx===q.ans;if(ok){btn.classList.add('ok');correct++;}else{btn.classList.add('ng');document.getElementById('q'+id+'o').querySelectorAll('.qopt')[q.ans].classList.add('ok');}var snarky=["<em>Hmm.</em> ","<em>Really, Watson?</em> ","<em>Come now.</em> "];document.getElementById('q'+id+'m').innerHTML=ok?'<strong style="color:var(--green)">QAlemental.</strong> '+q.ok:snarky[Math.floor(Math.random()*3)]+q.ng[idx];document.getElementById('q'+id+'f').classList.add('on');document.getElementById('q'+id+'n').style.display='block';done++;updateProg();}
+function updateProg(){document.getElementById('pf').style.width=(done/total*100)+'%';document.getElementById('pl').textContent=done+' / '+total+' questions';document.getElementById('px').textContent='+'+(done*100)+' XP';}
+function goto(id){document.getElementById(id).scrollIntoView({behavior:'smooth',block:'start'});}
+function showDone(){var dc=document.getElementById('doneCard');dc.style.display='block';document.getElementById('dcXP').textContent='+'+(correct*100)+' XP';document.getElementById('dcScore').textContent=correct+'/'+total;dc.scrollIntoView({behavior:'smooth',block:'center'});}
+function toggleTheme(){var LIGHT={'--dark':'#eef4fb','--d2':'#e0ecf7','--d3':'#cfe0f0','--card':'#f8fbff','--border':'#b8d4e8','--bhi':'#90b8d5','--text':'#0f1f35','--muted':'#3d607a','--white':'#0a1828'};var DARK={'--dark':'#080c10','--d2':'#0d1319','--d3':'#131c26','--card':'#111820','--border':'#1e2e3e','--bhi':'#2a4055','--text':'#dde8f0','--muted':'#8aa4bc','--white':'#f0f4f8'};var l=localStorage.getItem('qt')==='l';var theme=l?DARK:LIGHT;var r=document.documentElement;Object.keys(theme).forEach(function(k){r.style.setProperty(k,theme[k]);});localStorage.setItem('qt',l?'d':'l');document.getElementById('themeBtn').textContent=l?'☀️ Light':'🌙 Dark';}
+if(localStorage.getItem('qt')==='l'){document.getElementById('themeBtn').textContent='🌙 Dark';}
+Array.from({length:total},function(_,i){renderQ(i+1,i);});
+</script>
+</body>
+</html>
